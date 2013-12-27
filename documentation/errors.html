@@ -1,0 +1,919 @@
+
+Deprecated: preg_replace(): The /e modifier is deprecated, use preg_replace_callback instead in /usr/share/php/PhpDocumentor/phpDocumentor/Smarty-2.6.0/libs/Smarty_Compiler.class.php on line 262
+
+Call Stack:
+    0.0001     221392   1. {main}() /usr/bin/phpdoc:0
+    0.0002     230608   2. require('/usr/share/php/PhpDocumentor/phpDocumentor/phpdoc.inc') /usr/bin/phpdoc:40
+    0.1452    7659728   3. phpDocumentor_setup->createDocs() /usr/share/php/PhpDocumentor/phpDocumentor/phpdoc.inc:65
+    8.6266   60228592   4. phpDocumentor_IntermediateParser->Output() /usr/share/php/PhpDocumentor/phpDocumentor/Setup.inc.php:763
+    8.9741   61553768   5. phpDocumentor_IntermediateParser->Convert() /usr/share/php/PhpDocumentor/phpDocumentor/IntermediateParser.inc:1867
+    8.9741   61557408   6. Converter->walk() /usr/share/php/PhpDocumentor/phpDocumentor/IntermediateParser.inc:1654
+   14.0968   64581088   7. HTMLframesConverter->ConvertErrorLog() /usr/share/php/PhpDocumentor/phpDocumentor/Converter.inc:1951
+   14.1026   64955976   8. Smarty->fetch() /usr/share/php/PhpDocumentor/phpDocumentor/Converters/HTML/frames/HTMLframesConverter.inc:969
+   14.1027   64973088   9. Smarty->_compile_resource() /usr/share/php/PhpDocumentor/phpDocumentor/Smarty-2.6.0/libs/Smarty.class.php:1296
+   14.1030   64975632  10. Smarty->_compile_source() /usr/share/php/PhpDocumentor/phpDocumentor/Smarty-2.6.0/libs/Smarty.class.php:1458
+   14.1032   65002704  11. Smarty_Compiler->_compile_file() /usr/share/php/PhpDocumentor/phpDocumentor/Smarty-2.6.0/libs/Smarty.class.php:1523
+   14.1032   65003096  12. preg_replace() /usr/share/php/PhpDocumentor/phpDocumentor/Smarty-2.6.0/libs/Smarty_Compiler.class.php:262
+
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>phpDocumentor Parser Errors and Warnings</title>
+			<link rel="stylesheet" href="media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+						<a href="#Post-parsing">Post-parsing</a><br>
+<a href="#AccessCheckerTest.php">AccessCheckerTest.php</a><br>
+<a href="#AccessRule.php">AccessRule.php</a><br>
+<a href="#add.php">add.php</a><br>
+<a href="#AdminController.php">AdminController.php</a><br>
+<a href="#ApiStatusHiddenClass.php">ApiStatusHiddenClass.php</a><br>
+<a href="#ApocalypseException.php">ApocalypseException.php</a><br>
+<a href="#AppConfig.php">AppConfig.php</a><br>
+<a href="#AppConfigHiddenClass.php">AppConfigHiddenClass.php</a><br>
+<a href="#ArrayDataSet.php">ArrayDataSet.php</a><br>
+<a href="#Auth.php">Auth.php</a><br>
+<a href="#AuthException.php">AuthException.php</a><br>
+<a href="#AuthRequestedException.php">AuthRequestedException.php</a><br>
+<a href="#AuthTest.php">AuthTest.php</a><br>
+<a href="#Autoloader.php">Autoloader.php</a><br>
+<a href="#AutoLoaderTest.php">AutoLoaderTest.php</a><br>
+<a href="#Bootstrap.php">Bootstrap.php</a><br>
+<a href="#BootstrapHiddenClass.php">BootstrapHiddenClass.php</a><br>
+<a href="#Br.php">Br.php</a><br>
+<a href="#Button.php">Button.php</a><br>
+<a href="#Checkbox.php">Checkbox.php</a><br>
+<a href="#Clear.php">Clear.php</a><br>
+<a href="#CmsController.php">CmsController.php</a><br>
+<a href="#Connection.php">Connection.php</a><br>
+<a href="#ContainableDomElementAbstract.php">ContainableDomElementAbstract.php</a><br>
+<a href="#ContainableDomElementInterface.php">ContainableDomElementInterface.php</a><br>
+<a href="#Container.php">Container.php</a><br>
+<a href="#CoreBootstrap.php">CoreBootstrap.php</a><br>
+<a href="#CoreConfig.php">CoreConfig.php</a><br>
+<a href="#CoreConfigTest.php">CoreConfigTest.php</a><br>
+<a href="#CoreController.php">CoreController.php</a><br>
+<a href="#CoreControllerInterface.php">CoreControllerInterface.php</a><br>
+<a href="#CoreControllerTest.php">CoreControllerTest.php</a><br>
+<a href="#CoreHelper.php">CoreHelper.php</a><br>
+<a href="#CoreHelperTest.php">CoreHelperTest.php</a><br>
+<a href="#CoreHelperTest2.php">CoreHelperTest2.php</a><br>
+<a href="#CoreHTML.php">CoreHTML.php</a><br>
+<a href="#CoreModel.php">CoreModel.php</a><br>
+<a href="#CoreTranslator.php">CoreTranslator.php</a><br>
+<a href="#DatabaseInformation.php">DatabaseInformation.php</a><br>
+<a href="#DatabaseLogger.php">DatabaseLogger.php</a><br>
+<a href="#DatabaseManager.php">DatabaseManager.php</a><br>
+<a href="#DatabaseObjectFactory.php">DatabaseObjectFactory.php</a><br>
+<a href="#DataObject.php">DataObject.php</a><br>
+<a href="#DataObjectTest.php">DataObjectTest.php</a><br>
+<a href="#Date.php">Date.php</a><br>
+<a href="#DBException.php">DBException.php</a><br>
+<a href="#defines.php">defines.php</a><br>
+<a href="#DeleteObject.php">DeleteObject.php</a><br>
+<a href="#DeleteQueryBuilder.php">DeleteQueryBuilder.php</a><br>
+<a href="#Div.php">Div.php</a><br>
+<a href="#DomElementAbstract.php">DomElementAbstract.php</a><br>
+<a href="#DomElementInterface.php">DomElementInterface.php</a><br>
+<a href="#Dropdown.php">Dropdown.php</a><br>
+<a href="#DropdownElement.php">DropdownElement.php</a><br>
+<a href="#DropdownGroup.php">DropdownGroup.php</a><br>
+<a href="#edit.php">edit.php</a><br>
+<a href="#editplain.php">editplain.php</a><br>
+<a href="#EmailLogger.php">EmailLogger.php</a><br>
+<a href="#faq.php">faq.php</a><br>
+<a href="#FileLogger.php">FileLogger.php</a><br>
+<a href="#FileUploadObject.php">FileUploadObject.php</a><br>
+<a href="#FileUploadObjectTest.php">FileUploadObjectTest.php</a><br>
+<a href="#Form.php">Form.php</a><br>
+<a href="#Grid.php">Grid.php</a><br>
+<a href="#Headline.php">Headline.php</a><br>
+<a href="#Helper.php">Helper.php</a><br>
+<a href="#HelperHiddenClass.php">HelperHiddenClass.php</a><br>
+<a href="#HostConfig.php">HostConfig.php</a><br>
+<a href="#HostConfigHiddenClass.php">HostConfigHiddenClass.php</a><br>
+<a href="#HTMLHiddenClass.php">HTMLHiddenClass.php</a><br>
+<a href="#HTMLTest.php">HTMLTest.php</a><br>
+<a href="#HttpInformation.php">HttpInformation.php</a><br>
+<a href="#index.php">index.php</a><br>
+<a href="#Input.php">Input.php</a><br>
+<a href="#InsertQueryBuilder.php">InsertQueryBuilder.php</a><br>
+<a href="#json.php">json.php</a><br>
+<a href="#JsonResponse.php">JsonResponse.php</a><br>
+<a href="#JsonResponseTest.php">JsonResponseTest.php</a><br>
+<a href="#KeyNotExistsInDataObject.php">KeyNotExistsInDataObject.php</a><br>
+<a href="#KeyValueStore.php">KeyValueStore.php</a><br>
+<a href="#KeyValueTest.php">KeyValueTest.php</a><br>
+<a href="#Label.php">Label.php</a><br>
+<a href="#listing.php">listing.php</a><br>
+<a href="#Load.php">Load.php</a><br>
+<a href="#LoadTest.php">LoadTest.php</a><br>
+<a href="#LoggerInterface.php">LoggerInterface.php</a><br>
+<a href="#luuuke.php">luuuke.php</a><br>
+<a href="#menu.php">menu.php</a><br>
+<a href="#Migration.php">Migration.php</a><br>
+<a href="#migratior.php">migratior.php</a><br>
+<a href="#Model.php">Model.php</a><br>
+<a href="#ModelHiddenClass.php">ModelHiddenClass.php</a><br>
+<a href="#MultiDeleteObject.php">MultiDeleteObject.php</a><br>
+<a href="#MultiDeleteQueryBuilder.php">MultiDeleteQueryBuilder.php</a><br>
+<a href="#MultiUpdateObject.php">MultiUpdateObject.php</a><br>
+<a href="#MultiUpdateQueryBuilder.php">MultiUpdateQueryBuilder.php</a><br>
+<a href="#news.php">news.php</a><br>
+<a href="#NotAllowedException.php">NotAllowedException.php</a><br>
+<a href="#NotImplementedException.php">NotImplementedException.php</a><br>
+<a href="#NoViewException.php">NoViewException.php</a><br>
+<a href="#PaginatorInformation.php">PaginatorInformation.php</a><br>
+<a href="#PaginatorInformationTest.php">PaginatorInformationTest.php</a><br>
+<a href="#Password.php">Password.php</a><br>
+<a href="#Plaintext.php">Plaintext.php</a><br>
+<a href="#QueryBuilder.php">QueryBuilder.php</a><br>
+<a href="#QueryBuilderTest.php">QueryBuilderTest.php</a><br>
+<a href="#QueryGeneratorException.php">QueryGeneratorException.php</a><br>
+<a href="#QueryResultObject.php">QueryResultObject.php</a><br>
+<a href="#QueryString.php">QueryString.php</a><br>
+<a href="#QueryStringInterface.php">QueryStringInterface.php</a><br>
+<a href="#Radio.php">Radio.php</a><br>
+<a href="#RadioOption.php">RadioOption.php</a><br>
+<a href="#Redirect.php">Redirect.php</a><br>
+<a href="#RedirectTest.php">RedirectTest.php</a><br>
+<a href="#Request.php">Request.php</a><br>
+<a href="#RequestTest.php">RequestTest.php</a><br>
+<a href="#Result.php">Result.php</a><br>
+<a href="#ResultList.php">ResultList.php</a><br>
+<a href="#Router.php">Router.php</a><br>
+<a href="#RouterTest.php">RouterTest.php</a><br>
+<a href="#SaveObject.php">SaveObject.php</a><br>
+<a href="#SelectQueryBuilder.php">SelectQueryBuilder.php</a><br>
+<a href="#SelectQueryBuilderTest.php">SelectQueryBuilderTest.php</a><br>
+<a href="#setup.php">setup.php</a><br>
+<a href="#Span.php">Span.php</a><br>
+<a href="#Stack.php">Stack.php</a><br>
+<a href="#StackTest.php">StackTest.php</a><br>
+<a href="#staticview.php">staticview.php</a><br>
+<a href="#Submenu.php">Submenu.php</a><br>
+<a href="#SubmenuItem.php">SubmenuItem.php</a><br>
+<a href="#Submit.php">Submit.php</a><br>
+<a href="#TestBootstrap.php">TestBootstrap.php</a><br>
+<a href="#TestHiddenClass.php">TestHiddenClass.php</a><br>
+<a href="#testview.php">testview.php</a><br>
+<a href="#testview2.php">testview2.php</a><br>
+<a href="#Text.php">Text.php</a><br>
+<a href="#Textarea.php">Textarea.php</a><br>
+<a href="#Time.php">Time.php</a><br>
+<a href="#TodoException.php">TodoException.php</a><br>
+<a href="#TranslatorException.php">TranslatorException.php</a><br>
+<a href="#TranslatorHiddenClass.php">TranslatorHiddenClass.php</a><br>
+<a href="#TranslatorTest.php">TranslatorTest.php</a><br>
+<a href="#UpdateObject.php">UpdateObject.php</a><br>
+<a href="#UpdateQueryBuilder.php">UpdateQueryBuilder.php</a><br>
+<a href="#UpdateQueryBuilderTest.php">UpdateQueryBuilderTest.php</a><br>
+<a href="#wolxXxMVC.php">wolxXxMVC.php</a><br>
+<a name="Post-parsing"></a>
+<h1>Post-parsing</h1>
+<h2>Warnings:</h2><br>
+<b>Warning</b> - Class CoreControllerTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class ArrayDataSet parent PHPUnit_Extensions_Database_DataSet_AbstractDataSet not found<br>
+<b>Warning</b> - Class RequestTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class LoadTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class HTMLTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class KeyValueTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class CoreHelperTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class JsonResponseTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class UpdateQueryBuilderTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class RedirectTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class TranslatorTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class AutoLoaderTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class AccessCheckerTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class DataObjectTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class HostConfig in file /var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/HostConfigHiddenClass.php has multiple possible parents named AppConfig.  Cannot resolve name conflict,
+ try ignoring a file that contains the conflicting parent class<br>
+<b>Warning</b> - Class QueryBuilderTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class SelectQueryBuilderTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class PaginatorInformationTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class CoreHelperTest2 parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class RouterTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class AuthTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - Class CoreConfigTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - 
+duplicate class element "Helper" in file /var/domains/uwe/Lib/wolxXxMVC/Setup/src/Helper.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - Class FileUploadObjectTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - 
+duplicate class element "Helper" in file /var/domains/uwe/Lib/wolxXxMVC/tests/TestBootstrap.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<b>Warning</b> - Class StackTest parent PHPUnit_Framework_TestCase not found<br>
+<b>Warning</b> - 
+duplicate class element "Helper" in file /var/domains/uwe/Lib/wolxXxMVC/tests/StackTest.php will be ignored.
+Use an @ignore tag on the original if you want this case to be documented.<br>
+<a name="AccessChecker.php"></a>
+<h1>AccessChecker.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "AccessChecker", use another DocBlock to document the file<br>
+<a name="AccessCheckerTest.php"></a>
+<h1>AccessCheckerTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class AccessCheckerTest<br>
+<b>Warning on line 64</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 69</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/AccessCheckerTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="AccessRule.php"></a>
+<h1>AccessRule.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "AccessRule", use another DocBlock to document the file<br>
+<a name="add.php"></a>
+<h1>add.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 64</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/admin/add.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="AdminController.php"></a>
+<h1>AdminController.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "AdminController", use another DocBlock to document the file<br>
+<a name="ApiStatusHiddenClass.php"></a>
+<h1>ApiStatusHiddenClass.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - no @package tag was used in a DocBlock for class ApiStatus<br>
+<b>Warning on line 24</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/ApiStatusHiddenClass.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="ApocalypseException.php"></a>
+<h1>ApocalypseException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "ApocalypseException", use another DocBlock to document the file<br>
+<a name="AppConfig.php"></a>
+<h1>AppConfig.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "AppConfig", use another DocBlock to document the file<br>
+<a name="AppConfigHiddenClass.php"></a>
+<h1>AppConfigHiddenClass.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1</b> - no @package tag was used in a DocBlock for class AppConfig<br>
+<b>Warning on line 1</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/AppConfigHiddenClass.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="ArrayDataSet.php"></a>
+<h1>ArrayDataSet.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - no @package tag was used in a DocBlock for class ArrayDataSet<br>
+<b>Warning on line 50</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/_src/ArrayDataSet.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Auth.php"></a>
+<h1>Auth.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "Auth", use another DocBlock to document the file<br>
+<a name="AuthException.php"></a>
+<h1>AuthException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "AuthException", use another DocBlock to document the file<br>
+<a name="AuthRequestedException.php"></a>
+<h1>AuthRequestedException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "AuthRequestedException", use another DocBlock to document the file<br>
+<a name="AuthTest.php"></a>
+<h1>AuthTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class MockUser<br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 16</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 16</b> - no @package tag was used in a DocBlock for class AuthTest<br>
+<b>Warning on line 61</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 69</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 77</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 85</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 93</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 101</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 215</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/AuthTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Autoloader.php"></a>
+<h1>Autoloader.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "AutoLoader", use another DocBlock to document the file<br>
+<a name="AutoLoaderTest.php"></a>
+<h1>AutoLoaderTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class AutoLoaderTest<br>
+<b>Warning on line 32</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/AutoLoaderTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Bootstrap.php"></a>
+<h1>Bootstrap.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "Bootstrap", use another DocBlock to document the file<br>
+<a name="BootstrapHiddenClass.php"></a>
+<h1>BootstrapHiddenClass.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1</b> - no @package tag was used in a DocBlock for class Bootstrap<br>
+<b>Warning on line 1</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/BootstrapHiddenClass.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Br.php"></a>
+<h1>Br.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Br", use another DocBlock to document the file<br>
+<a name="Button.php"></a>
+<h1>Button.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Button", use another DocBlock to document the file<br>
+<a name="Checkbox.php"></a>
+<h1>Checkbox.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Checkbox", use another DocBlock to document the file<br>
+<a name="Clear.php"></a>
+<h1>Clear.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Clear", use another DocBlock to document the file<br>
+<a name="CmsController.php"></a>
+<h1>CmsController.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "CmsController", use another DocBlock to document the file<br>
+<a name="Connection.php"></a>
+<h1>Connection.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "Connection", use another DocBlock to document the file<br>
+<a name="ContainableDomElementAbstract.php"></a>
+<h1>ContainableDomElementAbstract.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "ContainableDomElementAbstract", use another DocBlock to document the file<br>
+<a name="ContainableDomElementInterface.php"></a>
+<h1>ContainableDomElementInterface.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "ContainableDomElementInterface", use another DocBlock to document the file<br>
+<a name="Container.php"></a>
+<h1>Container.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - no @package tag was used in a DocBlock for class Container<br>
+<b>Warning on line 3</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HTML/Elements/Container.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="CoreBootstrap.php"></a>
+<h1>CoreBootstrap.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "CoreBootstrap", use another DocBlock to document the file<br>
+<a name="CoreConfig.php"></a>
+<h1>CoreConfig.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "CoreConfig", use another DocBlock to document the file<br>
+<a name="CoreConfigTest.php"></a>
+<h1>CoreConfigTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class FooConfig<br>
+<b>Warning on line 8</b> - no @package tag was used in a DocBlock for class CoreConfigTest<br>
+<b>Warning on line 8</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 19</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 28</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 37</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 43</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/CoreConfigTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="CoreController.php"></a>
+<h1>CoreController.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "CoreController", use another DocBlock to document the file<br>
+<a name="CoreControllerInterface.php"></a>
+<h1>CoreControllerInterface.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - no @package tag was used in a DocBlock for interface CoreControllerInterface<br>
+<b>Warning on line 7</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Interfaces/CoreControllerInterface.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="CoreControllerTest.php"></a>
+<h1>CoreControllerTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class JustAnotherTestController<br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 18</b> - no @package tag was used in a DocBlock for class AnotherTestController<br>
+<b>Warning on line 18</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 34</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 34</b> - no @package tag was used in a DocBlock for class TestController<br>
+<b>Warning on line 57</b> - no @package tag was used in a DocBlock for class CoreControllerTest<br>
+<b>Warning on line 57</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 126</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 139</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 271</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 279</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 302</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/CoreControllerTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="CoreHelper.php"></a>
+<h1>CoreHelper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "CoreHelper", use another DocBlock to document the file<br>
+<a name="CoreHelperTest.php"></a>
+<h1>CoreHelperTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class CoreHelperTest<br>
+<b>Warning on line 335</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/CoreHelperTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="CoreHelperTest2.php"></a>
+<h1>CoreHelperTest2.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class CoreHelperTest2<br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 11</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/CoreHelperTest2.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="CoreHTML.php"></a>
+<h1>CoreHTML.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "CoreHTML", use another DocBlock to document the file<br>
+<a name="CoreModel.php"></a>
+<h1>CoreModel.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "CoreModel", use another DocBlock to document the file<br>
+<a name="CoreTranslator.php"></a>
+<h1>CoreTranslator.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "CoreTranslator", use another DocBlock to document the file<br>
+<a name="DatabaseInformation.php"></a>
+<h1>DatabaseInformation.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "DatabaseInformation", use another DocBlock to document the file<br>
+<a name="DatabaseLogger.php"></a>
+<h1>DatabaseLogger.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - no @package tag was used in a DocBlock for class DatabaseLogger<br>
+<b>Warning on line 18</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Logger/DatabaseLogger.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="DatabaseManager.php"></a>
+<h1>DatabaseManager.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "DatabaseManager", use another DocBlock to document the file<br>
+<a name="DatabaseObjectFactory.php"></a>
+<h1>DatabaseObjectFactory.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "DatabaseObjectFactory", use another DocBlock to document the file<br>
+<a name="DataObject.php"></a>
+<h1>DataObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "DataObject", use another DocBlock to document the file<br>
+<a name="DataObjectTest.php"></a>
+<h1>DataObjectTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class DataObjectTest<br>
+<b>Warning on line 84</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 88</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/DataObjectTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Date.php"></a>
+<h1>Date.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Date", use another DocBlock to document the file<br>
+<a name="DBException.php"></a>
+<h1>DBException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "DBException", use another DocBlock to document the file<br>
+<a name="defines.php"></a>
+<h1>defines.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 44</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/defines.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="DeleteObject.php"></a>
+<h1>DeleteObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "DeleteObject", use another DocBlock to document the file<br>
+<a name="DeleteQueryBuilder.php"></a>
+<h1>DeleteQueryBuilder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "DeleteQueryBuilder", use another DocBlock to document the file<br>
+<a name="Div.php"></a>
+<h1>Div.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - no @package tag was used in a DocBlock for class Div<br>
+<b>Warning on line 24</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HTML/Elements/Div.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="DomElementAbstract.php"></a>
+<h1>DomElementAbstract.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "DomElementAbstract", use another DocBlock to document the file<br>
+<a name="DomElementInterface.php"></a>
+<h1>DomElementInterface.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "DomElementInterface", use another DocBlock to document the file<br>
+<a name="Dropdown.php"></a>
+<h1>Dropdown.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Dropdown", use another DocBlock to document the file<br>
+<a name="DropdownElement.php"></a>
+<h1>DropdownElement.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "DropdownElement", use another DocBlock to document the file<br>
+<a name="DropdownGroup.php"></a>
+<h1>DropdownGroup.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "DropdownGroup", use another DocBlock to document the file<br>
+<a name="edit.php"></a>
+<h1>edit.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 61</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/admin/edit.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="editplain.php"></a>
+<h1>editplain.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 59</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/admin/editplain.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="EmailLogger.php"></a>
+<h1>EmailLogger.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - no @package tag was used in a DocBlock for class EmailLogger<br>
+<b>Warning on line 18</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Logger/EmailLogger.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="faq.php"></a>
+<h1>faq.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 52</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/admin/faq.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="FileLogger.php"></a>
+<h1>FileLogger.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - no @package tag was used in a DocBlock for class FileLogger<br>
+<b>Warning on line 14</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Logger/FileLogger.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="FileUploadObject.php"></a>
+<h1>FileUploadObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "FileUploadObject", use another DocBlock to document the file<br>
+<a name="FileUploadObjectTest.php"></a>
+<h1>FileUploadObjectTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class FileUploadObjectTest<br>
+<b>Warning on line 13</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/FileUploadObjectTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Form.php"></a>
+<h1>Form.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Form", use another DocBlock to document the file<br>
+<a name="Grid.php"></a>
+<h1>Grid.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Grid", use another DocBlock to document the file<br>
+<a name="Headline.php"></a>
+<h1>Headline.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Headline", use another DocBlock to document the file<br>
+<a name="Helper.php"></a>
+<h1>Helper.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 7</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/Helper.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 7</b> - no @package tag was used in a DocBlock for class Helper<br>
+<a name="HelperHiddenClass.php"></a>
+<h1>HelperHiddenClass.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1</b> - no @package tag was used in a DocBlock for class Helper<br>
+<b>Warning on line 1</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/HelperHiddenClass.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="HostConfig.php"></a>
+<h1>HostConfig.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "HostConfig", use another DocBlock to document the file<br>
+<a name="HostConfigHiddenClass.php"></a>
+<h1>HostConfigHiddenClass.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1</b> - no @package tag was used in a DocBlock for class HostConfig<br>
+<b>Warning on line 1</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/HostConfigHiddenClass.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="HTMLHiddenClass.php"></a>
+<h1>HTMLHiddenClass.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1</b> - no @package tag was used in a DocBlock for class HTML<br>
+<b>Warning on line 1</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/HTMLHiddenClass.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="HTMLTest.php"></a>
+<h1>HTMLTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class HTMLTest<br>
+<b>Warning on line 8</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 70</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 123</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 131</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 228</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 306</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 425</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/HTMLTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="HttpInformation.php"></a>
+<h1>HttpInformation.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "HttpInformation", use another DocBlock to document the file<br>
+<a name="index.php"></a>
+<h1>index.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/index.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 32</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/admin/index.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Input.php"></a>
+<h1>Input.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Input", use another DocBlock to document the file<br>
+<a name="InsertQueryBuilder.php"></a>
+<h1>InsertQueryBuilder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "InsertQueryBuilder", use another DocBlock to document the file<br>
+<a name="json.php"></a>
+<h1>json.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 0</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/json.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="JsonResponse.php"></a>
+<h1>JsonResponse.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "JsonResponse", use another DocBlock to document the file<br>
+<a name="JsonResponseTest.php"></a>
+<h1>JsonResponseTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class JsonResponseTest<br>
+<b>Warning on line 71</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/JsonResponseTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="KeyNotExistsInDataObject.php"></a>
+<h1>KeyNotExistsInDataObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "KeyNotExistsInDataObject", use another DocBlock to document the file<br>
+<a name="KeyValueStore.php"></a>
+<h1>KeyValueStore.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "KeyValueStore", use another DocBlock to document the file<br>
+<a name="KeyValueTest.php"></a>
+<h1>KeyValueTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class KeyValueTest<br>
+<b>Warning on line 17</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 53</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/KeyValueTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Label.php"></a>
+<h1>Label.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Label", use another DocBlock to document the file<br>
+<a name="listing.php"></a>
+<h1>listing.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 40</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/admin/listing.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Load.php"></a>
+<h1>Load.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "Load", use another DocBlock to document the file<br>
+<a name="LoadTest.php"></a>
+<h1>LoadTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class LoadTest<br>
+<b>Warning on line 15</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 34</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 137</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/LoadTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="LoggerInterface.php"></a>
+<h1>LoggerInterface.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "LoggerInterface", use another DocBlock to document the file<br>
+<a name="luuuke.php"></a>
+<h1>luuuke.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 0</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/_src/ScanDirTestDir/abc/luuuke.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="menu.php"></a>
+<h1>menu.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/admin/layout/menu.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Migration.php"></a>
+<h1>Migration.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 11</b> - DocBlock would be page-level, but precedes class "Migration", use another DocBlock to document the file<br>
+<a name="migratior.php"></a>
+<h1>migratior.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 22</b> - Page-level DocBlock precedes "function secho", use another DocBlock to document the source element<br>
+<a name="Model.php"></a>
+<h1>Model.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "Mxodel", use another DocBlock to document the file<br>
+<a name="ModelHiddenClass.php"></a>
+<h1>ModelHiddenClass.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/ModelHiddenClass.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 1</b> - no @package tag was used in a DocBlock for class Model<br>
+<a name="MultiDeleteObject.php"></a>
+<h1>MultiDeleteObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "MultiDeleteObject", use another DocBlock to document the file<br>
+<a name="MultiDeleteQueryBuilder.php"></a>
+<h1>MultiDeleteQueryBuilder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "MultiDeleteQueryBuilder", use another DocBlock to document the file<br>
+<a name="MultiUpdateObject.php"></a>
+<h1>MultiUpdateObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "MultiUpdateObject", use another DocBlock to document the file<br>
+<a name="MultiUpdateQueryBuilder.php"></a>
+<h1>MultiUpdateQueryBuilder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "MultiUpdateQueryBuilder", use another DocBlock to document the file<br>
+<a name="news.php"></a>
+<h1>news.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 55</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/src/admin/news.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="NotAllowedException.php"></a>
+<h1>NotAllowedException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "NotAllowedException", use another DocBlock to document the file<br>
+<a name="NotImplementedException.php"></a>
+<h1>NotImplementedException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "NotImplementedException", use another DocBlock to document the file<br>
+<a name="NoViewException.php"></a>
+<h1>NoViewException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "NoViewException", use another DocBlock to document the file<br>
+<a name="PaginatorInformation.php"></a>
+<h1>PaginatorInformation.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "PaginatorInformation", use another DocBlock to document the file<br>
+<a name="PaginatorInformationTest.php"></a>
+<h1>PaginatorInformationTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class PaginatorInformationTest<br>
+<b>Warning on line 12</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/PaginatorInformationTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Password.php"></a>
+<h1>Password.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Password", use another DocBlock to document the file<br>
+<a name="Plaintext.php"></a>
+<h1>Plaintext.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Plaintext", use another DocBlock to document the file<br>
+<a name="QueryBuilder.php"></a>
+<h1>QueryBuilder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 12</b> - DocBlock would be page-level, but precedes class "QueryBuilder", use another DocBlock to document the file<br>
+<a name="QueryBuilderTest.php"></a>
+<h1>QueryBuilderTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class QueryBuilderTest<br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 77</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 109</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/QueryBuilderTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="QueryGeneratorException.php"></a>
+<h1>QueryGeneratorException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "QueryGeneratorException", use another DocBlock to document the file<br>
+<a name="QueryResultObject.php"></a>
+<h1>QueryResultObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "QueryResultObject", use another DocBlock to document the file<br>
+<a name="QueryString.php"></a>
+<h1>QueryString.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "QueryString", use another DocBlock to document the file<br>
+<a name="QueryStringInterface.php"></a>
+<h1>QueryStringInterface.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "QueryStringInterface", use another DocBlock to document the file<br>
+<a name="Radio.php"></a>
+<h1>Radio.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Radio", use another DocBlock to document the file<br>
+<a name="RadioOption.php"></a>
+<h1>RadioOption.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "RadioOption", use another DocBlock to document the file<br>
+<a name="Redirect.php"></a>
+<h1>Redirect.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "Redirect", use another DocBlock to document the file<br>
+<b>Warning on line 113</b> - Unknown tag "@covers" used<br>
+<a name="RedirectTest.php"></a>
+<h1>RedirectTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 5</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 5</b> - no @package tag was used in a DocBlock for class RedirectTest<br>
+<b>Warning on line 37</b> - Unknown tag "@covers" used<br>
+<b>Warning on line 54</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 58</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/RedirectTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Request.php"></a>
+<h1>Request.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "Request", use another DocBlock to document the file<br>
+<a name="RequestTest.php"></a>
+<h1>RequestTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class RequestTest<br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 50</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/RequestTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Result.php"></a>
+<h1>Result.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "Result", use another DocBlock to document the file<br>
+<a name="ResultList.php"></a>
+<h1>ResultList.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "ResultList", use another DocBlock to document the file<br>
+<a name="Router.php"></a>
+<h1>Router.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "Router", use another DocBlock to document the file<br>
+<a name="RouterTest.php"></a>
+<h1>RouterTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class RouterTest<br>
+<b>Warning on line 30</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/RouterTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="SaveObject.php"></a>
+<h1>SaveObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "SaveObject", use another DocBlock to document the file<br>
+<a name="SelectQueryBuilder.php"></a>
+<h1>SelectQueryBuilder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "SelectQueryBuilder", use another DocBlock to document the file<br>
+<a name="SelectQueryBuilderTest.php"></a>
+<h1>SelectQueryBuilderTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class SelectQueryBuilderTest<br>
+<b>Warning on line 136</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 148</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 165</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 285</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 347</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 355</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 362</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/SelectQueryBuilderTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="setup.php"></a>
+<h1>setup.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 60</b> - File "/var/domains/uwe/Lib/wolxXxMVC/Setup/setup.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Span.php"></a>
+<h1>Span.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Span", use another DocBlock to document the file<br>
+<a name="Stack.php"></a>
+<h1>Stack.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Stack", use another DocBlock to document the file<br>
+<a name="StackTest.php"></a>
+<h1>StackTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 6</b> - no @package tag was used in a DocBlock for class Helper<br>
+<b>Warning on line 11</b> - no @package tag was used in a DocBlock for class StackTest<br>
+<b>Warning on line 11</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 73</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/StackTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="staticview.php"></a>
+<h1>staticview.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 0</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/_src/staticview.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Submenu.php"></a>
+<h1>Submenu.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "Submenu", use another DocBlock to document the file<br>
+<a name="SubmenuItem.php"></a>
+<h1>SubmenuItem.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 8</b> - DocBlock would be page-level, but precedes class "SubmenuItem", use another DocBlock to document the file<br>
+<a name="Submit.php"></a>
+<h1>Submit.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Submit", use another DocBlock to document the file<br>
+<a name="TestBootstrap.php"></a>
+<h1>TestBootstrap.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 18</b> - no @package tag was used in a DocBlock for class Helper<br>
+<b>Warning on line 18</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 34</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/TestBootstrap.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="TestHiddenClass.php"></a>
+<h1>TestHiddenClass.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 2</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/TestHiddenClass.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<b>Warning on line 2</b> - no @package tag was used in a DocBlock for class Test<br>
+<a name="testview.php"></a>
+<h1>testview.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 0</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/_src/testview.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="testview2.php"></a>
+<h1>testview2.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 0</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/_src/testview2.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="Text.php"></a>
+<h1>Text.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Text", use another DocBlock to document the file<br>
+<a name="Textarea.php"></a>
+<h1>Textarea.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Textarea", use another DocBlock to document the file<br>
+<a name="Time.php"></a>
+<h1>Time.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "Time", use another DocBlock to document the file<br>
+<a name="TodoException.php"></a>
+<h1>TodoException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "TodoException", use another DocBlock to document the file<br>
+<a name="TranslatorException.php"></a>
+<h1>TranslatorException.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "TranslatorException", use another DocBlock to document the file<br>
+<a name="TranslatorHiddenClass.php"></a>
+<h1>TranslatorHiddenClass.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 1</b> - no @package tag was used in a DocBlock for class Translator<br>
+<b>Warning on line 1</b> - File "/var/domains/uwe/Lib/wolxXxMVC/HiddenClasses/TranslatorHiddenClass.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="TranslatorTest.php"></a>
+<h1>TranslatorTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class TranslatorTest<br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 19</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 22</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/TranslatorTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="UpdateObject.php"></a>
+<h1>UpdateObject.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 10</b> - DocBlock would be page-level, but precedes class "UpdateObject", use another DocBlock to document the file<br>
+<a name="UpdateQueryBuilder.php"></a>
+<h1>UpdateQueryBuilder.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 9</b> - DocBlock would be page-level, but precedes class "UpdateQueryBuilder", use another DocBlock to document the file<br>
+<a name="UpdateQueryBuilderTest.php"></a>
+<h1>UpdateQueryBuilderTest.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 4</b> - no @package tag was used in a DocBlock for class UpdateQueryBuilderTest<br>
+<b>Warning on line 4</b> - Unknown tag "@codeCoverageIgnore" used<br>
+<b>Warning on line 29</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 37</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 45</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 53</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 61</b> - Unknown tag "@expectedException" used<br>
+<b>Warning on line 70</b> - File "/var/domains/uwe/Lib/wolxXxMVC/tests/UpdateQueryBuilderTest.php" has no page-level DocBlock, use @package in the first DocBlock to create one<br>
+<a name="wolxXxMVC.php"></a>
+<h1>wolxXxMVC.php</h1>
+<h2>Warnings:</h2><br>
+<b>Warning on line 13</b> - DocBlock would be page-level, but precedes class "wolxXxMVC", use another DocBlock to document the file<br>
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 22 Oct 2013 08:44:41 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+	</p>
+	</body>
+</html>

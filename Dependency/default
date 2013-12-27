@@ -1,0 +1,28 @@
+[accessCheck]
+class = \York\AccessCheck\Manager;
+shared = true;
+
+[apiCode]
+class = '\York\Request\Api\Code';
+
+[applicationConfiguration]
+class = '\York\Storage\Application';
+shared = true;
+
+[authManager]
+class = '\York\Auth\Manager';
+
+[databaseManager]
+class = '\York\Database\Manager';
+shared = true;
+
+[dataStorage]
+class = '\York\Storage\Application';
+shared = true;
+
+[logger]
+class = '\York\Logger\Manager';
+shared = true;
+
+[mailer]
+class = '\York\Mailer';

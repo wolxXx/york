@@ -1,0 +1,11 @@
+required packages
+php 5.4
+curl
+wget
+imagemagick
+apache
+svn
+
+
+short open tags?
+output buffering on
