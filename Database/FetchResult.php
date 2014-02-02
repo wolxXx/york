@@ -29,6 +29,10 @@ class FetchResult{
 		return $this->$key;
 	}
 
+	public function getData(){
+		return get_object_vars($this);
+	}
+
 	/**
 	 * global getter for object properties
 	 *
@@ -39,7 +43,7 @@ class FetchResult{
 		if(false === property_exists($this, $key)){
 			$properties =  implode(', ', array_keys(get_object_vars($this)));
 			$message = sprintf('warning: "%s" not found. only got %s', $key, $properties);
-			\York\Logger\Manager::getInstance()->log($message, \York\Logger\Manager::TYPE_ALL, \York\Logger\Manager::LEVEL_DEBUG);
+			\York\Dependency\Manager::get('logger')->log($message, \York\Logger\Manager::LEVEL_DEBUG);
 			return null;
 		}
 		return $this->$key;

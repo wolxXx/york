@@ -12,6 +12,10 @@ shared = true;
 [authManager]
 class = '\York\Auth\Manager';
 
+[databaseConnection]
+class = '\York\Database\Connection';
+shared = false;
+
 [databaseManager]
 class = '\York\Database\Manager';
 shared = true;
@@ -26,3 +30,22 @@ shared = true;
 
 [mailer]
 class = '\York\Mailer';
+
+[requestData]
+class = \York\Request\Data;
+shared = true;
+
+[requestManager]
+class = \York\Request\Manager;
+shared = true;
+
+[session]
+class = \York\Storage\Session;
+
+[splashManager]
+class = \York\View\Splash\Manager;
+shared = true;
+
+[viewManager]
+class = '\York\View\Manager';
+shared = true;

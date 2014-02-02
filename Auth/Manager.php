@@ -4,6 +4,7 @@ use Application\Helper;
 use York\Configuration;
 use York\Database\Accessor\Factory;
 use York\Database\Model;
+use York\Dependency\Manager as Dependency;
 use York\Exception\Auth;
 use York\Helper\Application;
 use York\Helper\Date;
@@ -21,8 +22,7 @@ use York\View\Splash\Manager as Splash;
  *
  * @author wolxXx
  * @version 3.0
- * @package York
- * @subpackage Auth
+ * @package York\Auth
  */
 abstract class Manager{
 	/**
@@ -64,38 +64,59 @@ abstract class Manager{
 	}
 
 	/**
-	 * getter for the stack
+	 * getter for the application wide stack
 	 *
 	 * @param string $key
 	 * @return mixed
 	 */
 	private static function get($key){
-		return \York\Stack::getInstance()->get($key);
+		return Dependency::get('applicationConfiguration')->getSafely($key);
 	}
+
 	/**
-	 * setter for the stack
+	 * setter for the application wide stack
 	 *
 	 * @param string $key
 	 * @param mixed $value
 	 */
 	private static function set($key, $value){
-		\York\Stack::getInstance()->set($key, $value);
+		Dependency::get('applicationConfiguration')->set($key, $value);
+	}
+
+	/**
+	 * getter for the session stack
+	 *
+	 * @param string $key
+	 * @return mixed
+	 */
+	private static function getPersisted($key){
+		return Dependency::get('session')->getSafely($key);
+	}
+
+	/**
+	 * setter for the session stack
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 */
+	private static function setPersist($key, $value){
+		Dependency::get('session')->set($key, $value);
 	}
 
 	/**
 	 * clears all auth session data
 	 */
 	public static function logout(){
-		self::set(Configuration::$AUTH_LOGGED_IN, false);
-		self::set(Configuration::$AUTH_USER, null);
-		self::set(Configuration::$AUTH_FAILED_LOG_INS, 0);
+		self::setPersist(Configuration::$AUTH_LOGGED_IN, false);
+		self::setPersist(Configuration::$AUTH_USER, null);
+		self::setPersist(Configuration::$AUTH_FAILED_LOG_INS, 0);
 	}
 
 	/**
 	 * increases the counter of failed logins
 	 */
 	protected static function increaseFailures(){
-		self::set(Configuration::$AUTH_FAILED_LOG_INS, self::get(Configuration::$AUTH_FAILED_LOG_INS) + 1);
+		self::setPersist(Configuration::$AUTH_FAILED_LOG_INS, self::getPersisted(Configuration::$AUTH_FAILED_LOG_INS) + 1);
 	}
 
 	/**
@@ -105,9 +126,10 @@ abstract class Manager{
 	protected static function checkBanAfterFailedLogin($result){
 		if(true === self::get(Configuration::$AUTH_ACTIVATE_USER_BANNING)){
 			self::increaseFailures();
-			if(self::get(Configuration::$AUTH_FAILED_LOG_INS) > 2){
-				self::set(Configuration::$AUTH_USER_BANNED, time() + (int) Configuration::$AUTH_BAN_TIME);
-				self::set(Configuration::$AUTH_FAILED_LOG_INS, 0);
+			if(self::getPersisted(Configuration::$AUTH_FAILED_LOG_INS) > 2){
+				self::setPersist(Configuration::$AUTH_USER_BANNED, time() + (int) Configuration::$AUTH_BAN_TIME);
+				self::setPersist(Configuration::$AUTH_FAILED_LOG_INS, 0);
+				//@todo uhm.. needs to be defined in some helper
 				if(method_exists('Helper', 'sendBanMail')){
 					Helper::sendBanMail();
 					Helper::sendBanMail($result);
@@ -133,7 +155,7 @@ abstract class Manager{
 		 */
 
 		$model = new Model();
-		$dataObject = Data::getInstance();
+		$dataObject = \York\Dependency\Manager::get('requestData');
 
 		/**
 		 * get the user from the database if result does not provide a database result
@@ -141,15 +163,16 @@ abstract class Manager{
 		 */
 		if(null === $result){
 			$key = self::get(Configuration::$AUTH_CREDENTIAL_USER_ID);
-			$value = $dataObject->get(self::get(Configuration::$AUTH_CREDENTIAL_USER_ID));
+			$value = $dataObject->get($key);
 			$result = $model->findOne('user', $value, $key);
 		}
+
 		/**
 		 * is a user found with this credentials?
 		 */
 		if(null === $result){
 			self::checkBanAfterFailedLogin($result);
-			Splash::addText(Translator::translate('Unbekannter Nutzer'));
+			Dependency::get('splashManager')->addText(Translator::translate('Unbekannter Nutzer'));
 			Application::redirect('/auth/login');
 		}
 		/**
@@ -158,7 +181,7 @@ abstract class Manager{
 
 		if($result->password !== md5($dataObject->get(self::get(Configuration::$AUTH_CREDENTIAL_USER_ACCESS)))){
 			self::checkBanAfterFailedLogin($result);
-			Splash::addText(Translator::translate('Falsches Passwort!'));
+			Dependency::get('splashManager')->addText(Translator::translate('Falsches Passwort!'));
 			Application::redirect('/auth/login');
 		}
 		if(Configuration::$USER_STATUS_BANNED == $result->status){
@@ -168,7 +191,7 @@ abstract class Manager{
 			Application::redirect('/auth/pending');
 		}
 		unset($result->password);
-		self::set(Configuration::$AUTH_LOGGED_IN, true);
+		self::setPersist(Configuration::$AUTH_LOGGED_IN, true);
 		self::setUser($result);
 		Factory::getUpdateObject('user', $result->id)
 			->set('lastlog', Date::getDate())
@@ -181,22 +204,22 @@ abstract class Manager{
 	 * @param \York\Database\FetchResult $user
 	 */
 	public static function setUser($user){
-		self::set(Configuration::$AUTH_USER, $user);
+		self::setPersist(Configuration::$AUTH_USER, $user);
 	}
 
 	/**
 	 * bans a user the time to ban was set in the defines file by BAN_TIME
 	 */
 	public static function ban(){
-		self::set(Configuration::$AUTH_USER_BANNED, time() + Configuration::$BAN_TIME);
-		Application::refresh();
+		self::setPersist(Configuration::$AUTH_USER_BANNED, time() + Configuration::$BAN_TIME);
+		die();
 	}
 
 	/**
 	 * unbans a user
 	 */
 	public static function unBan(){
-		self::set(Configuration::$AUTH_USER_BANNED, time() -1);
+		self::setPersist(Configuration::$AUTH_USER_BANNED, time() -1);
 	}
 
 	/**
@@ -214,7 +237,7 @@ abstract class Manager{
 	 * @return integer
 	 */
 	public static function getRemainingBanTime(){
-		return self::get(Configuration::$AUTH_USER_BANNED) - time();
+		return self::getPersisted(Configuration::$AUTH_USER_BANNED) - time();
 	}
 
 	/**
@@ -223,7 +246,7 @@ abstract class Manager{
 	 * @param boolean $isLoggedIn
 	 */
 	public static function setIsLoggedIn($isLoggedIn = true){
-		self::set(Configuration::$AUTH_LOGGED_IN, $isLoggedIn);
+		self::setPersist(Configuration::$AUTH_LOGGED_IN, $isLoggedIn);
 	}
 
 	/**
@@ -232,7 +255,7 @@ abstract class Manager{
 	 * @return boolean
 	 */
 	public static function isLoggedIn(){
-		return true == self::get(Configuration::$AUTH_LOGGED_IN);
+		return true == self::getPersisted(Configuration::$AUTH_LOGGED_IN);
 	}
 
 	/**
@@ -256,7 +279,15 @@ abstract class Manager{
 	 * @return integer
 	 */
 	public static function getUserFailedLogins(){
-		return self::get(Configuration::$AUTH_FAILED_LOG_INS);
+		return self::getPersisted(Configuration::$AUTH_FAILED_LOG_INS);
+	}
+
+	public static function  increaseFailedLogins(){
+		self::setPersist(Configuration::$AUTH_FAILED_LOG_INS, self::getPersisted(Configuration::$AUTH_FAILED_LOG_INS) + 1);
+		if(self::getUserFailedLogins() > 2){
+			self::ban();
+			die();
+		}
 	}
 
 	/**
@@ -268,7 +299,7 @@ abstract class Manager{
 		if(false === self::isLoggedIn()){
 			throw new Auth('User is not logged in! cannot return user\'s properties!!');
 		}
-		return self::get(Configuration::$AUTH_USER);
+		return self::getPersisted(Configuration::$AUTH_USER);
 	}
 
 	/**
@@ -277,7 +308,7 @@ abstract class Manager{
 	 * @return integer
 	 */
 	public static function getUserId(){
-		return self::getUser()->id;
+		return (int) self::getUser()->id;
 	}
 
 	/**
@@ -287,7 +318,7 @@ abstract class Manager{
 	 */
 	public static function getUserType(){
 
-		return self::getUser()->type;
+		return (int) self::getUser()->type;
 	}
 
 	/**
@@ -315,7 +346,7 @@ abstract class Manager{
 	 * @return integer
 	 */
 	public static function getUserStatus(){
-		return self::getUser()->status;
+		return (int) self::getUser()->status;
 	}
 
 	/**

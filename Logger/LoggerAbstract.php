@@ -48,7 +48,7 @@ abstract class LoggerAbstract implements LoggerInterface{
 	 * @throws LoggerLevelNotAllowed
 	 */
 	public function addLevel($level){
-		if(false === Manager::getInstance()->isAllowedLevel($level)){
+		if(false === \York\Dependency\Manager::get('logger')->isAllowedLevel($level)){
 			throw new LoggerLevelNotAllowed();
 		}
 		if(false === in_array($level, $this->levels)){

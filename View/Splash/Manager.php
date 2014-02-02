@@ -1,5 +1,9 @@
 <?php
 namespace York\View\Splash;
+use York\Dependency\Manager as Dependency;
+use York\View\Splash\Item;
+use York\View\Splash\ItemInterface;
+
 /**
  * splash manager
  *
@@ -9,38 +13,17 @@ namespace York\View\Splash;
  */
 class Manager {
 	/**
-	 * singleton instance of the manager
-	 *
-	 * @var \York\View\Splash\Manager
+	 * session key for splashes
 	 */
-	protected static $instance;
-
-	/**
-	 * set of splashes
-	 *
-	 * @var \York\View\Splash\ItemInterface[]
-	 */
-	protected $splashes = array();
-
-	/**
-	 * getter for the singleton instance
-	 *
-	 * @return \York\View\Splash\Manager
-	 */
-	public static function getInstance(){
-		if(null === self::$instance){
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
+	const sessionKey = 'york.session.splashes';
 
 	/**
 	 * retrieves all set splashes
 	 *
-	 * @return \York\View\Splash\ItemInterface[]
+	 * @return ItemInterface[]
 	 */
 	public function getSplashes(){
-		return $this->splashes;
+		return Dependency::get('session')->getSafely(self::sessionKey, array());
 	}
 
 	/**
@@ -48,24 +31,26 @@ class Manager {
 	 *
 	 * @param $text
 	 */
-	public static function addText($text){
-		self::getInstance()->addSplash(new \York\View\Splash\Item($text));
+	public function addText($text){
+		$this->addSplash(new Item($text));
 	}
 
 	/**
 	 * adds a splash to the splash set
 	 * you can append (default) or prepend (set append to false) the splash
 	 *
-	 * @param \York\View\Splash\ItemInterface $splash
+	 * @param ItemInterface $splash
 	 * @param boolean $append
 	 * @return \York\View\Splash\Manager
 	 */
-	public function addSplash(\York\View\Splash\ItemInterface $splash, $append = true){
+	public function addSplash(ItemInterface $splash, $append = true){
+		$splashes = $this->getSplashes();
 		if(true === $append){
-			$this->splashes[] = $splash;
-			return $this;
+			$splashes[] = $splash;
+		}else{
+			$splashes = array_unshift($splashes, $splash);
 		}
-		$this->splashes = array_unshift($this->splashes, $splash);
+		Dependency::get('session')->set(self::sessionKey, $splashes);
 		return $this;
 	}
 
@@ -75,7 +60,7 @@ class Manager {
 	 * @return \York\View\Splash\Manager
 	 */
 	public function clearSplashes(){
-		$this->splashes = array();
+		Dependency::get('session')->set(self::sessionKey, array());
 		return $this;
 	}
 }

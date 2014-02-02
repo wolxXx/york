@@ -255,5 +255,5 @@ interface MailerInterface{
 	 *
 	 * @return \York\MailerInterface
 	 */
-	public function send();
+	public function send($force = false);
 }

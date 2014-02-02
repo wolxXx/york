@@ -48,7 +48,7 @@ class Json{
 		$this
 			->setError(false)
 			->setMessage(\York\Request\Api\Code::getStatusTextForCode(\York\Request\Api\Code::OK))
-			->setStatus(\York\Request\Api\Code::ERROR)
+			->setStatus(\York\Request\Api\Code::OK)
 			->clearData()
 		;
 	}
@@ -152,7 +152,7 @@ class Json{
 	 * sets the status and its message
 	 *
 	 * @param integer $status
-	 * @return JsonResponse
+	 * @return \York\Response\Json
 	 */
 	public function setStatusAndBelongingMessageForError($status){
 		$this->setError(true);
@@ -163,7 +163,7 @@ class Json{
 	 * setter for the status code
 	 *
 	 * @param integer $value
-	 * @return JsonResponse
+	 * @return \York\Response\Json
 	 */
 	public function setStatus($value){
 		$this->status = intval($value)."";
@@ -174,7 +174,7 @@ class Json{
 	 * setter for the message field
 	 *
 	 * @param string $value
-	 * @return JsonResponse
+	 * @return \York\Response\Json
 	 */
 	public function setMessage($value){
 		$this->message = $value;
@@ -184,7 +184,7 @@ class Json{
 	/**
 	 * clears the message
 	 *
-	 * @return JsonResponse
+	 * @return \York\Response\Json
 	 */
 	public function clearMessage(){
 		return $this->setMessage('');
@@ -220,7 +220,7 @@ class Json{
 	/**
 	 * getter for the data
 	 *
-	 * @return array | stdClass
+	 * @return array | \stdClass
 	 */
 	public function getData(){
 		return $this->data;

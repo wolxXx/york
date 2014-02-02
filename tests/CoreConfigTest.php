@@ -2,13 +2,13 @@
 /**
  * @codeCoverageIgnore
  */
-class FooConfig extends CoreConfig{}
+class FooConfig extends \York\Configuration{}
 /**
  * @codeCoverageIgnore
  */
 class CoreConfigTest extends  PHPUnit_Framework_TestCase{
 	public function testUsual(){
-		$config = new HostConfig();
+		$config = new \Application\Configuration\Host();
 		$config->configureApplication();
 		$config->configureHost();
 		$config->checkConfig();

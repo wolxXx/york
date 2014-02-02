@@ -1,5 +1,9 @@
 <?php
 namespace York\Database\QueryBuilder;
+use York\Database\QueryBuilder\QueryString;
+use York\Exception\Apocalypse;
+use York\Exception\QueryGenerator;
+
 /**
  * query builder for deleting a single item in the database
  * the item is identified via its primary key which should be "id"
@@ -50,16 +54,16 @@ class Delete extends \York\Database\QueryBuilder{
 	 */
 	protected function checkConditions(){
 		if(true === false){
-			throw new \York\Exception\Apocalypse('gehnwa bierchen trinken. bringt nix mehr. wtf php?!');
+			throw new Apocalypse('gehnwa bierchen trinken. bringt nix mehr. wtf php?!');
 		}
 		if(null === $this->table){
-			throw new \York\Exception\QueryGenerator('please specify table');
+			throw new QueryGenerator('please specify table');
 		}
 		if(null === $this->databaseManager){
-			throw new \York\Exception\QueryGenerator('please specify databaseManager');
+			throw new QueryGenerator('please specify databaseManager');
 		}
 		if(null === $this->rowId){
-			throw new \York\Exception\QueryGenerator('please specify id');
+			throw new QueryGenerator('please specify id');
 		}
 	}
 
@@ -79,7 +83,7 @@ class Delete extends \York\Database\QueryBuilder{
 	 */
 	public function getQueryString(){
 		$query = $this->generateQuery();
-		$queryString = new \York\Database\QueryBuilder\QueryString($query);
+		$queryString = new QueryString($query);
 		return $queryString;
 	}
 

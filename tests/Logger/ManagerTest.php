@@ -1,5 +1,5 @@
 <?php
-class ManagerTest extends \PHPUnit_Framework_TestCase {
+class LoggerManagerTest extends \PHPUnit_Framework_TestCase {
 	public function testIntantiation(){
 		$manager = \York\Logger\Manager::getInstance();
 		$this->assertInstanceOf('\York\Logger\Manager', $manager);
@@ -19,4 +19,3 @@ class ManagerTest extends \PHPUnit_Framework_TestCase {
 		$this->assertSameSize(array($type), $logger->getTypes());
 	}
 }
- 

@@ -1,5 +1,9 @@
 <?php
 namespace York\Database\QueryBuilder;
+use York\Database\QueryBuilder;
+use York\Exception\QueryGenerator;
+use York\Helper\Set;
+
 /**
  * creates an insert into $table query string
  *
@@ -7,7 +11,7 @@ namespace York\Database\QueryBuilder;
  * @version 3.0
  * @package York\Database\QueryBuilder
  */
-class Insert extends \York\Database\QueryBuilder{
+class Insert extends QueryBuilder{
 	/**
 	 * the name of the table
 	 *
@@ -58,14 +62,14 @@ class Insert extends \York\Database\QueryBuilder{
 	 */
 	protected function checkConditions(){
 		if(true === empty($this->table)){
-			throw new \York\Exception\QueryGenerator('you need to specify a table name!');
+			throw new QueryGenerator('you need to specify a table name!');
 		}
 		if(false === is_array($this->data)){
-			throw new \York\Exception\QueryGenerator('could not create model if data is not an array');
+			throw new QueryGenerator('could not create model if data is not an array');
 		}
 
 		if(true === empty($this->data)){
-			throw new \York\Exception\QueryGenerator('recieved no data');
+			throw new QueryGenerator('recieved no data');
 		}
 	}
 
@@ -80,13 +84,14 @@ class Insert extends \York\Database\QueryBuilder{
 	 * @return array
 	 */
 	private function generateStringFromArray(){
-		$keys = '';
+		$connection = \York\Dependency\Manager::get('databaseManager')->getConnection();
+		$keys = implode(',' , Set::decorate(array_keys($this->data), '`', '`'));
 		$values = '';
-		$connection = \York\Database\Manager::getInstance()->getConnection();
-		$keys = implode(',' , \York\Helper\Set::decorate(array_keys($this->data), '`', '`'));
+
 		foreach(array_keys($this->data) as $key){
 			$values .= sprintf("'%s',", $connection->escape($this->data[$key]));
 		}
+
 		$keys = rtrim($keys, ',');
 		$values = rtrim($values, ',');
 		return array('keys' => $keys, 'values' => $values);

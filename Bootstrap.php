@@ -1,5 +1,7 @@
 <?php
 namespace York;
+use Application\Configuration\Host;
+use York\Dependency\Manager as Dependency;
 use York\Helper\Application;
 use York\Logger\Database;
 use York\Logger\File;
@@ -10,7 +12,7 @@ use York\Router;
  * basic basement for mvc base
  * runs some before and after functions
  * initialises analysing of url
- * instanciates the controller
+ * instantiates the controller
  * calls view from view manager
  *
  * @author wolxXx
@@ -54,7 +56,7 @@ abstract class Bootstrap{
 	public $stack;
 
 	/**
-	 * instanciated object of a controller
+	 * instantiated object of a controller
 	 *
 	 * @var \York\Controller
 	 */
@@ -79,7 +81,7 @@ abstract class Bootstrap{
 	 * get the config
 	 */
 	protected final function config(){
-		$config = new \Application\Configuration\Host();
+		$config = new Host();
 		$config->configureApplication();
 		$config->configureHost();
 		$config->checkConfig();
@@ -90,13 +92,8 @@ abstract class Bootstrap{
 	 */
 	private final function init(){
 		if(false === isset($_SERVER['argv'])){
-			set_exception_handler(function(){
-				foreach(func_get_args() as $current){
-					var_dump($current);
-					echo ($current->getMessage());
-				}
-				die('WTF?!');
-				\York\Helper::dieDebug(func_get_args());
+			set_exception_handler(function($exception){
+				$this->handleException($exception);
 			});
 			set_error_handler(function(){
 				call_user_func_array(array('\York\York', 'errorHandler'), func_get_args());
@@ -112,21 +109,58 @@ abstract class Bootstrap{
 			session_start();
 		}
 
-		Manager::getInstance()->addLogger(new Database('log', Manager::LEVEL_ALL));
-		Manager::getInstance()->addLogger(new File(__DIR__.'/log/york.log', Manager::LEVEL_ALL));
-		Manager::getInstance()->log('test');
-
 		$this->router = new Router();
 		Application::grabModeAndVersion();
 		Application::grabHostName();
 
-		$this->stack = \York\Stack::getInstance();
+		$this->stack = Dependency::get('applicationConfiguration');
 		$this->config();
 
 		$this->model = new \York\Database\Model();
-		$this->viewManager = \York\View\Manager::getInstance();
+		$this->viewManager = Dependency::get('viewManager');
+	}
 
-		#\York\Helper::logToFile('URL: '.\York\Helper::getCurrentURL(), 'url');
+	/**
+	 * dedicated exception display handler
+	 *
+	 *
+	 * @param \Exception $exception
+	 */
+	public function handleException(\Exception $exception){
+		?>
+		<h1>Error: <?= $exception->getMessage() ?></h1>
+		Occurred in file: <?= $exception->getFile() ?> at line <?= $exception->getLine() ?><br />
+		Trace:
+		<? foreach($exception->getTrace() as $trace): ?>
+			<ul>
+				<? if(isset($trace['file'])): ?>
+					<li>
+						File: <?= $trace['file'] ?>
+					</li>
+				<? endif ?>
+				<? if(isset($trace['line'])): ?>
+					<li>
+						Line: <?= $trace['line'] ?>
+					</li>
+				<? endif ?>
+				<li>
+					Function: <?= $trace['function'] ?>
+				</li>
+				<? if(isset($trace['type'])): ?>
+					<li>
+						Accessor: <?= $trace['type'] ?>
+					</li>
+				<? endif ?>
+				<? if(isset($trace['type'])): ?>
+					<li>
+						Args: <?= print_r($trace['args']) ?>
+					</li>
+				<? endif ?>
+			</ul>
+		<? endforeach ?>
+
+		<?
+		die();
 	}
 
 	/**

@@ -49,7 +49,7 @@ class Update{
 			->setTable($table)
 			->setId($rowId)
 		;
-		$this->databaseManager = \York\Database\Manager::getInstance();
+		$this->databaseManager = \York\Dependency\Manager::get('databaseManager');
 	}
 
 	/**

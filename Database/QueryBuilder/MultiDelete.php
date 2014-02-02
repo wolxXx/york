@@ -49,7 +49,7 @@ class MultiDelete extends \York\Database\QueryBuilder{
 	 */
 	public function setDatabaseManager($databaseManager = null){
 		if(null === $databaseManager){
-			$databaseManager = \York\Database\Manager::getInstance();
+			$databaseManager = \York\Dependency\Manager::get('databaseManager');
 		}
 		$this->databaseManager = $databaseManager;
 		return $this;

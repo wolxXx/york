@@ -29,8 +29,6 @@ else
 	mkdir -p $COVERAGEDIR;
 fi
 
-echo $COVERAGEDIR;
 
-
-phpunit --bootstrap $here/TestBootstrap.php --no-globals-backup --process-isolation --coverage-html $COVERAGEDIR $TESTPATH;
+phpunit --configuration $here/phpunit.xml --coverage-html $COVERAGEDIR $TESTPATH;
 #phpunit --colors --bootstrap TestBootstrap.php  --coverage-html $COVERAGEDIR $TESTPATH;

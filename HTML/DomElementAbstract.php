@@ -135,6 +135,19 @@ abstract class DomElementAbstract extends Options implements \York\HTML\DomEleme
 		return $this;
 	}
 
+
+	public function appendLabel($text = ''){
+		if(null === $this->label){
+			$this->addLabel($text);
+			return $this;
+		}
+
+		$this->label->setText($this->label->getText().$text);
+		return $this;
+
+
+	}
+
 	/**
 	 * getter for the label
 	 *

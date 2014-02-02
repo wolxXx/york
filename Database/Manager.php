@@ -1,5 +1,7 @@
 <?php
 namespace York\Database;
+use York\Dependency\Manager as Dependency;
+
 /**
  * accepts QueryString objects and delegates them to the database connection
  * implemented as singleton pattern
@@ -9,13 +11,6 @@ namespace York\Database;
  * @package York\Database
  */
 class Manager{
-	/**
-	 * instance of itself -> singleton pattern
-	 *
-	 * @var \York\Database\Manager
-	 */
-	private static $instance;
-
 	/**
 	 * instance of a Connection
 	 *
@@ -31,29 +26,17 @@ class Manager{
 	protected $forceLogging = false;
 
 	/**
-	 * singleton accessor
-	 *
-	 * @return \York\Database\Manager
-	 */
-	public static function getInstance(){
-		if(null === self::$instance){
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
 	 * constructor
 	 *
 	 * sets up a new Connection instance
 	 */
-	private function __construct(){
-		$this->connection = new \York\Database\Connection();
+	public function __construct(){
+		$this->connection = Dependency::get('databaseConnection');
 		$this->connection
-			->setHost(\York\Stack::getInstance()->get('db_host'))
-			->setUser(\York\Stack::getInstance()->get('db_user'))
-			->setPassword(\York\Stack::getInstance()->get('db_pass'))
-			->setSchema(\York\Stack::getInstance()->get('db_schema'))
+			->setHost(Dependency::get('applicationConfiguration')->get('db_host'))
+			->setUser(Dependency::get('applicationConfiguration')->get('db_user'))
+			->setPassword(Dependency::get('applicationConfiguration')->get('db_pass'))
+			->setSchema(Dependency::get('applicationConfiguration')->get('db_schema'))
 			->connect();
 	}
 
@@ -84,7 +67,7 @@ class Manager{
 		try{
 			$this->log($resultObject, $start, $end);
 		}catch (\York\Exception\York $exception){
-			\York\Logger\Manager::getInstance()->log('query exception: '.$exception->getMessage(), \York\Logger\Manager::TYPE_FILE, \York\Logger\Manager::LEVEL_ALL);
+			Dependency::get('logger')->log('query exception: '.$exception->getMessage(), \York\Logger\Manager::LEVEL_DATABASE_ERROR);
 		}
 		return $resultObject;
 	}
@@ -148,10 +131,10 @@ class Manager{
 		$logtext .= '____________________________________________'.PHP_EOL;
 
 		if(false === $queryResultObject->queryWasSuccessful()){
-			\York\Logger\Manager::getInstance()->log($logtext, \York\Logger\Manager::LEVEL_DATABASE_ERROR);
+			\York\Dependency\Manager::get('logger')->log($logtext, \York\Logger\Manager::LEVEL_DATABASE_ERROR);
 		}
-		if('1' !== \York\Stack::getInstance()->get('disable_db_log') || true === $this->forceLogging || (int)$execution > 1){
-			\York\Logger\Manager::getInstance()->log($logtext, \York\Logger\Manager::LEVEL_DATABASE_DEBUG);
+		if('1' !== Dependency::get('applicationConfiguration')->getSafely('disable_db_log') || true === $this->forceLogging || (int)$execution > 1){
+			\York\Dependency\Manager::get('logger')->log($logtext, \York\Logger\Manager::LEVEL_DATABASE_DEBUG);
 		}
 	}
 

@@ -1,5 +1,9 @@
 <?php
 namespace York;
+use York\Dependency\Manager as Dependency;
+use York\Exception\York;
+use York\Request\Manager as Request;
+
 /**
  * the main controller which provides main functionality
  * this cannot be instantiated - this is abstract
@@ -34,9 +38,14 @@ abstract class Controller{
 	protected $viewManager;
 
 	/**
+	 * @var \York\Auth\ManagerInterface
+	 */
+	protected $authManager;
+
+	/**
 	 * an instance of the stack
 	 *
-	 * @var \York\Stack
+	 * @var \York\Storage\StorageInterface
 	 */
 	protected $stack;
 
@@ -64,7 +73,7 @@ abstract class Controller{
 	/**
 	 * information holder of the request
 	 *
-	 * @var \York\Request\Manager
+	 * @var Request
 	 */
 	protected $request;
 
@@ -92,6 +101,13 @@ abstract class Controller{
 	}
 
 	/**
+	 * instance of the logger
+	 *
+	 * @var \York\Logger\Manager
+	 */
+	protected $logger;
+
+	/**
 	 * set if after the run method should be a redirect
 	 *
 	 * @var \York\Redirect
@@ -102,16 +118,16 @@ abstract class Controller{
 	 * initialises the controller
 	 */
 	private final function init(){
-		$this->viewManager = \York\View\Manager::getInstance();
+		$this->viewManager = Dependency::get('viewManager');
+		$this->authManager = Dependency::getClassNameForDependency('authManager');
 		$this->model = new \York\Database\Model();
-		$this->stack = \York\Stack::getInstance();
-		#$this->requestData = \York\Request\Data::getInstance();
-		$this->request = new \York\Request\Manager();
+		$this->stack = Dependency::get('applicationConfiguration');
+		$this->request = new Request();
 		$this->initAccessChecker();
 		$this->version = $this->stack->get('version');
 		try{
 			$this->viewManager->setLayout($this->stack->get('version'));
-		}catch(\York\Exception\York $exception){
+		}catch(York $exception){
 			$this->viewManager->setLayout();
 		}
 		$this->viewManager->set('isAjax', $this->request->isAjax());
@@ -221,7 +237,7 @@ abstract class Controller{
 	/**
 	 * getter for the current request object
 	 *
-	 * @return \York\Request\Manager
+	 * @return Request
 	 */
 	public function getRequest(){
 		return $this->request;

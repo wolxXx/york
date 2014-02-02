@@ -1,5 +1,8 @@
 <?php
 namespace York\Database\Blueprint;
+use York\Database\Model;
+use York\Helper\String;
+
 /**
  * blueprint system, usually known as models
  *
@@ -26,7 +29,7 @@ abstract class Skeleton implements \York\Database\Blueprint\ItemInterface{
 	 */
 	public static function getById($id, $preventLoadReferences = false){
 		$class = get_called_class();
-		$instance = \York\Database\Model::Factory()->findOne(\York\Helper\String::pascalCaseToUnderscores($class), $id);
+		$instance = Model::Factory()->findOne(String::pascalCaseToUnderscores($class), $id);
 		if(null === $instance){
 			return null;
 		}

@@ -73,7 +73,7 @@ class Manager{
 	 * checks if request is ajax, post and mobile
 	 */
 	protected function init(){
-		$this->stack = \York\Stack::getInstance();
+		$this->stack = \York\Dependency\Manager::get('applicationConfiguration');
 		$this->dataObject = new \York\Request\Data();
 		$this->checkIfRequestIsAjax();
 		$this->checkIfRequestIsPost();
@@ -109,7 +109,7 @@ class Manager{
 	 */
 	protected function checkIfRequestIsMobile(){
 		$this->isMobile = false;
-		if('mobile' === $this->stack->get('version')){
+		if('mobile' === $this->stack->getSafely('version', 'main')){
 			$this->isMobile = true;
 			return $this;
 		}
@@ -151,10 +151,9 @@ class Manager{
 	 * logs the post data
 	 * fields named "pass", "password" or "passwort" are replaced with ****
 	 *
-	 * @param string $destination
-	 * @return Request
+	 * @return Manager
 	 */
-	public function postLog($destination){
+	public function postLog(){
 		if(false === $this->isPost()){
 			return $this;
 		}
@@ -182,7 +181,7 @@ class Manager{
 			$txt .= "$key: $value\n";
 		}
 		$txt .= "________________\n";
-		\York\Logger\Manager::getInstance()->log($txt, \York\Logger\Manager::TYPE_FILE, \York\Logger\Manager::LEVEL_LOG_POST);
+		\York\Dependency\Manager::get('logger')->log($txt, \York\Logger\Manager::LEVEL_LOG_POST);
 		return $this;
 	}
-} 
+}

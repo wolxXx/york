@@ -5,6 +5,7 @@
  * @author wolxXx
  * @version 2.0
  * @package wolxXxMVC
+ * @deprecated
  */
 class AutoLoader{
 	/**

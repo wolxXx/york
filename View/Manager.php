@@ -1,5 +1,10 @@
 <?php
 namespace York\View;
+use York\Dependency\Manager as Dependency;
+use York\Helper\Application;
+use York\Helper\String;
+use York\Helper\Translator;
+
 /**
  * the loader / the bridge to the view
  * extracts the setted vars to the view
@@ -73,13 +78,6 @@ class Manager{
 	private $css = '';
 
 	/**
-	 * singleton pattern instance
-	 *
-	 * @var \York\View\Manager
-	 */
-	private static $instance;
-
-	/**
 	 * the path to the layouts
 	 *
 	 * @var string
@@ -96,12 +94,12 @@ class Manager{
 	/**
 	 * constructor is private because of singleton access
 	 */
-	private final function __construct(){
+	public final function __construct(){
 		$this->params = array();
-		$this->stack = \York\Stack::getInstance();
-		$this->setLayoutPath($this->stack->get('layoutPath', \York\Helper\Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR.'Layout'));
+		$this->stack = Dependency::get('applicationConfiguration');
+		$this->setLayoutPath($this->stack->getSafely('layoutPath', Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR.'Layout'));
 		$this->setLayout($this->layout);
-		$this->setViewPath($this->stack->get('viewPath', \York\Helper\Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR));
+		$this->setViewPath($this->stack->getSafely('viewPath', Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR));
 	}
 
 	/**
@@ -111,7 +109,7 @@ class Manager{
 	 * @return \York\View\Manager
 	 */
 	public function setViewPath($path){
-		$this->viewPath = \York\Helper\String::addTailingSlashIfNeeded($path);
+		$this->viewPath = String::addTailingSlashIfNeeded($path);
 		return $this;
 	}
 
@@ -131,7 +129,7 @@ class Manager{
 	 * @return \York\View\Manager
 	 */
 	public function setLayoutPath($path){
-		$this->layoutPath = \York\Helper\String::addTailingSlashIfNeeded($path);
+		$this->layoutPath = String::addTailingSlashIfNeeded($path);
 		return $this;
 	}
 
@@ -141,29 +139,6 @@ class Manager{
 	 */
 	public function getLayoutPath(){
 		return $this->layoutPath;
-	}
-
-	/**
-	 * singleton pattern instance getter
-	 *
-	 * @return \York\View\Manager
-	 */
-	public static function getInstance(){
-		if(null === self::$instance){
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
-	 * clear the instance
-	 *
-	 * @return \York\View\Manager
-	 */
-	public static function clearInstance(){
-		self::getInstance()->clearBuffer();
-		self::$instance = null;
-		return self::getInstance();
 	}
 
 	/**
@@ -236,9 +211,9 @@ class Manager{
 	 */
 	function getView($file_name){
 		if($this->layout !== $this->defaultLayout){
-			$prefix = \York\Helper\String::addTailingSlashIfNeeded($this->layout);
+			$prefix = String::addTailingSlashIfNeeded($this->layout);
 		}else{
-			$prefix = \York\Helper\String::addTailingSlashIfNeeded('Main');
+			$prefix = String::addTailingSlashIfNeeded('Main');
 		}
 		$possibleMatches = array(
 			#'views/mobile/api/foo'
@@ -276,7 +251,7 @@ class Manager{
 		}
 		extract($this->params);
 		ob_start();
-		require_once $file;
+		require $file;
 		$this->params['content'] = ob_get_clean();
 		extract($this->params);
 		if(true === $this->get('isAjax')){
@@ -284,10 +259,10 @@ class Manager{
 			return $this;
 		}
 		if(false === file_exists($this->layoutPath.$this->layout.'.php')){
-			#\York\Helper::logerror('layout "'.$this->layout.'" not found, displaying default layout.');
 			$this->layout = $this->defaultLayout;
 		}
-		require_once($this->layoutPath.$this->layout.'.php');
+		
+		require($this->layoutPath.$this->layout.'.php');
 		return $this;
 	}
 

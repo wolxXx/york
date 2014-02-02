@@ -6,6 +6,15 @@ namespace York\Database\Blueprint;
 interface ItemInterface{
 	/**
 	 * init your references
+	 *
+	 * @return ItemInterface
 	 */
 	public function initReferencing();
+
+	/**
+	 * validate yourself
+	 *
+	 * @return ItemInterface
+	 */
+	public function validate();
 }

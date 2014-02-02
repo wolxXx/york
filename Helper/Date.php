@@ -53,7 +53,11 @@ class Date{
 	 * @return string
 	 */
 	public static function formatDate($date){
-		return date('d.m.Y, H:i', self::dateToTimestamp($date));
+		$pattern = 'd.m.Y, H:i';
+		if(true === $date instanceof \DateTime){
+			return $date->format($pattern);
+		}
+		return date($pattern, self::dateToTimestamp($date));
 	}
 
 	/**
@@ -73,6 +77,10 @@ class Date{
 			$time = time();
 		}
 		return date($format, $time);
+	}
+
+	public static function getDateTime($time = null){
+		return new \DateTime(self::getDate(null, $time));
 	}
 
 	/**
@@ -149,4 +157,4 @@ class Date{
 
 		return implode(':', $split);
 	}
-} 
+}

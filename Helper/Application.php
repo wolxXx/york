@@ -1,5 +1,7 @@
 <?php
 namespace York\Helper;
+use York\Dependency\Manager as Dependency;
+
 /**
  * application helper utilities class
  *
@@ -8,19 +10,52 @@ namespace York\Helper;
  * @package York\Helper
  */
 class Application{
+	/**
+	 * checks if the application runs in cli mode
+	 *
+	 * @return boolean
+	 */
+	public static function isCli(){
+		return false !== isset($_SERVER['argv']);
+	}
+
+	/**
+	 * debugs all given params and dies
+	 */
+	public static function dieDebug(){
+		foreach(func_get_args() as $current){
+			self::debug($current);
+		}
+		die('die debug called. stopping here...'.PHP_EOL);
+	}
+
+	/**
+	 * debugs all given params
+	 */
 	public static function debug(){
 		$backtrace = debug_backtrace(true);
 		$trace = $backtrace[0];
-		#if('CoreHelper.php' === Helper::getFileName($trace['file'])){
-		#	$trace = $backtrace[1];
-		#}
+
+		if(__FILE__ === $trace['file']){
+			$trace = $backtrace[1];
+		}
 		$line = isset($trace['line'])? $trace['line'] : 666;
 		$file = isset($trace['file'])? $trace['file'] : 'somewhere';
-		echo '<div class="debug"><pre>debug from '.(str_replace(self::getDocRoot(), '', $file)).' line '.$line.':</pre>';
+		if(false === self::isCli()){
+			echo '<div class="debug"><pre>debug from '.(str_replace(self::getDocRoot(), '', $file)).' line '.$line.':</pre>';
+		}else{
+			echo 'debug from '.(str_replace(self::getDocRoot(), '', $file)).' line '.$line.':'.PHP_EOL;
+		}
+
 		foreach(func_get_args() as $arg){
 			var_dump($arg);
 		}
-		echo '</div>';
+		if(false === self::isCli()){
+			echo '</div>';
+		}else{
+			echo '____________________'.PHP_EOL.PHP_EOL;
+		}
+
 	}
 
 	/**
@@ -95,7 +130,7 @@ class Application{
 	 * saves it in the default stack
 	 */
 	public static function grabHostName(){
-		\York\Stack::getInstance()->set('hostname', php_uname("n"));
+		Dependency::get('applicationConfiguration')->set('hostname', php_uname("n"));
 	}
 
 	/**
@@ -108,12 +143,12 @@ class Application{
 	 */
 	public static function grabModeAndVersion(){
 		if(false === getenv('APPLICATION_ENV')){
-			putenv('APPLICATION_ENV=main-production');
+			putenv('APPLICATION_ENV=main-dev');
 		}
 		$split = explode('-', getenv('APPLICATION_ENV'));
 		$version = $split[0];
 		$mode = $split[1];
-		\York\Stack::getInstance()->set('version', $version);
-		\York\Stack::getInstance()->set('mode', $mode);
+		Dependency::get('applicationConfiguration')->set('version', $version);
+		Dependency::get('applicationConfiguration')->set('mode', $mode);
 	}
 }

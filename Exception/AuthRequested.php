@@ -9,7 +9,7 @@ namespace York\Exception;
  */
 class AuthRequested extends Auth{
 	public function __construct(){
-		\York\Stack::getInstance()->set('redirect', \York\Helper::getCurrentURI());
-		\York\Helper::redirect('/auth/login');
+		\York\Dependency\Manager::get('session')->set('redirect', \York\Helper\Net::getCurrentURI());
+		\York\Helper\Application::redirect('/auth/login');
 	}
 }

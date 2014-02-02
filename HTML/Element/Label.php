@@ -102,6 +102,15 @@ class Label extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
+	 * getter for the label text
+	 *
+	 * @return string
+	 */
+	public function getText(){
+		return $this->get('text');
+	}
+
+	/**
 	 * (non-PHPdoc)
 	 * @see DomElementInterface::display()
 	 */

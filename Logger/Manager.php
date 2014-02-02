@@ -1,6 +1,5 @@
 <?php
 namespace York\Logger;
-use York\Code\SingletonWithoutShutdown;
 
 /**
  * log manager
@@ -10,7 +9,7 @@ use York\Code\SingletonWithoutShutdown;
  * @package York\Logger
  */
 
-class Manager extends SingletonWithoutShutdown{
+class Manager{
 	/**
 	 * list of listening loggers
 	 *
@@ -156,4 +155,11 @@ class Manager extends SingletonWithoutShutdown{
 	 * @var string
 	 */
 	const LEVEL_APPLICATION_DEBUG = 'LEVEL_APPLICATION_DEBUG';
+
+	/**
+	 * logger level api response
+	 *
+	 * @var string
+	 */
+	const LEVEL_API_RESPONSE = 'LEVEL_API_RESPONSE';
 }

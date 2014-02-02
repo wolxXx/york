@@ -76,6 +76,30 @@ class String {
 	}
 
 	/**
+	 * converts a underscore string to a pascal string
+	 * like google_sucks => GoogleSucks
+	 * @param string $string
+	 * @return string
+	 */
+	public static function underscoresToPascalCase($string){
+		$return = '';
+		$nextBigThing = true;
+		for($i = 0; $i < strlen($string); $i++){
+			if('_' === $string[$i]){
+				$nextBigThing = true;
+				continue;
+			}
+			if(true === $nextBigThing){
+				$return .= strtoupper($string[$i]);
+				$nextBigThing = false;
+				continue;
+			}
+			$return .= strtolower($string[$i]);
+		}
+		return $return;
+	}
+
+	/**
 	 * adds a tailing slash to the string if it does not have one
 	 *
 	 * @param string $string

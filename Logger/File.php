@@ -65,9 +65,8 @@ class File extends LoggerAbstract{
 	 * @inheritdoc
 	 */
 	public function log($message){
-		$message .= "\n";
-		$file = fopen($this->filePath, 'a+');
-		fputs($file, $message);
+		$file = fopen('log/'.$this->filePath, 'a+');
+		fputs($file, $message.PHP_EOL.PHP_EOL);
 		fclose($file);
 		return $this;
 	}

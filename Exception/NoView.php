@@ -9,7 +9,7 @@ namespace York\Exception;
  */
 class NoView extends York{
 	public function __construct(){
-		\York\Stack::getInstance()->set('type', '404');
-		\York\View\Manager::getInstance()->set('type', '404');
+		\York\Dependency\Manager::get('session')->set('type', '404');
+		\York\Dependency\Manager::get('viewManager')->set('type', '404');
 	}
 }

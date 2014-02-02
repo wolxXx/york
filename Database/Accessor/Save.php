@@ -1,5 +1,7 @@
 <?php
 namespace York\Database\Accessor;
+use York\Dependency\Manager as Dependency;
+
 /**
  * OO-Wrapper for having a saveable object for the york core model save
  * this is only usable for one table. no composed objects are supported.. yet!
@@ -38,7 +40,7 @@ class Save{
 	 * @return \York\Database\Accessor\Save
 	 */
 	public function __construct($table){
-		$this->databaseManager = \York\Database\Manager::getInstance();
+		$this->databaseManager = Dependency::get('databaseManager');
 		$this
 			->reset()
 			->setTable($table);
@@ -76,7 +78,8 @@ class Save{
 	public function get($key){
 		if(!isset($this->data[$key])){
 			$message = sprintf('warning: property "%s" not set in saveobject!', $key);
-			\York\Logger\Manager::getInstance()->log($message, \York\Logger\Manager::TYPE_ALL, \York\Logger\Manager::LEVEL_WARN);
+			$logger = Dependency::get('logger');
+			$logger->log($message, $logger::TYPE_ALL, $logger::LEVEL_WARN);
 			return null;
 		}
 		return $this->data[$key];

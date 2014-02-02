@@ -11,7 +11,7 @@ class Session extends StorageAbstract implements StorageInterface{
 	 * starts a session
 	 * only callable from here
 	 */
-	protected function __construct(){
+	public function __construct(){
 		if(false === defined('STDIN') && '' === session_id()){
 			session_start();
 		}
@@ -65,7 +65,7 @@ class Session extends StorageAbstract implements StorageInterface{
 	 * @param $default
 	 * @return mixed
 	 */
-	public function getSafely($key, $default){
+	public function getSafely($key, $default = null){
 		return $this->get($key, $default);
 	}
 

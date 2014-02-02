@@ -1,5 +1,6 @@
 <?php
 namespace York\Database;
+use \York\Dependency\Manager as Dependency;
 /**
  * abstract query builder
  * needs a connection. you can set it via dic or dis.
@@ -38,7 +39,7 @@ abstract class QueryBuilder{
 		$this->connection = $connection;
 
 		if(null === $this->connection){
-			$this->connection = \York\Database\Manager::getInstance()->getConnection();
+			$this->connection = Dependency::get('databaseManager')->getConnection();
 		}
 
 		return $this;
@@ -201,7 +202,10 @@ abstract class QueryBuilder{
 	 */
 	protected function generateOrder(){
 		$order = '';
-		if(null !== $this->conditions['order']){
+		if(null !== $this->conditions['order'] && false === empty($this->conditions['order'])){
+			if(true === is_array($this->conditions['order'])){
+				$this->conditions['order'] = implode(',', $this->conditions['order']);
+			}
 			$order = sprintf('ORDER BY %s', $this->conditions['order']);
 		}
 		return $order;

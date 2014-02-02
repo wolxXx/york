@@ -407,7 +407,7 @@ class Mailer implements MailerInterface{
 	/**
 	 * @inheritdoc
 	 */
-	public function send($force = true){
+	public function send($force = false){
 
 		$this->check();
 

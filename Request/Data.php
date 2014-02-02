@@ -9,13 +9,6 @@ namespace York\Request;
  */
 class Data{
 	/**
-	 * instance for wanted singleton pattern
-	 *
-	 * @var \York\Request\Data
-	 */
-	protected static $instance;
-
-	/**
 	 * the main data storage
 	 *
 	 * @var array
@@ -65,18 +58,6 @@ class Data{
 	}
 
 	/**
-	 * singleton instance getter
-	 *
-	 * @return \York\Request\Data
-	 */
-	public static function getInstance(){
-		if(null === self::$instance){
-			self::$instance = new self();
-		}
-		return self::$instance;
-	}
-
-	/**
 	 * initialises the data object
 	 *
 	 * @return \York\Request\Data
@@ -94,11 +75,24 @@ class Data{
 		return $this;
 	}
 
+	/**
+	 * setter for data
+	 *
+	 * @param $key
+	 * @param $value
+	 * @return \York\Request\Data
+	 */
 	public function set($key, $value){
 		$this->data[$key] = $value;
 		return $this;
 	}
 
+	/**
+	 * set data from an array
+	 *
+	 * @param $array
+	 * @return \York\Request\Data
+	 */
 	protected function setFromArray($array){
 		foreach($array as $key => $value){
 			$this->set($key, $value);

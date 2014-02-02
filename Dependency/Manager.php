@@ -124,6 +124,7 @@ class Manager{
 		$manager = self::getInstance();
 		$manager->instances[$type] = $object;
 		$manager->configuration[$type]['class'] = get_class($object);
+
 		return $manager;
 	}
 
@@ -147,14 +148,24 @@ class Manager{
 		return isset($this->configuration[$type]['shared']) && '1' === $this->configuration[$type]['shared'];
 	}
 
+	/**
+	 * get the class name
+	 *
+	 * @param $type
+	 * @return mixed
+	 * @throws \York\Exception\Dependency
+	 */
 	public static function getClassNameForDependency($type){
 		$manager = self::getInstance();
+
 		if(false === $manager->hasDependencyConfigured($type)){
 			throw new Dependency(sprintf('unable to get dependency %s', $type));
 		}
+
 		if(false === isset($manager->configuration[$type]['class'])){
 			throw new Dependency(sprintf('not fully qualified dependency %s', $type));
 		}
+
 		return $manager->configuration[$type]['class'];
 	}
 

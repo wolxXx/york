@@ -1,5 +1,7 @@
 <?php
 namespace York\View\Splash;
+use York\View\Splash\ItemInterface;
+
 /**
  * a splash item
  *
@@ -7,7 +9,7 @@ namespace York\View\Splash;
  * @version 3.0
  * @package York\View\Splash
  */
-class Item implements \York\View\Splash\ItemInterface{
+class Item implements ItemInterface{
 	/**
 	 * the displayed text
 	 *
@@ -20,7 +22,7 @@ class Item implements \York\View\Splash\ItemInterface{
 	 *
 	 * @param string $text
 	 */
-	public function __construct($text){
+	public function __construct($text = ''){
 		$this->setText($text);
 	}
 
@@ -28,7 +30,7 @@ class Item implements \York\View\Splash\ItemInterface{
 	 * setter for the text
 	 *
 	 * @param $text
-	 * @return \York\View\Splash\ItemInterface
+	 * @return ItemInterface
 	 */
 	public function setText($text){
 		$this->text = $text;

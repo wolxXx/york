@@ -1,7 +1,7 @@
 #!/bin/bash
 clear;
 
-echo "wolxXxMVC shelltools: deployment.";
+echo "York ClI: deployment.";
 
 die () {
 	echo >&2 "$@";
@@ -9,10 +9,10 @@ die () {
 }
 
 #really needs to have a specification!!
-if [ "$#" -lt 1 ]; then  
+if [ "$#" -lt 1 ]; then
 	die "please specify the configuration! (dev, production)";
 fi
-if [ $1 != "dev" ] && [ $1 != "production" ]; then  
+if [ $1 != "dev" ] && [ $1 != "production" ]; then
 	die "please specify the configuration! (dev, production)";
 fi
 

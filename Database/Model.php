@@ -1,6 +1,9 @@
 <?php
 namespace York\Database;
-use York\Database\Manager;
+use York\Database\QueryBuilder\QueryStringInterface;
+use York\Database\QueryBuilder\Select;
+use York\Database\QueryResultList;
+use York\Dependency\Manager as Dependency;
 use York\Exception\Apocalypse;
 use York\Storage\Application;
 
@@ -11,7 +14,6 @@ use York\Storage\Application;
  * @author wolxXx
  * @version 3.0
  * @package York\Database
-
  */
 class Model{
 	/**
@@ -66,7 +68,7 @@ class Model{
 		$type = ucfirst($type);
 		$instance = new $type($manager);
 
-		if(false === $instance instanceof Model){
+		if(false === $instance instanceof \York\Database\Model\Item){
 			throw new Apocalypse(sprintf('Model "%s" not an instance of the core model!!', $type));
 		}
 
@@ -78,22 +80,10 @@ class Model{
 	 */
 	public function __construct(Manager $manager = null){
 		if(null === $manager){
-			$manager = Manager::getInstance();
+			$manager = Dependency::get('databaseManager');
 		}
 		$this->databaseManager = $manager;
-		$this->stack = Application::getInstance();
-
-		return;
-		$calledClass = get_called_class();
-		$allowedClasses = array('Model', 'CoreModel');
-		$isAllowedClass = in_array($calledClass, $allowedClasses);
-		if(false === $isAllowedClass){
-			return;
-		}
-		foreach(Helper::scanDirectory(Helper::getDocRoot().'application'.DIRECTORY_SEPARATOR.'models') as $current){
-			$className = str_replace(Helper::getFileExtension($current, true), '', Helper::getFileName($current));
-			$this->availableModels[] = new $className();
-		}
+		$this->stack = Dependency::get('applicationConfiguration');
 	}
 
 	/**
@@ -102,10 +92,10 @@ class Model{
 	 * @param \York\Database\QueryBuilder\QueryString $queryStringObject
 	 * @return \York\Database\QueryResult
 	 */
-	protected function query(\York\Database\QueryBuilder\QueryStringInterface $queryStringObject){
+	protected function query(QueryStringInterface $queryStringObject){
 		$result = $this->databaseManager->find($queryStringObject);
 		if('' !== $result->getError()){
-			\York\Logger\Manager::getInstance()->log(sprintf('query: %s | message: %s', $queryStringObject->getQueryString(true), $result->getError()),  \York\Logger\Manager::LEVEL_DATABASE_ERROR);
+			\York\Dependency\Manager::get('logger')->log(sprintf('query: %s | message: %s', $queryStringObject->getQueryString(true), $result->getError()),  \York\Logger\Manager::LEVEL_DATABASE_ERROR);
 		}
 		return new \York\Database\QueryResult($result, $queryStringObject->getQueryString(), $result->getError());
 	}
@@ -113,12 +103,12 @@ class Model{
 	/**
 	 * finds one item by a query string object
 	 *
-	 * @param \York\Database\QueryBuilder\QueryStringInterface $queryString
+	 * @param QueryStringInterface $queryString
 	 * @return \York\Database\QueryResult | null
 	 */
-	public function findOneByQueryString(\York\Database\QueryBuilder\QueryStringInterface $queryString){
+	public function findOneByQueryString(QueryStringInterface $queryString){
 		$result = $this->query($queryString);
-		$resultList = new \York\Database\QueryResultList();
+		$resultList = new QueryResultList();
 		$resultList->injectResultsViaQueryResult($result->getResult()->getResult());
 		$results = $resultList->getResults();
 		if(true === empty($results)){
@@ -130,12 +120,12 @@ class Model{
 	/**
 	 * finds all occurences by a query string
 	 *
-	 * @param \York\Database\QueryBuilder\QueryStringInterface $queryString
+	 * @param QueryStringInterface $queryString
 	 * @return array
 	 */
-	public function findAllByQueryString(\York\Database\QueryBuilder\QueryStringInterface $queryString){
+	public function findAllByQueryString(QueryStringInterface $queryString){
 		$result = $this->query($queryString);
-		$resultList = new \York\Database\QueryResultList();
+		$resultList = new QueryResultList();
 		//@fixme uhm... getResult->getResult seems to be broken....
 		$resultList->injectResultsViaQueryResult($result->getResult()->getResult());
 		$results = $resultList->getResults();
@@ -149,7 +139,7 @@ class Model{
 	 * @return null | \York\Database\QueryResult | array
 	 */
 	public function find($conditions){
-		$queryBuilder = new \York\Database\QueryBuilder\Select();
+		$queryBuilder = new Select();
 		$queryBuilder->setConditions($conditions);
 		if(true === $queryBuilder->isQueryForAll()){
 			return $this->findAllByQueryString($queryBuilder->getQueryString());
@@ -164,7 +154,7 @@ class Model{
 	 * @param string $model
 	 * @param string | integer $key
 	 * @param string $field
-	 * @return \York\Database\QueryResult | null
+	 * @return \York\Database\FetchResult | null
 	 */
 	public function findOne($model, $key, $field = null){
 		if(null === $field){

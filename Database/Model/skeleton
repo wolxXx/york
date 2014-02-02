@@ -1,0 +1,22 @@
+<?php
+namespace Application\Model\Blueprint;
+/**
+ * auto generated model for %%tablename%%
+ *
+ * @author YorkFramework
+ * @version 1.0
+ * @package Application\Model\Blueprint
+ */
+class %%modelname%% extends \York\Database\Model\Item{
+
+	%%classmembers%%
+
+	/**
+	 * constructor
+	 *
+	 * @param integer | null $id
+	 */
+	public function __construct($id = null){
+		parent::__construct('%%tablename%%', $id);
+	}
+}

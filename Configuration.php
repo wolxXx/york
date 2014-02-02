@@ -1,5 +1,8 @@
 <?php
 namespace York;
+use York\Dependency\Manager as Dependency;
+use York\Exception\Apocalypse;
+
 /**
  * config base for having objects as config
  *
@@ -8,7 +11,6 @@ namespace York;
  * @package York
  */
 abstract class Configuration{
-	public static $USER_TYPE_ADMIN = 1;
 	public static $AUTH_ACTIVATE_USER_BANNING = 'Auth.activateUserBanning';
 	public static $AUTH_CREDENTIAL_USER_ACCESS = 'Auth.credentialsUserAccess';
 	public static $AUTH_CREDENTIAL_USER_ID = 'Auth.credentialsUserId';
@@ -23,6 +25,7 @@ abstract class Configuration{
 	public static $USER_STATUS_BANNED = 2;
 	public static $USER_TYPE_USUAL = 0;
 	public static $USER_TYPE_EDITOR = 1;
+	public static $USER_TYPE_ADMIN = 2;
 
 	/**
 	 * an instance of the stack
@@ -34,16 +37,16 @@ abstract class Configuration{
 	 * get an instance of the stack
 	 */
 	public final function __construct(){
-		$this->stack = \York\Dependency\Manager::get('applicationConfiguration');
+		$this->stack = Dependency::get('applicationConfiguration');
 	}
 
 	/**
 	 * configuration of the application
 	 *
-	 * @throws \York\Exception\Apocalypse
+	 * @throws Apocalypse
 	 */
 	public function configureApplication(){
-		throw new \York\Exception\Apocalypse('please configure application');
+		throw new Apocalypse('please configure application');
 	}
 
 	/**
@@ -51,16 +54,16 @@ abstract class Configuration{
 	 * place database credentials here
 	 * configure whatever you want
 	 *
-	 * @throws \York\Exception\Apocalypse
+	 * @throws Apocalypse
 	 */
 	public function configureHost(){
-		throw new \York\Exception\Apocalypse('please configure host');
+		throw new Apocalypse('please configure host');
 	}
 
 	/**
 	 * checks if the minimal needed settings are done
 	 *
-	 * @throws \York\Exception\Apocalypse
+	 * @throws Apocalypse
 	 */
 	public final function checkConfig(){
 		$needed = array(
@@ -70,7 +73,7 @@ abstract class Configuration{
 			$this->stack->get('db_pass')
 		);
 		if(true === in_array(null, $needed)){
-			throw new \York\Exception\Apocalypse('you need to specify db_host, db_user, db_schema, db_pass in configuration!');
+			throw new Apocalypse('you need to specify db_host, db_user, db_schema, db_pass in configuration!');
 		}
 	}
 }

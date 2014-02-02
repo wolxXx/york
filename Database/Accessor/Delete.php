@@ -39,7 +39,7 @@ class Delete{
 		$this
 			->setId($rowId)
 			->setTable($table);
-		$this->databaseManager = \York\Database\Manager::getInstance();
+		$this->databaseManager = \York\Dependency\Manager::get('databaseManager');
 	}
 
 	/**

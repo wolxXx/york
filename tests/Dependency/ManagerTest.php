@@ -1,5 +1,5 @@
 <?php
-class ManagerTest extends \PHPUnit_Framework_TestCase{
+class DependencyManagerTest extends \PHPUnit_Framework_TestCase{
 	/**
 	 * @var \York\Dependency\Manager
 	 */

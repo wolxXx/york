@@ -43,6 +43,11 @@ class Application extends StorageAbstract implements StorageInterface{
 		return $this->data[$key];
 	}
 
+	/**
+	 * retrieve the whole data
+	 *
+	 * @return array
+	 */
 	public function getAll(){
 		return $this->data;
 	}
@@ -108,7 +113,15 @@ class Application extends StorageAbstract implements StorageInterface{
 		return $this->removeData($key);
 	}
 
-	public function getSafely($key, $default){
+	/**
+	 * try safely to get the data for the given ey
+	 * if the key is not set, the default value will be returned
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 * @return mixed
+	 */
+	public function getSafely($key, $default = null){
 		try{
 			return $this->get($key);
 		}catch (KeyNotFound $exception){

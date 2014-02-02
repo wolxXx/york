@@ -1,6 +1,5 @@
 <?php
 namespace York\Autoload;
-use York\York;
 
 /**
  * object orientated auto loading mechanism
@@ -40,7 +39,19 @@ final class Manager{
 	 * @return string
 	 */
 	protected static function getResolvedPathForClassNameInLibrary($className){
-		return 'Library/'.self::getResolvedPathForClassName($className);
+		$resolved = __DIR__.'/../../'.self::getResolvedPathForClassName($className);
+		return $resolved;
+	}
+
+	/**
+	 * retrieves the file path for the given class name and prepends "Library"
+	 *
+	 * @param $className
+	 * @return string
+	 */
+	protected static function getResolvedPathForClassNameInApplication($className){
+		$resolved = __DIR__.'/../../..'.self::getResolvedPathForClassName($className);
+		return $resolved;
 	}
 
 	/**
@@ -50,13 +61,9 @@ final class Manager{
 	 * @return boolean
 	 */
 	public static function isLoadable($className){
-		if(true === file_exists(self::getResolvedPathForClassNameInLibrary($className))){
-			return true;
-		}
-		if(true === file_exists(self::getResolvedPathForClassName($className))){
-			return true;
-		}
-		return false;
+		return
+			true === file_exists(self::getResolvedPathForClassNameInLibrary($className)) ||
+			true === file_exists(self::getResolvedPathForClassNameInApplication($className));
 	}
 
 	/**
@@ -77,7 +84,5 @@ final class Manager{
 			require_once $resolvedClassPath;
 			return;
 		}
-
-		\York\Dependency\Manager::get('logger')->log(sprintf('unable to load "%s" via Autoload/Manager. loading deprecated legacy autoloader', $className), \York\Logger\Manager::LEVEL_DEBUG);
 	}
 }

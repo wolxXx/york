@@ -36,7 +36,7 @@ class MultiDelete{
 	 * @param array $conditions
 	 */
 	public function __construct($table = null, $conditions = array()){
-		$this->databaseManager = \York\Database\Manager::getInstance();
+		$this->databaseManager = \York\Dependency\Manager::get('databaseManager');
 		$this
 			->setConditions($conditions)
 			->setTable($table);

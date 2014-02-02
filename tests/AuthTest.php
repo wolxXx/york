@@ -17,10 +17,10 @@ class MockUser extends \York\Database\FetchResult{
  */
 class AuthTest extends  PHPUnit_Framework_TestCase{
 	public function testIsUserPasswordOk(){
-		$this->assertFalse(Auth::isUserPasswordOk('blubb', new MockUser()));
+		$this->assertFalse(\York\Auth\Manager::isUserPasswordOk('blubb', new MockUser()));
 		$user = new MockUser();
-		$user->password = Auth::hashPassword('foobar');
-		$this->assertTrue(Auth::isUserPasswordOk('foobar', $user));
+		$user->password = \York\Auth\Manager::hashPassword('foobar');
+		$this->assertTrue(\York\Auth\Manager::isUserPasswordOk('foobar', $user));
 	}
 
 	public function testHashPassword(){
@@ -33,8 +33,8 @@ class AuthTest extends  PHPUnit_Framework_TestCase{
 
 	public function testLogin(){
 		Auth::logout();
-		$_POST[Stack::getInstance()->get(CREDENTIALUSERID)] = 'god@linux.org';
-		$_POST[Stack::getInstance()->get(CREDENTIALUSERACCESS)] = 'linux';
+		$_POST[\York\Configuration::$AUTH_CREDENTIAL_USER_ID] = 'god@linux.org';
+		$_POST[\York\Configuration::$AUTH_CREDENTIAL_USER_ID] = 'linux';
 		Auth::login(new MockUser());
 	}
 
@@ -175,13 +175,13 @@ class AuthTest extends  PHPUnit_Framework_TestCase{
 	}
 
 	public function testFailedLogins(){
-		$_POST[Stack::getInstance()->get(CREDENTIALUSERID)] = 'god@linux.org';
-		$_POST[Stack::getInstance()->get(CREDENTIALUSERACCESS)] = 'linux';
+		$_POST[\York\Configuration::$AUTH_CREDENTIAL_USER_ID] = 'god@linux.org';
+		$_POST[\York\Configuration::$AUTH_CREDENTIAL_USER_ACCESS] = 'linux';
 		Auth::logout();
 		$user = new MockUser();
 		$user->password = 'hihi';
 		Auth::login($user);
-		$this->assertSame(Auth::getUserFailedLogins(), true === Stack::getInstance()->get(ACTIVATEUSERBANNING)? 1 : 0);
+		$this->assertSame(Auth::getUserFailedLogins(), true === \York\Configuration::$AUTH_ACTIVATE_USER_BANNING? 1 : 0);
 	}
 
 	public function testMultiFailedLogins(){

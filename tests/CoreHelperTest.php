@@ -5,13 +5,7 @@
 class CoreHelperTest extends  PHPUnit_Framework_TestCase{
 	protected static $timestamp = 1343146996;
 
-	public function testPascalCaseToUnderscores(){
-		$string = 'GoogleSucks';
-		$this->assertSame('google_sucks', Helper::pascalCaseToUnderscores($string));
 
-		$string = 'Google';
-		$this->assertSame('google', Helper::pascalCaseToUnderscores($string));
-	}
 
 	public function testMultiArrayDecorate(){
 		$array = array('foo', array('foo'));
@@ -58,13 +52,6 @@ class CoreHelperTest extends  PHPUnit_Framework_TestCase{
 		$this->assertSame(0, Helper::secondsToRemainingTime(0));
 	}
 
-	public function testIsUrlSyntaxNotOk(){
-		$this->assertFalse(Helper::isURLSyntaxOk('asd'));
-	}
-
-	public function testIsUrlSyntaxOk(){
-		$this->assertTrue(Helper::isURLSyntaxOk('http://wolxxx.de'));
-	}
 
 	public function testGetIpIfRemoteAddrIsNotSet(){
 		$_SERVER['REMOTE_ADDR'] = null;
@@ -92,31 +79,7 @@ class CoreHelperTest extends  PHPUnit_Framework_TestCase{
 		$this->assertFalse(Helper::isDebugEnabled());
 	}
 
-	public function testNormalizeString(){
-		$string = 'Hällö! wWü gehts?!';
-		$this->assertSame('haelloe! wWue gehts?!', Helper::normalizeString($string));
-	}
 
-	public function testCleanString(){
-		$string = 'Hällö! wWü gehts?!';
-		$this->assertSame('Haelloe!_wWue_gehts?!', Helper::cleanString($string));
-	}
-
-	public function testRemoveHtmlTags(){
-		$text = '<a href="test.html">huhu</a> test';
-		$this->assertSame('huhu test', CoreHelper::removeTagsFromText($text));
-
-		$text = '<h1>huhu</h1> test';
-		$this->assertSame('huhu test', CoreHelper::removeTagsFromText($text));
-	}
-
-	public function testRemoveLinkTagFromText(){
-		$text = '<a href="test.html">huhu</a> test';
-		$this->assertSame('huhu test', CoreHelper::removeSingleTagFromText($text, 'a'));
-
-		$text = '<h1>huhu</h1> test';
-		$this->assertSame($text, CoreHelper::removeSingleTagFromText($text, 'a'));
-	}
 
 	public function testDateByTimeStampDefaultFormat(){
 		$this->assertEquals(CoreHelper::getDateByTimestamp(null, 12334), '1970-01-01 04:25:34');

@@ -50,10 +50,12 @@ final class York{
 			\York\Helper::logToFile('the query generator failed!! '.$exception->getMessage(), 'dberror');
 			require_once 'tot.html';
 		}catch(\York\Exception\NoView $exception){
+			\York\Helper\Application::debug($exception);
 			die('no view: '.$exception->getMessage());
 			$this->catchError('/error/noView');
 			die('');
 		}catch(\York\Exception\Apocalypse $exception){
+			var_dump(debug_backtrace());
 			die('apocalypse: '.$exception->getMessage());
 			if('production' === Stack::getInstance()->get('mode')){
 				\York\Helper::logerror($x->getMessage());
@@ -137,12 +139,12 @@ an error occured:
 at line {$line} in file {$file}
 MESSAGE;
 
-		\York\Logger\Manager::getInstance()->log($text, \York\Logger\Manager::TYPE_FILE, \York\Logger\Manager::LEVEL_DEBUG);
+		\York\Dependency\Manager::get('logger')->log($text, \York\Logger\Manager::LEVEL_DEBUG);
 		throw new \York\Exception\York($message, $code);
 	}
 }
 
 /**
- * just run the constructor....
+ * now... let the hammer fall!
  */
 new York();

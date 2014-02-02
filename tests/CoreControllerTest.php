@@ -2,13 +2,13 @@
 /**
  * @codeCoverageIgnore
  */
-class JustAnotherTestController extends CoreController{
+class JustAnotherTestController extends \York\Controller{
 	public function testAction(){
-		$this->registerRedirect('/pewpew', Redirect::$redirect);
+		$this->registerRedirect('/pewpew', \York\Redirect::$redirect);
 	}
 
 	public function anotherTestAction(){
-		$this->registerRedirect(new Redirect('/pewpew'), Redirect::$moved);
+		$this->registerRedirect(new \York\Redirect('/pewpew'), \York\Redirect::$moved);
 	}
 
 	public function pewpewAction(){}
@@ -16,7 +16,7 @@ class JustAnotherTestController extends CoreController{
 /**
  * @codeCoverageIgnore
  */
-class AnotherTestController extends CoreController{
+class AnotherTestController extends \York\Controller{
 	public function indexAction(){}
 
 	public function testAction(){
@@ -32,7 +32,7 @@ class AnotherTestController extends CoreController{
 /**
  * @codeCoverageIgnore
  */
-class TestController extends CoreController{
+class TestController extends \York\Controller{
 	public function testAction(){
 		$this->registerRedirect('/pewpew', Redirect::$redirect);
 	}

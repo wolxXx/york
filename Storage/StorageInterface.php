@@ -48,7 +48,7 @@ interface StorageInterface {
 	 * @param mixed $default
 	 * @return mixed
 	 */
-	public function getSafely($key, $default);
+	public function getSafely($key, $default = null);
 
 	/**
 	 * remove the set data for the key

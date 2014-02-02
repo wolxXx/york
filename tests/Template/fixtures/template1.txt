@@ -1,0 +1,7 @@
+hello %%name%%
+
+thank your for using %%frameworkthatrocks%%
+
+kind regards,
+
+wolxXx

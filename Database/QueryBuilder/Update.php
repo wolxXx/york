@@ -60,7 +60,7 @@ class Update{
 	 */
 	public function setDatabaseManager($databaseManager = null){
 		if(null === $databaseManager){
-			$databaseManager = \York\Database\Manager::getInstance();
+			$databaseManager = \York\Dependency\Manager::get('databaseManager');
 		}
 		$this->databaseManager = $databaseManager;
 		return $this;
@@ -92,6 +92,27 @@ class Update{
 		}
 	}
 
+	protected function prepareData(){
+		foreach($this->data as $key => $value){
+			if(true === is_array($value)){
+				$this->data[$key] = implode(', ', $value);
+				continue;
+			}
+
+			if(true === $value instanceof \DateTime){
+				/**
+				 * @var \DateTime $value
+				 */
+				$this->data[$key] = $value->format('Y-m-d H:i:s');
+				continue;
+			}
+			if(true === is_bool($value)){
+				$this->data[$key] = true === $value? 1 : 0;
+				continue;
+			}
+		}
+	}
+
 	/**
 	 * creates the query
 	 *
@@ -102,6 +123,7 @@ class Update{
 
 		$text = '';
 		$connection = $this->databaseManager->getConnection();
+		$this->prepareData();
 		foreach ($this->data as $key => $value){
 			$text.= sprintf("`%s` = '%s', ", $key, $connection->escape($value));
 		}
