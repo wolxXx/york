@@ -1,0 +1,21 @@
+{
+	"name": "wolxXx/york",
+	"description": "york framework",
+	"minimum-stability": "dev",
+	"license": "proprietary",
+	"authors": [
+		{
+			"name": "wolxXx",
+			"email": "devops@wolxXx.de"
+		}
+	],
+
+	"config": {
+		"bin-dir": "bin",
+		"vendor-dir": "vendor"
+	},
+
+	"require": {
+		"squizlabs/php_codesniffer": "1.4.5"
+	}
+}
