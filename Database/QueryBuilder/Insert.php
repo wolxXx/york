@@ -89,7 +89,11 @@ class Insert extends QueryBuilder{
 		$values = '';
 
 		foreach(array_keys($this->data) as $key){
-			$values .= sprintf("'%s',", $connection->escape($this->data[$key]));
+			$value = $this->data[$key];
+			if(true === $this->data[$key] instanceof \DateTime){
+				$value = $value->format('Y-m-d H:i:s');
+			}
+			$values .= sprintf("'%s',", $connection->escape($value));
 		}
 
 		$keys = rtrim($keys, ',');

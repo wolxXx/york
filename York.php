@@ -104,7 +104,9 @@ final class York{
 			Typ: <?= $code.' '.\York\Helper::errorCodeToString($code) ?><br />
 			<?= $file ?> : <?= $line ?>
 		<?php
-		var_dump($context);
+		foreach($context as $row){
+			var_dump($row);
+		}
 		die();
 	}
 
@@ -140,7 +142,9 @@ at line {$line} in file {$file}
 MESSAGE;
 
 		\York\Dependency\Manager::get('logger')->log($text, \York\Logger\Manager::LEVEL_DEBUG);
-		throw new \York\Exception\York($message, $code);
+		\York\Dependency\Manager::get('logger')->log($text, \York\Logger\Manager::LEVEL_ERROR);
+		$exception = new \York\Exception\York($message, $code);
+		throw $exception;
 	}
 }
 

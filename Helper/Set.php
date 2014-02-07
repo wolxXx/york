@@ -49,7 +49,7 @@ class Set{
 	 * @param null $stringAfter
 	 * @return array
 	 */
-	public static function decorate($array, $stringBefore = '', $stringAfter = null){
+	public static function decorate(array $array, $stringBefore = '', $stringAfter = null){
 		if(null === $stringAfter){
 			$stringAfter = $stringBefore;
 		}

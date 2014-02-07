@@ -1,6 +1,7 @@
 <?php
 namespace York\Logger;
 use York\Exception\FileSystem;
+use York\Helper\Application;
 
 /**
  * log file writer
@@ -15,6 +16,11 @@ class File extends LoggerAbstract{
 	 * @var string
 	 */
 	protected $filePath;
+
+	/**
+	 * @var \York\FileSystem\File $file
+	 */
+	protected $file;
 
 	/**
 	 * set up the logger
@@ -39,6 +45,8 @@ class File extends LoggerAbstract{
 	 * @todo use filesystem helpers!
 	 */
 	public function setFilePath($filePath){
+		$this->file = new \York\FileSystem\File(Application::getProjectRoot().'log/'.basename($filePath), true);
+		return $this;
 		$this->filePath = $filePath;
 		$path = explode(DIRECTORY_SEPARATOR, $this->filePath);
 		array_pop($path);
@@ -65,9 +73,7 @@ class File extends LoggerAbstract{
 	 * @inheritdoc
 	 */
 	public function log($message){
-		$file = fopen('log/'.$this->filePath, 'a+');
-		fputs($file, $message.PHP_EOL.PHP_EOL);
-		fclose($file);
+		file_put_contents($this->file->getFullName(), file_get_contents($this->file->getFullName()).$message.PHP_EOL.PHP_EOL);
 		return $this;
 	}
 

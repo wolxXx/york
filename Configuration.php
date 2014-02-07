@@ -67,10 +67,10 @@ abstract class Configuration{
 	 */
 	public final function checkConfig(){
 		$needed = array(
-			$this->stack->get('db_host'),
-			$this->stack->get('db_user'),
-			$this->stack->get('db_schema'),
-			$this->stack->get('db_pass')
+			Dependency::get('databaseConfiguration')->get('db_host'),
+			Dependency::get('databaseConfiguration')->get('db_user'),
+			Dependency::get('databaseConfiguration')->get('db_schema'),
+			Dependency::get('databaseConfiguration')->get('db_pass')
 		);
 		if(true === in_array(null, $needed)){
 			throw new Apocalypse('you need to specify db_host, db_user, db_schema, db_pass in configuration!');

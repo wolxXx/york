@@ -3,8 +3,9 @@ namespace York\Backend;
 require_once(__DIR__.'/../Autoload/Manager.php');
 new \York\Autoload\Manager();
 
-chdir(__DIR__);
-chdir('../../../');
+
+chdir(\York\Helper\Application::getProjectRoot());
+
 
 class Bootstrap extends \York\Bootstrap{
 

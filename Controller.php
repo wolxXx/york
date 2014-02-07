@@ -43,6 +43,11 @@ abstract class Controller{
 	protected $authManager;
 
 	/**
+	 * @var \York\Dependency\Manager
+	 */
+	protected $dependencyManager;
+
+	/**
 	 * an instance of the stack
 	 *
 	 * @var \York\Storage\StorageInterface
@@ -118,6 +123,8 @@ abstract class Controller{
 	 * initialises the controller
 	 */
 	private final function init(){
+		$this->dependencyManager = Dependency::getInstance();
+		$this->dependencyManager->get('viewManager');
 		$this->viewManager = Dependency::get('viewManager');
 		$this->authManager = Dependency::getClassNameForDependency('authManager');
 		$this->model = new \York\Database\Model();

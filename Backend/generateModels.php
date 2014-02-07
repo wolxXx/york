@@ -4,7 +4,7 @@ class generateModels extends \York\Console\Application{
 
 	function help()
 	{
-		$this->out('just run');
+		$this->output('just run');
 	}
 
 	public function run()

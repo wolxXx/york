@@ -136,9 +136,6 @@ abstract class Application {
 			 * @var ValidatorInterface $validator
 			 */
 			foreach($this->required as $key => $validators){
-				if(false === $this->request->dataObject->hasDataForKey($key)){
-					return false;
-				}
 				foreach($validators as $validator){
 					$validator->isValid($this->request->dataObject->getSavely($key, null));
 				}

@@ -12,6 +12,10 @@ shared = true;
 [authManager]
 class = '\York\Auth\Manager';
 
+[databaseConfiguration]
+class = '\York\Storage\Simple';
+shared = true;
+
 [databaseConnection]
 class = '\York\Database\Connection';
 shared = false;

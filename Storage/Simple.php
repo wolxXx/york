@@ -33,7 +33,7 @@ class Simple implements StorageInterface{
 			throw new KeyNotFound(sprintf('key % not set', $key));
 		}
 
-		return $this->data['key'];
+		return $this->data[$key];
 	}
 
 	/**

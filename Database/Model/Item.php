@@ -1,6 +1,8 @@
 <?php
 namespace York\Database\Model;
 use York\Database\Accessor\Factory;
+use York\Exception\ModelNotSaved;
+use York\Storage\Simple;
 
 abstract class Item{
 	/**
@@ -9,13 +11,6 @@ abstract class Item{
 	 * @var string
 	 */
 	protected $table;
-
-	/**
-	 * id of the set in the database
-	 *
-	 * @var integer
-	 */
-	protected $id;
 
 	/**
 	 * dirty-flag
@@ -27,12 +22,13 @@ abstract class Item{
 	/**
 	 * the data
 	 *
-	 * @var \York\Storage\Simple
+	 * @var Simple
 	 */
 	protected $data;
 
 	/**
 	 * list of class members that have direct correspondence to the database
+	 *
 	 * @var array
 	 */
 	protected $flatMembers;
@@ -42,10 +38,14 @@ abstract class Item{
 	 * @param integer $id
 	 */
 	public function __construct($table, $id = null){
-		$this->data = new \York\Storage\Simple();
+		$this->data = new Simple();
 		$this->table = $table;
 		$this->id = $id;
 		$this->isModified = false;
+	}
+
+	public function __toString(){
+		return get_called_class();
 	}
 
 	/**
@@ -66,6 +66,16 @@ abstract class Item{
 		return $this;
 	}
 
+	public function setReferenced($key, $value){
+		if(false === in_array($key, $this->referencedMembers) || false === $value instanceof Item){
+			return $this;
+		}
+
+		$this->$key = $value;
+
+		return $this;
+	}
+
 	/**
 	 * setter for data
 	 * sets the dirty-flag if data is modified
@@ -75,6 +85,10 @@ abstract class Item{
 	 * @return \York\Database\Model\Item
 	 */
 	public function set($key, $value){
+		if(true === in_array($key, array('data', 'table', 'flatMembers', 'referencedMembers')) || true === $value instanceof Item){
+			return $this;
+		}
+
 		if($value === $this->$key){
 			return $this;
 		}
@@ -148,12 +162,12 @@ abstract class Item{
 	/**
 	 * delete the set in the database
 	 *
-	 * @throws \York\Exception\ModelNotSaved
-	 * @return boolean
+	 * @throws ModelNotSaved
+	 * @return boolean\DateTime
 	 */
 	public function delete(){
 		if(null === $this->getId()){
-			throw new \York\Exception\ModelNotSaved();
+			throw new ModelNotSaved();
 		}
 		return Factory::getDeleteObject($this->getTable(), $this->getId())->delete()->queryWasSuccessful();
 	}

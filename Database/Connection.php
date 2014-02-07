@@ -153,6 +153,11 @@ class Connection{
 	 */
 	public function query($query){
 		$this->lastQuery = $query;
+		/**
+		 * @var \York\Logger\Manager $logger
+		 */
+		$logger = \York\Dependency\Manager::get('logger');
+		$logger->log($query, $logger::LEVEL_DATABASE_DEBUG);
 
 		return $this->connection->query($query);
 	}

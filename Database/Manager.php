@@ -33,10 +33,10 @@ class Manager{
 	public function __construct(){
 		$this->connection = Dependency::get('databaseConnection');
 		$this->connection
-			->setHost(Dependency::get('applicationConfiguration')->get('db_host'))
-			->setUser(Dependency::get('applicationConfiguration')->get('db_user'))
-			->setPassword(Dependency::get('applicationConfiguration')->get('db_pass'))
-			->setSchema(Dependency::get('applicationConfiguration')->get('db_schema'))
+			->setHost(Dependency::get('databaseConfiguration')->get('db_host'))
+			->setUser(Dependency::get('databaseConfiguration')->get('db_user'))
+			->setPassword(Dependency::get('databaseConfiguration')->get('db_pass'))
+			->setSchema(Dependency::get('databaseConfiguration')->get('db_schema'))
 			->connect();
 	}
 

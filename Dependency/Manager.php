@@ -35,7 +35,7 @@ class Manager{
 	/**
 	 * @return \York\Dependency\Manager
 	 */
-	private static function getInstance(){
+	public static function getInstance(){
 		if(null === self::$instance){
 			self::$instance = new self();
 		}

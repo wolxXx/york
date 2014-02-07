@@ -64,7 +64,18 @@ class Application{
 	 * @return string
 	 */
 	public static function getDocRoot(){
-		return realpath(__DIR__.'/../../').'/';
+		return self::getProjectRoot().'docroot'.DIRECTORY_SEPARATOR;
+	}
+
+	/**
+	 * retrieves the project root path
+	 *
+	 * @return string
+	 */
+	public static function getProjectRoot(){
+		$path = __DIR__.'/../../../';
+		$path = realpath($path).DIRECTORY_SEPARATOR;
+		return $path;
 	}
 
 	/**
@@ -73,9 +84,7 @@ class Application{
 	 * @return string
 	 */
 	public static function getApplicationRoot(){
-		$path = __DIR__.'/../../../Application';
-		$path = realpath($path).DIRECTORY_SEPARATOR;
-		return $path;
+		return self::getProjectRoot().'Application'.DIRECTORY_SEPARATOR;
 	}
 
 	/**

@@ -22,6 +22,7 @@ class File{
 			}
 			try{
 				touch($this->path);
+				chmod($this->path, 0774);
 			}catch (\York\Exception\York $exception){
 				throw new \York\Exception\FileSystem(sprintf('cannot touch file %s', $this->path));
 			}

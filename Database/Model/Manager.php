@@ -1,5 +1,6 @@
 <?php
 namespace York\Database\Model;
+use York\Database\Model;
 use York\Exception\Autoload;
 
 /**
@@ -28,7 +29,7 @@ abstract class Manager implements ManagerInterface{
 	 * set up
 	 */
 	public final function __construct(){
-		$this->model = new \York\Database\Model();
+		$this->model = new Model();
 	}
 
 	/**
@@ -76,8 +77,6 @@ abstract class Manager implements ManagerInterface{
 			}
 		}
 
-
-
 		if(true === array_key_exists($name, $data)){
 			$value = $data[$name];
 
@@ -101,7 +100,8 @@ abstract class Manager implements ManagerInterface{
 			}
 		}
 
-		if(false === isset($data[$identifiedBy]) || null === $data[$identifiedBy]){
+		if(false === isset($identifiedBy) || null === $identifiedBy || false === isset($data[$identifiedBy])){
+
 			return null;
 		}
 
@@ -143,7 +143,7 @@ abstract class Manager implements ManagerInterface{
 	 * @param \York\Database\FetchResult $result
 	 * @return null|\York\Database\Blueprint\ItemInterface
 	 */
-	protected function createByResult($result){
+	protected function createByResult($result, $preventReferencing = false){
 		if(null === $result){
 			return null;
 		}
@@ -163,11 +163,15 @@ abstract class Manager implements ManagerInterface{
 		$reflection = new \ReflectionClass($instance);
 
 		foreach($reflection->getProperties() as $property){
-			if('flatMembers' === $property->getName()){
+			if(true === in_array($property->getName(), array('flatMembers', 'referencedMembers'))){
 				continue;
 			}
 			$name = $property->getName();
 			$instance->set($name, $this->matchDeclaredVar($property, $resultData));
+		}
+
+		foreach($instance->referencedMembers as $referenced){
+			$instance->setReferenced($referenced, $this->matchDeclaredVar($reflection->getProperty($referenced), $resultData));
 		}
 
 		$instance->validate();
@@ -194,13 +198,14 @@ abstract class Manager implements ManagerInterface{
 	 * @param \York\Database\QueryBuilder $query
 	 * @return \York\Database\Blueprint\ItemInterface[]
 	 */
-	public function find(\York\Database\QueryBuilder $query){
-		$model = new \York\Database\Model();
+	public function find(\York\Database\QueryBuilder $query, $preventReferencing = false){
+		\York\Helper\Application::debug($preventReferencing);
+		$model = new Model();
 		$results = $model->findAllByQueryString($query->getQueryString());
 		$return = array();
 
 		foreach($results as $current){
-			$currentBlueprint = $this->createByResult($current);
+			$currentBlueprint = $this->createByResult($current, $preventReferencing);
 
 			if(null === $currentBlueprint){
 				continue;

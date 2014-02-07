@@ -153,7 +153,7 @@ abstract class Bootstrap{
 				<? endif ?>
 				<? if(isset($trace['type'])): ?>
 					<li>
-						Args: <?= print_r($trace['args']) ?>
+						Args: <? var_dump($trace['args']) ?>
 					</li>
 				<? endif ?>
 			</ul>
