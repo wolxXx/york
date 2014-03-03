@@ -1,0 +1,1232 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Load</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Load</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+													<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+						|											<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">the loader / the bridge to the view</p>
+<p class="description"><p>extracts the setted vars to the view  handles partials  holds JavaScript, JavaScriptFiles, CSS and CSSFiles</p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> wolxXx</li>
+				<li><span class="field">version:</span> 1.6</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_Load.php.html">/Load.php</a> (line <span class="field">13</span>)
+		</p>
+		
+				
+		<pre></pre>
+	
+			</div>
+</div>
+
+
+
+	<a name="sec-var-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variable Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+						<span class="disabled">Vars</span> (<a href="#sec-vars">details</a>)
+							| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+								</div>
+		<div class="info-box-body">
+			<div class="var-summary">
+																																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$layoutPath" title="details" class="var-name">$layoutPath</a>
+				</div>
+																<div class="var-title">
+					<span class="var-type">string</span>
+					<a href="#$viewPath" title="details" class="var-name">$viewPath</a>
+				</div>
+											</div>
+		</div>
+	</div>
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																		<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+				 
+				|
+						<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																				<div class="method-definition">
+					static 						<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#clearInstance" title="details" class="method-name">clearInstance</a>
+										()
+									</div>
+																																																																<div class="method-definition">
+					static 						<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#getInstance" title="details" class="method-name">getInstance</a>
+										()
+									</div>
+																																																																																																																																
+												<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#addCss" title="details" class="method-name">addCss</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$text</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$top</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#addCssFile" title="details" class="method-name">addCssFile</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$top</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#addCssFiles" title="details" class="method-name">addCssFiles</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$files</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#addJavascript" title="details" class="method-name">addJavascript</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$text</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$top</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#addJavascriptFile" title="details" class="method-name">addJavascriptFile</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$top</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#addJavascriptFiles" title="details" class="method-name">addJavascriptFiles</a>
+											([<span class="var-type">array</span>&nbsp;<span class="var-name">$files</span> = <span class="var-default">array()</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#clearAllCss" title="details" class="method-name">clearAllCss</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#clearAllJavascript" title="details" class="method-name">clearAllJavascript</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#clearBuffer" title="details" class="method-name">clearBuffer</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#clearCss" title="details" class="method-name">clearCss</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#clearCssFiles" title="details" class="method-name">clearCssFiles</a>
+										()
+									</div>
+																								<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#clearJavascript" title="details" class="method-name">clearJavascript</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#clearJavascriptFiles" title="details" class="method-name">clearJavascriptFiles</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#debug" title="details" class="method-name">debug</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed|null</span>
+										<a href="#get" title="details" class="method-name">get</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getCss" title="details" class="method-name">getCss</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getCssFiles" title="details" class="method-name">getCssFiles</a>
+										()
+									</div>
+																								<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getJavascript" title="details" class="method-name">getJavascript</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#getJavascriptFiles" title="details" class="method-name">getJavascriptFiles</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getLayout" title="details" class="method-name">getLayout</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getLayoutPath" title="details" class="method-name">getLayoutPath</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getMergedCss" title="details" class="method-name">getMergedCss</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getMergedJavascript" title="details" class="method-name">getMergedJavascript</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string|null</span>
+										<a href="#getView" title="details" class="method-name">getView</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$file_name</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">string</span>
+										<a href="#getViewPath" title="details" class="method-name">getViewPath</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#partial" title="details" class="method-name">partial</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$datas</span> = <span class="var-default">null</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$passtrough</span> = <span class="var-default">false</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#set" title="details" class="method-name">set</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#setLayout" title="details" class="method-name">setLayout</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">'main'</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#setLayoutPath" title="details" class="method-name">setLayoutPath</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#setViewPath" title="details" class="method-name">setViewPath</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+										<a href="#view" title="details" class="method-name">view</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$file_name</span> = <span class="var-default">null</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#viewExists" title="details" class="method-name">viewExists</a>
+											(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	<a name="sec-vars"></a>
+	<div class="info-box">
+		<div class="info-box-title">Variables</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+										<a href="#sec-var-summary">Vars</a> (<span class="disabled">details</span>)
+						
+			
+										| 
+									<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+							
+					</div>
+		<div class="info-box-body">
+			<a name="var$layoutPath" id="$layoutPath"><!-- --></A>
+<div class="oddrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$layoutPath</span>
+			 = <span class="var-default"> ''</span>			(line <span class="line-number">86</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">the path to the layouts</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+<a name="var$viewPath" id="$viewPath"><!-- --></A>
+<div class="evenrow">
+
+	<div class="var-header">
+		<span class="var-title">
+			<span class="var-type">string</span>
+			<span class="var-name">$viewPath</span>
+			 = <span class="var-default"> ''</span>			(line <span class="line-number">93</span>)
+		</span>
+	</div>
+
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">the path to the views</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> protected</li>
+			</ul>
+	
+	
+		
+		
+
+</div>
+						
+		</div>
+	</div>
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+															<a href="#sec-var-summary">Vars</a> (<a href="#sec-vars">details</a>)
+																	<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+<a name="methodclearInstance" id="clearInstance"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method clearInstance</span> (line <span class="line-number">162</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">clear the instance</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			clearInstance
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetInstance" id="getInstance"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">static method getInstance</span> (line <span class="line-number">150</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">singleton pattern instance getter</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+	    static
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			getInstance
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+
+<a name="methodaddCss" id="addCss"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">addCss</span> (line <span class="line-number">476</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">adds text to the css text</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			addCss
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$text</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$top</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$text</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$top</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddCssFile" id="addCssFile"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">addCssFile</span> (line <span class="line-number">427</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">puts a name of a css-file into the array</p>
+<p class="description"><p>if $top is set to true, it puts it to the top of the array so it will be displayed first  be aware that there is no guarantee, that the provided item is really the first because this operation  can be performed multiple times  useful for loading dependencies</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			addCssFile
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$top</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$top</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddCssFiles" id="addCssFiles"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">addCssFiles</span> (line <span class="line-number">444</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">adds multiple css files to the array</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			addCssFiles
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$files</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$files</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddJavascript" id="addJavascript"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">addJavascript</span> (line <span class="line-number">407</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">adds text to the javascript text</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			addJavascript
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$text</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$top</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$text</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$top</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddJavascriptFile" id="addJavascriptFile"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">addJavascriptFile</span> (line <span class="line-number">358</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">puts a name of a js-file into the array</p>
+<p class="description"><p>if $top is set to true, it puts it to the top of the array so it will be displayed first  be aware that there is no guarantee, that the provided item is really the first because this operation  can be performed multiple times  useful for loading dependencies</p></p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			addJavascriptFile
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$top</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$top</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodaddJavascriptFiles" id="addJavascriptFiles"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">addJavascriptFiles</span> (line <span class="line-number">375</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">adds multiple javascript files to the array</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			addJavascriptFiles
+		</span>
+					([<span class="var-type">array</span>&nbsp;<span class="var-name">$files</span> = <span class="var-default">array()</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$files</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodclearAllCss" id="clearAllCss"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearAllCss</span> (line <span class="line-number">587</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">clears all set javascript files and  strings</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			clearAllCss
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodclearAllJavascript" id="clearAllJavascript"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearAllJavascript</span> (line <span class="line-number">556</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">clears all set javascript files and  strings</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			clearAllJavascript
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodclearBuffer" id="clearBuffer"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearBuffer</span> (line <span class="line-number">524</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">clears the buffer and moves it to /dev/null</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			clearBuffer
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodclearCss" id="clearCss"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearCss</span> (line <span class="line-number">567</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">clears all set css strings</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			clearCss
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodclearCssFiles" id="clearCssFiles"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearCssFiles</span> (line <span class="line-number">577</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">clears all set css files</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			clearCssFiles
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodclearJavascript" id="clearJavascript"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearJavascript</span> (line <span class="line-number">536</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">clears all set javascript strings</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			clearJavascript
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodclearJavascriptFiles" id="clearJavascriptFiles"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">clearJavascriptFiles</span> (line <span class="line-number">546</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">clears all set javascript files</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			clearJavascriptFiles
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methoddebug" id="debug"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">debug</span> (line <span class="line-number">199</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">debugs current layout, params, js, js files, css, css files</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			debug
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodget" id="get"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">get</span> (line <span class="line-number">186</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">gets a variable or null if not defined</p>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed|null</span>
+		<span class="method-name">
+			get
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$key</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetCss" id="getCss"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCss</span> (line <span class="line-number">465</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns the css</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getCss
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetCssFiles" id="getCssFiles"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getCssFiles</span> (line <span class="line-number">456</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns the array with the file names</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getCssFiles
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetJavascript" id="getJavascript"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getJavascript</span> (line <span class="line-number">396</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">gets the plain javascript</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getJavascript
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetJavascriptFiles" id="getJavascriptFiles"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getJavascriptFiles</span> (line <span class="line-number">387</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns the array with the file names</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			getJavascriptFiles
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetLayout" id="getLayout"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getLayout</span> (line <span class="line-number">240</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">gets the name of the set layout</p>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getLayout
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetLayoutPath" id="getLayoutPath"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getLayoutPath</span> (line <span class="line-number">141</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">getter for the layout path</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getLayoutPath
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetMergedCss" id="getMergedCss"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getMergedCss</span> (line <span class="line-number">490</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns all set css files as one string</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getMergedCss
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetMergedJavascript" id="getMergedJavascript"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getMergedJavascript</span> (line <span class="line-number">499</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">returns all set javascript files as one string</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getMergedJavascript
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodgetView" id="getView"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">getView</span> (line <span class="line-number">263</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">retrieves the path of a file</p>
+<p class="description"><p>if a prefix is set (layout) it checks if there exists a special view  if not the default view is returned if one exists  if not null is returned</p></p>
+	
+	<div class="method-signature">
+		<span class="method-result">string|null</span>
+		<span class="method-name">
+			getView
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$file_name</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$file_name</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodgetViewPath" id="getViewPath"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">getViewPath</span> (line <span class="line-number">122</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">getter for the view path</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">string</span>
+		<span class="method-name">
+			getViewPath
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodpartial" id="partial"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">partial</span> (line <span class="line-number">329</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">tries to render a partial view  if $passtrough is set, data contains the datas</p>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			partial
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>, [<span class="var-type">mixed</span>&nbsp;<span class="var-name">$datas</span> = <span class="var-default">null</span>], [<span class="var-type">boolean</span>&nbsp;<span class="var-name">$passtrough</span> = <span class="var-default">false</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span>			</li>
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$datas</span>			</li>
+					<li>
+				<span class="var-type">boolean</span>
+				<span class="var-name">$passtrough</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodset" id="set"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">set</span> (line <span class="line-number">175</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">sets a variable</p>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			set
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$key</span>, <span class="var-type">mixed</span>&nbsp;<span class="var-name">$value</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$key</span>			</li>
+					<li>
+				<span class="var-type">mixed</span>
+				<span class="var-name">$value</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetLayout" id="setLayout"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">setLayout</span> (line <span class="line-number">227</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">sets a layout</p>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			setLayout
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span> = <span class="var-default">'main'</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetLayoutPath" id="setLayoutPath"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">setLayoutPath</span> (line <span class="line-number">132</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">setter for the layout path</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			setLayoutPath
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodsetViewPath" id="setViewPath"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">setViewPath</span> (line <span class="line-number">112</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">setter for the view path</p>
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			setViewPath
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$path</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$path</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodview" id="view"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">view</span> (line <span class="line-number">298</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">runs the view, buffers it, and then calls the layout</p>
+	<ul class="tags">
+				<li><span class="field">throws:</span> NoViewException</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result"><a href="../wolxXxMVC/Load.html">Load</a></span>
+		<span class="method-name">
+			view
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$file_name</span> = <span class="var-default">null</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$file_name</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodviewExists" id="viewExists"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">viewExists</span> (line <span class="line-number">250</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">determinates if a view file with $name exists</p>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			viewExists
+		</span>
+					(<span class="var-type">string</span>&nbsp;<span class="var-name">$name</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$name</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 22 Oct 2013 08:44:39 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+	</p>
+	</div></body>
+</html>

@@ -1,0 +1,830 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class AuthTest</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class AuthTest</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+		<p class="notes">
+			Located in <a class="field" href="_tests---AuthTest.php.html">/tests/AuthTest.php</a> (line <span class="field">17</span>)
+		</p>
+		
+				
+		<pre>PHPUnit_Framework_TestCase
+   |
+   --AuthTest</pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																																																																																																																																												
+												<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testBan" title="details" class="method-name">testBan</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testFailedLogins" title="details" class="method-name">testFailedLogins</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testFailedLoginsAfterLogout" title="details" class="method-name">testFailedLoginsAfterLogout</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testFailedLoginsToBeZeroForValidUser" title="details" class="method-name">testFailedLoginsToBeZeroForValidUser</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testGetStatusTypeWithoutLogin" title="details" class="method-name">testGetStatusTypeWithoutLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testGetUserEmailWithoutLogin" title="details" class="method-name">testGetUserEmailWithoutLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testGetUserIdWithoutLogin" title="details" class="method-name">testGetUserIdWithoutLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testGetUserLastLoginWithoutLogin" title="details" class="method-name">testGetUserLastLoginWithoutLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testGetUserNickWithoutLogin" title="details" class="method-name">testGetUserNickWithoutLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testGetUserTypeWithoutLogin" title="details" class="method-name">testGetUserTypeWithoutLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testHasAccessWithLoginButLowType" title="details" class="method-name">testHasAccessWithLoginButLowType</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testHasAccessWithLoginWithHigherType" title="details" class="method-name">testHasAccessWithLoginWithHigherType</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testHasAccessWithLoginWithMuchHigherType" title="details" class="method-name">testHasAccessWithLoginWithMuchHigherType</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testHasAccessWithoutLogin" title="details" class="method-name">testHasAccessWithoutLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testHashPassword" title="details" class="method-name">testHashPassword</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testIsLoggedInAfterLogout" title="details" class="method-name">testIsLoggedInAfterLogout</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testIsLoggedInAfterManualLogin" title="details" class="method-name">testIsLoggedInAfterManualLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testIsUserPasswordOk" title="details" class="method-name">testIsUserPasswordOk</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testLogin" title="details" class="method-name">testLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testLoginForValidUser" title="details" class="method-name">testLoginForValidUser</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testMultiFailedLogins" title="details" class="method-name">testMultiFailedLogins</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testSaltingPassword" title="details" class="method-name">testSaltingPassword</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testSetUser" title="details" class="method-name">testSetUser</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testUnban" title="details" class="method-name">testUnban</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testUserLastLogin" title="details" class="method-name">testUserLastLogin</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testUserStatusActivated" title="details" class="method-name">testUserStatusActivated</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#testUserStatusBanned" title="details" class="method-name">testUserStatusBanned</a>
+										()
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="methodtestBan" id="testBan"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testBan</span> (line <span class="line-number">107</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testBan
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestFailedLogins" id="testFailedLogins"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testFailedLogins</span> (line <span class="line-number">177</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testFailedLogins
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestFailedLoginsAfterLogout" id="testFailedLoginsAfterLogout"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testFailedLoginsAfterLogout</span> (line <span class="line-number">172</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testFailedLoginsAfterLogout
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestFailedLoginsToBeZeroForValidUser" id="testFailedLoginsToBeZeroForValidUser"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testFailedLoginsToBeZeroForValidUser</span> (line <span class="line-number">200</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testFailedLoginsToBeZeroForValidUser
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestGetStatusTypeWithoutLogin" id="testGetStatusTypeWithoutLogin"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testGetStatusTypeWithoutLogin</span> (line <span class="line-number">102</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testGetStatusTypeWithoutLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestGetUserEmailWithoutLogin" id="testGetUserEmailWithoutLogin"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testGetUserEmailWithoutLogin</span> (line <span class="line-number">70</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testGetUserEmailWithoutLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestGetUserIdWithoutLogin" id="testGetUserIdWithoutLogin"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testGetUserIdWithoutLogin</span> (line <span class="line-number">62</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testGetUserIdWithoutLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestGetUserLastLoginWithoutLogin" id="testGetUserLastLoginWithoutLogin"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testGetUserLastLoginWithoutLogin</span> (line <span class="line-number">86</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testGetUserLastLoginWithoutLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestGetUserNickWithoutLogin" id="testGetUserNickWithoutLogin"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testGetUserNickWithoutLogin</span> (line <span class="line-number">78</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testGetUserNickWithoutLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestGetUserTypeWithoutLogin" id="testGetUserTypeWithoutLogin"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testGetUserTypeWithoutLogin</span> (line <span class="line-number">94</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testGetUserTypeWithoutLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestHasAccessWithLoginButLowType" id="testHasAccessWithLoginButLowType"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testHasAccessWithLoginButLowType</span> (line <span class="line-number">122</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testHasAccessWithLoginButLowType
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestHasAccessWithLoginWithHigherType" id="testHasAccessWithLoginWithHigherType"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testHasAccessWithLoginWithHigherType</span> (line <span class="line-number">131</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testHasAccessWithLoginWithHigherType
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestHasAccessWithLoginWithMuchHigherType" id="testHasAccessWithLoginWithMuchHigherType"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testHasAccessWithLoginWithMuchHigherType</span> (line <span class="line-number">138</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testHasAccessWithLoginWithMuchHigherType
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestHasAccessWithoutLogin" id="testHasAccessWithoutLogin"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testHasAccessWithoutLogin</span> (line <span class="line-number">117</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testHasAccessWithoutLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestHashPassword" id="testHashPassword"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testHashPassword</span> (line <span class="line-number">26</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testHashPassword
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestIsLoggedInAfterLogout" id="testIsLoggedInAfterLogout"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testIsLoggedInAfterLogout</span> (line <span class="line-number">41</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testIsLoggedInAfterLogout
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestIsLoggedInAfterManualLogin" id="testIsLoggedInAfterManualLogin"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testIsLoggedInAfterManualLogin</span> (line <span class="line-number">46</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testIsLoggedInAfterManualLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestIsUserPasswordOk" id="testIsUserPasswordOk"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testIsUserPasswordOk</span> (line <span class="line-number">19</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testIsUserPasswordOk
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestLogin" id="testLogin"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testLogin</span> (line <span class="line-number">34</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestLoginForValidUser" id="testLoginForValidUser"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testLoginForValidUser</span> (line <span class="line-number">208</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testLoginForValidUser
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestMultiFailedLogins" id="testMultiFailedLogins"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testMultiFailedLogins</span> (line <span class="line-number">187</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testMultiFailedLogins
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestSaltingPassword" id="testSaltingPassword"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testSaltingPassword</span> (line <span class="line-number">30</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testSaltingPassword
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestSetUser" id="testSetUser"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testSetUser</span> (line <span class="line-number">51</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testSetUser
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestUnban" id="testUnban"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testUnban</span> (line <span class="line-number">112</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testUnban
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestUserLastLogin" id="testUserLastLogin"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testUserLastLogin</span> (line <span class="line-number">163</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testUserLastLogin
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestUserStatusActivated" id="testUserStatusActivated"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">testUserStatusActivated</span> (line <span class="line-number">145</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testUserStatusActivated
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodtestUserStatusBanned" id="testUserStatusBanned"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">testUserStatusBanned</span> (line <span class="line-number">154</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	<ul class="tags">
+				<li><span class="field">access:</span> public</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			testUserStatusBanned
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 22 Oct 2013 08:44:37 +0200 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.4</a>
+	</p>
+	</div></body>
+</html>
