@@ -1,1 +1,0 @@
-alert('huhu from test.js!');

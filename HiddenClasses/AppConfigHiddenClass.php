@@ -1,2 +1,0 @@
-<?
-class AppConfig extends CoreConfig{}
