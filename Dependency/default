@@ -53,3 +53,6 @@ shared = true;
 [viewManager]
 class = '\York\View\Manager';
 shared = true;
+
+[writer]
+class = '\York\Writer\Standard';

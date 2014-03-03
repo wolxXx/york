@@ -47,33 +47,18 @@ class File extends LoggerAbstract{
 	public function setFilePath($filePath){
 		$this->file = new \York\FileSystem\File(Application::getProjectRoot().'log/'.basename($filePath), true);
 		return $this;
-		$this->filePath = $filePath;
-		$path = explode(DIRECTORY_SEPARATOR, $this->filePath);
-		array_pop($path);
-		$path = implode(DIRECTORY_SEPARATOR, $path).DIRECTORY_SEPARATOR;
-		if(false === file_exists($this->filePath)){
-			if(false === is_dir($path)){
-				try{
-					mkdir($path, 0770, true);
-				}catch (\Exception $exception){
-					throw new FileSystem();
-				}
-			}
-			try{
-				touch($filePath);
-			}catch (\Exception $exception){
-				throw new FileSystem();
-			}
-
-		}
-		return $this;
 	}
 
 	/**
 	 * @inheritdoc
 	 */
 	public function log($message){
-		file_put_contents($this->file->getFullName(), file_get_contents($this->file->getFullName()).$message.PHP_EOL.PHP_EOL);
+		$message = $message.PHP_EOL.PHP_EOL;
+		$file = fopen($this->file->getFullName(), "a+");
+		fwrite($file, $message);
+		fclose($file);
+
+		#file_put_contents($this->file->getFullName(), file_get_contents($this->file->getFullName()).$message.PHP_EOL.PHP_EOL);
 		return $this;
 	}
 

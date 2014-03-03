@@ -1,5 +1,6 @@
 <?php
 namespace York\Database;
+use York\Database\QueryBuilder\QueryStringInterface;
 use York\Dependency\Manager as Dependency;
 
 /**
@@ -56,10 +57,10 @@ class Manager{
 	 * takes the execution time
 	 * calls the logger
 	 *
-	 * @param \York\Database\QueryBuilder\QueryStringInterface $queryStringObject
+	 * @param QueryStringInterface $queryStringObject
 	 * @return \York\Database\QueryResult
 	 */
-	public function query(\York\Database\QueryBuilder\QueryStringInterface $queryStringObject){
+	public function query(QueryStringInterface $queryStringObject){
 		$start = microtime(true);
 		$result = $this->connection->query($queryStringObject->getQueryString());
 		$end = microtime(true);
@@ -141,10 +142,10 @@ class Manager{
 	/**
 	 * saves a new item in the database
 	 *
-	 * @param QueryStringInterface $queryStringObject
+	 * @param QueryBuilder\QueryStringInterface $queryStringObject
 	 * @return \York\Database\QueryResult
 	 */
-	public function save(\York\Database\QueryBuilder\QueryStringInterface $queryStringObject){
+	public function save(QueryStringInterface $queryStringObject){
 		$result = $this->query($queryStringObject);
 		$result->setLastInsertId($this->connection->getLastInsertId());
 		return $result;
@@ -156,7 +157,7 @@ class Manager{
 	 * @param QueryStringInterface $queryStringObject
 	 * @return \York\Database\QueryResult
 	 */
-	public function update(\York\Database\QueryBuilder\QueryStringInterface $queryStringObject){
+	public function update(QueryStringInterface $queryStringObject){
 		return $this->query($queryStringObject);
 	}
 
@@ -166,7 +167,7 @@ class Manager{
 	 * @param QueryStringInterface $queryStringObject
 	 * @return \York\Database\QueryResult
 	 */
-	public function delete(\York\Database\QueryBuilder\QueryStringInterface $queryStringObject){
+	public function delete(QueryStringInterface $queryStringObject){
 		return $this->query($queryStringObject);
 	}
 
@@ -176,7 +177,7 @@ class Manager{
 	 * @param QueryStringInterface $queryStringObject
 	 * @return \York\Database\QueryResult
 	 */
-	public function find(\York\Database\QueryBuilder\QueryStringInterface $queryStringObject){
+	public function find(QueryStringInterface $queryStringObject){
 		return $this->query($queryStringObject);
 	}
 

@@ -55,7 +55,7 @@ abstract class Manager implements ManagerInterface{
 	 * @param array $data
 	 * @return mixed
 	 */
-	protected function matchDeclaredVar(\ReflectionProperty $property, array $data){
+	protected function matchDeclaredVar(\ReflectionProperty $property, array $data, $preventReferencing = false){
 		$name = $property->getName();
 
 		$comment = str_replace('*', '', $property->getDocComment());
@@ -100,8 +100,7 @@ abstract class Manager implements ManagerInterface{
 			}
 		}
 
-		if(false === isset($identifiedBy) || null === $identifiedBy || false === isset($data[$identifiedBy])){
-
+		if(true === $preventReferencing || false === isset($identifiedBy) || null === $identifiedBy || false === isset($data[$identifiedBy])){
 			return null;
 		}
 
@@ -167,8 +166,9 @@ abstract class Manager implements ManagerInterface{
 				continue;
 			}
 			$name = $property->getName();
-			$instance->set($name, $this->matchDeclaredVar($property, $resultData));
+			$instance->set($name, $this->matchDeclaredVar($property, $resultData, $preventReferencing));
 		}
+
 
 		foreach($instance->referencedMembers as $referenced){
 			$instance->setReferenced($referenced, $this->matchDeclaredVar($reflection->getProperty($referenced), $resultData));
@@ -196,10 +196,10 @@ abstract class Manager implements ManagerInterface{
 	 * find all by the the query builder data
 	 *
 	 * @param \York\Database\QueryBuilder $query
+	 * @param boolean $preventReferencing
 	 * @return \York\Database\Blueprint\ItemInterface[]
 	 */
 	public function find(\York\Database\QueryBuilder $query, $preventReferencing = false){
-		\York\Helper\Application::debug($preventReferencing);
 		$model = new Model();
 		$results = $model->findAllByQueryString($query->getQueryString());
 		$return = array();
@@ -215,6 +215,20 @@ abstract class Manager implements ManagerInterface{
 		}
 
 		return $return;
+	}
+
+	/**
+	 * finds all items
+	 * handle with care!
+	 *
+	 * @return \York\Database\Blueprint\ItemInterface[]
+	 */
+	public function findAll(){
+		return $this->find(new \York\Database\QueryBuilder\Select(array(
+			'from' => array(
+				$this->tableName
+			)
+		)));
 	}
 
 	/**

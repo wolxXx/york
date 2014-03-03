@@ -16,7 +16,7 @@ class Application{
 	 * @return boolean
 	 */
 	public static function isCli(){
-		return false !== isset($_SERVER['argv']);
+		return php_sapi_name() === 'cli';
 	}
 
 	/**
@@ -41,20 +41,26 @@ class Application{
 		}
 		$line = isset($trace['line'])? $trace['line'] : 666;
 		$file = isset($trace['file'])? $trace['file'] : 'somewhere';
+
+		$pre = '';
+		$post = '';
+		$last = '____________________'.PHP_EOL.PHP_EOL;
+
 		if(false === self::isCli()){
-			echo '<div class="debug"><pre>debug from '.(str_replace(self::getDocRoot(), '', $file)).' line '.$line.':</pre>';
-		}else{
-			echo 'debug from '.(str_replace(self::getDocRoot(), '', $file)).' line '.$line.':'.PHP_EOL;
+			$pre = '<div class="debug"><pre>';
+			$post = '</pre>';
+			$last = '</div>';
 		}
+
+		$text = 'debug from '.(str_replace(getcwd(), '', $file)).' line '.$line.':'.PHP_EOL;
+
+		echo sprintf('%s%s%s', $pre, $text, $post);
 
 		foreach(func_get_args() as $arg){
 			var_dump($arg);
 		}
-		if(false === self::isCli()){
-			echo '</div>';
-		}else{
-			echo '____________________'.PHP_EOL.PHP_EOL;
-		}
+
+		echo $last;
 
 	}
 

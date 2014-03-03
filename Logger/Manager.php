@@ -36,6 +36,10 @@ class Manager{
 		return $this;
 	}
 
+	public function hasLoggerForLevel($level){
+
+	}
+
 	/**
 	 * checks if the given level is allowed
 	 *
@@ -162,4 +166,11 @@ class Manager{
 	 * @var string
 	 */
 	const LEVEL_API_RESPONSE = 'LEVEL_API_RESPONSE';
+
+	/**
+	 * logger level console
+	 *
+	 * @var string
+	 */
+	const LEVEL_CONSOLE_RUN = 'LEVEL_CONSOLE_RUN';
 }

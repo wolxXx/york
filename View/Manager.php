@@ -226,7 +226,10 @@ class Manager{
 			$this->viewPath.$this->stack->get('controller').DIRECTORY_SEPARATOR.$file_name,
 
 			#'/views/foo'
-			$this->viewPath.$file_name
+			$this->viewPath.$file_name,
+
+			#'/views/foo'
+			$this->viewPath.'Main/'.$file_name
 		);
 		foreach($possibleMatches as $current){
 			$current .= '.php';
@@ -261,7 +264,7 @@ class Manager{
 		if(false === file_exists($this->layoutPath.$this->layout.'.php')){
 			$this->layout = $this->defaultLayout;
 		}
-		
+
 		require($this->layoutPath.$this->layout.'.php');
 		return $this;
 	}

@@ -179,7 +179,7 @@ class Model{
 		$conditions['fields'] = array('COUNT(*) as count');
 		$conditions['method'] = 'one';
 		$result = $this->find($conditions);
-		return $result->count;
+		return (int) $result->count;
 	}
 
 	/**

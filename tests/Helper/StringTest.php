@@ -10,6 +10,74 @@ namespace York\Helper;
 
 
 class StringTest extends \PHPUnit_Framework_TestCase {
+	public function testFloatToDecimal(){
+		$this->assertSame('13,37', String::floatToDecimal('13.37'));
+	}
+
+	public function isMailSyntaxOkDataProvider(){
+		return array(
+			array(
+				true,
+				'devops@wolxXx.de'
+			),
+			array(
+				true,
+				'devops@wolxXx.local'
+			),
+			array(
+				false,
+				'root@localhost'
+			)
+		);
+	}
+
+	/**
+	 * @dataProvider isMailSyntaxOkDataProvider
+	 */
+	public function testIsMailSyntaxOk($result, $check){
+		$this->assertSame($result, String::isMailSyntaxOk($check));
+	}
+
+	public function testAddTailingSlashIfNeeded(){
+		$this->assertSame('foobar/', String::addTailingSlashIfNeeded('foobar'));
+	}
+
+	public function testAddTailingSlashIfNeededAgain(){
+		$this->assertSame('foobar/', String::addTailingSlashIfNeeded('foobar/'));
+	}
+
+	public function testGetClassNameFromNamespace(){
+		$this->assertSame('Foobar', String::getClassNameFromNamespace('\York\Pewpew\Foobar'));
+	}
+
+	public function testGetClassNameFromNamespaceFails(){
+		$this->assertNotSame('Foobar', String::getClassNameFromNamespace('\York\Pewpew\Bazfoo'));
+	}
+
+	public function testStartsWith(){
+		$this->assertTrue(String::startsWith('foobar', 'foo'));
+	}
+
+	public function testStartsWithFails(){
+		$this->assertFalse(String::startsWith('foobar', 'bar'));
+	}
+
+	public function testStartsWithFailsAgain(){
+		$this->assertFalse(String::startsWith('fo', 'bar'));
+	}
+
+	public function testEndsWith(){
+		$this->assertTrue(String::endsWith('foobar', 'bar'));
+	}
+
+	public function testEndsWithFails(){
+		$this->assertFalse(String::endsWith('foobar', 'foo'));
+	}
+
+	public function testEndsWithFailsAgain(){
+		$this->assertFalse(String::endsWith('ar', 'foo'));
+	}
+
 	public function testUnderscoresToPascalCase(){
 		$string = 'foobar_lol';
 		$this->assertSame('FoobarLol', \York\Helper\String::underscoresToPascalCase($string));

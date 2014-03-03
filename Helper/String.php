@@ -8,6 +8,34 @@ namespace York\Helper;
  * @package York\Helper
  */
 class String {
+	/**
+	 * checks if a string starts with another string
+	 *
+	 * @param string $haystack
+	 * @param string $needle
+	 * @return boolean
+	 */
+	public static function startsWith($haystack, $needle){
+		return $needle === substr($haystack, 0, strlen($needle));
+	}
+
+	/**
+	 * checks if a string ends with another string
+	 *
+	 * @param string $haystack
+	 * @param string $needle
+	 * @return boolean
+	 */
+	public static function endsWith($haystack, $needle){
+		return $needle === substr($haystack,  strlen($haystack) - strlen($needle));
+	}
+
+	/**
+	 * retrieves the class name from a namespace string
+	 *
+	 * @param string $className
+	 * @return string
+	 */
 	public static function getClassNameFromNamespace($className){
 		$className = explode('\\', $className);
 		$className = end($className);

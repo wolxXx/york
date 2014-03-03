@@ -38,6 +38,9 @@ abstract class Configuration{
 	 */
 	public final function __construct(){
 		$this->stack = Dependency::get('applicationConfiguration');
+		$this->stack->set('output.isVerboseEnabled', false);
+		$this->stack->set('output.isDebugEnabled', false);
+		$this->stack->set('output.isStandardEnabled', true);
 	}
 
 	/**

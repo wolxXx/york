@@ -1,5 +1,11 @@
 <?php
 namespace York\Database;
+use York\Database\Accessor\Factory;
+use York\Database\QueryBuilder\QueryString;
+use York\Dependency\Manager as Dependency;
+use York\Exception\York;
+use York\Helper\Application;
+use York\Helper\Date;
 
 /**
  * pattern for a migration
@@ -32,7 +38,7 @@ abstract class Migration{
 	 */
 	public function __construct($revision){
 		$this->setRevision($revision);
-		$this->connection = \York\Dependency\Manager::get('databaseManager')->getConnection();
+		$this->connection = Dependency::get('databaseManager')->getConnection();
 	}
 
 	/**
@@ -71,9 +77,9 @@ abstract class Migration{
 	 * @return Migration
 	 */
 	protected final function insertMigrationToDB(){
-		\York\Database\Accessor\Factory::getSaveObject('migrations')
+		Factory::getSaveObject('migrations')
 			->set('number', $this->getRevision())
-			->set('created', \York\Helper\Date::getDate())
+			->set('created', Date::getDate())
 			->save();
 		return $this;
 	}
@@ -87,30 +93,17 @@ abstract class Migration{
 	 * bridge to the database manager
 	 *
 	 * @param string $query
-	 * @return QueryResultObject
+	 * @return QueryResult
 	 */
 	protected function query($query){
+		$database = Dependency::get('databaseManager');
+
 		$result = null;
 		try{
-			$result = DatabaseManager::getInstance()->query(new QueryString($query));
-		}catch(Exception $x){
-			Helper::debug($x, $result);
+			$result = $database->query(new QueryString($query));
+		}catch(York $x){
+			Application::debug($x, $result);
 		}
 		return $result;
-	}
-
-	/**
-	 * returns a new instance of a migration
-	 *
-	 * @param integer $revision
-	 */
-	public static function getInstance($revision){
-		$className = 'Migration'.$revision;
-		if(false === class_exists($className, false)){
-			require_once 'application/migrations/'.$revision.'.php';
-		}
-		$instance = new $className();
-		$instance->setRevision($revision);
-		return $instance;
 	}
 }

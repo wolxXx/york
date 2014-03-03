@@ -41,6 +41,24 @@ class Set{
 	}
 
 	/**
+	 * repeat an array $times times
+	 *
+	 * @param $array
+	 * @param int $times
+	 * @return array
+	 */
+	public static function array_repeat($array, $times = 1){
+		$result = array();
+		foreach(range(0, $times) as $counter){
+			foreach($array as $value){
+				$result[] = $value;
+			}
+		}
+
+		return $result;
+	}
+
+	/**
 	 * decorator for arrays
 	 * runs through the array and decorates all string values with the given decorate string
 	 *

@@ -1,14 +1,56 @@
 <?php
 namespace York\Database;
+use York\Database\Model;
+
 /**
  * retrieves information from mysql databases, tables and columns
- * requires an instanciated model object
+ * requires an instantiated model object
  *
  * @author wolxXx
- * @version 3.0
+ * @version 3.1
  * @package York\Database
  */
 class Information{
+	/**
+	 * checks if the given table exists in the given database
+	 *
+	 * @param string $databaseName
+	 * @param string $tableName
+	 * @return boolean
+	 */
+	public static function tableExists($databaseName, $tableName){
+		$model = new Model();
+		return 0 !== $model->count(array(
+			'method' => 'all',
+			'from' => 'information_schema.COLUMNS',
+			'where' => array(
+				'TABLE_SCHEMA' => $databaseName,
+				'TABLE_NAME' => $tableName
+			)
+		));
+	}
+
+	/**
+	 * checks if the given column exists in the given table and database
+	 *
+	 * @param string $databaseName
+	 * @param string $tableName
+	 * @param string $columnName
+	 * @return boolean
+	 */
+	public static function columnExists($databaseName, $tableName, $columnName){
+		$model = new Model();
+		return 0 !== $model->count(array(
+			'method' => 'all',
+			'from' => 'information_schema.COLUMNS',
+			'where' => array(
+				'TABLE_SCHEMA' => $databaseName,
+				'TABLE_NAME' => $tableName,
+				'COLUMN_NAME' => $columnName
+			)
+		));
+	}
+
 	/**
 	 * retrieves all columns for a table
 	 *
@@ -17,7 +59,7 @@ class Information{
 	 * @return array
 	 */
 	public static function getColumnsForTable($databaseName, $tableName){
-		$model = new \York\Database\Model();
+		$model = new Model();
 		return $model->find(array(
 			'distinct' => true,
 			'method' => 'all',
@@ -36,10 +78,10 @@ class Information{
 	 * @param string $databaseName
 	 * @param string $tableName
 	 * @param string $columnName
-	 * @return stdClass
+	 * @return \stdClass
 	 */
 	public static function getTypeOfColumn($databaseName, $tableName, $columnName){
-		$model = new \York\Database\Model();
+		$model = new Model();
 		return $model->find(array(
 			'distinct' => true,
 			'method' => 'one',
@@ -64,7 +106,7 @@ class Information{
 	 * @return array
 	 */
 	public static function getAllTables($databaseName, $exclude = array()){
-		$model = new \York\Database\Model();
+		$model = new Model();
 		return $model->find(array(
 			'method' => 'all',
 			'distinct' => true,

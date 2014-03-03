@@ -1,6 +1,7 @@
 <?php
 namespace York\Console;
 use York\Exception\Console;
+use York\Template\Parser;
 
 /**
  * abstract class for console applications
@@ -11,20 +12,6 @@ use York\Exception\Console;
  * @package York\Console
  */
 abstract class Application {
-	/**
-	 * original argument counter
-	 *
-	 * @var integer
-	 */
-	protected $argc;
-
-	/**
-	 * original argument values
-	 *
-	 * @var array
-	 */
-	protected $argv;
-
 	/**
 	 * the script name
 	 *
@@ -38,32 +25,6 @@ abstract class Application {
 	 * @var string
 	 */
 	protected $version;
-
-	/**
-	 * required arguments
-	 *
-	 * @var array
-	 */
-	protected $required = array();
-
-	/**
-	 * optional arguments
-	 *
-	 * @var array
-	 */
-	protected $optional = array();
-
-	/**
-	 * given parameters
-	 *
-	 * @var array
-	 */
-	protected $parameters = array();
-
-	/**
-	 * @var Parameter[]
-	 */
-	protected $params = array();
 
 	/**
 	 * flag for debug enabled
@@ -87,153 +48,180 @@ abstract class Application {
 	protected $isQuietEnabled = false;
 
 	/**
+	 * flag for colors enabled
+	 *
+	 * @var boolean
+	 */
+	protected $isColorEnabled = true;
+
+	/**
+	 * default amount of microseconds to wait for next char
+	 *
+	 * @var integer
+	 */
+	protected $defaultTypingDelay = 5000;
+
+	/**
+	 * current amount of microseconds to wait for next char
+	 *
+	 * @var integer
+	 */
+	protected $typingDelay;
+
+	/**
+	 * default amount of microseconds to wait for carriage return
+	 *
+	 * @var integer
+	 */
+	protected $defaultCarriageReturnDelay = 200000;
+
+	/**
+	 * current amount of microseconds to wait for carriage return
+	 *
+	 * @var integer
+	 */
+	protected $carriageReturnDelay;
+
+	/**
+	 * amount of microseconds displaying the welcome screen
+	 *
+	 * @var integer
+	 */
+	protected $welcomeDelay = 210000;
+
+	/**
+	 * default string that will be displayed before output
+	 *
+	 * @var string
+	 */
+	protected $defaultOutputPrefix = '   ';
+
+	/**
+	 * string that will be displayed before output
+	 *
+	 * @var string
+	 */
+	protected $outputPrefix = '   ';
+
+	/**
 	 * start up
 	 *
 	 * @param string $scriptName
 	 * @param string $version
+	 * @throws \York\Exception\Console
 	 */
 	public final function __construct($scriptName, $version){
-		$this->init($scriptName, $version);
+		if(false === \York\Helper\Application::isCli()){
+			throw new Console('tried to run cli script in non-cli environment!');
+		}
+		$writer = \York\Writer\Console::Factory();
+		\York\Dependency\Manager::setDependency('writer', $writer);
+
+		$this->scriptName = $scriptName;
+		$this->version = $version;
+		$this->carriageReturnDelay = $this->defaultCarriageReturnDelay;
+		$this->typingDelay = $this->defaultTypingDelay;
+
+		$this->init();
 	}
 
 	/**
 	 * run the application
 	 *
-	 * @param $scriptName
-	 * @param $version
 	 */
-	protected function init($scriptName, $version){
+	protected final function init(){
+		$this->checkDefaultFlags();
+
+		if(true == Flag::Factory('help', 'h')->isEnabled()){
+			$this->debugOutput('help flag found. help enabled.');
+			$this->helpWrap();
+			return;
+		}
+
+		if(true == Flag::Factory('version', 'V')->isEnabled()){
+			$this->debugOutput('version flag found. displaying help.');
+			$this->showVersion();
+			return;
+		}
+
 		$this->clearScreen();
-		$this
-			->setScriptName($scriptName)
-			->setVersion($version);
-		try{
-			$this->check();
-		}catch (Console $exception){
-			$this->output('York Cli Setup Error: '.$exception->getMessage().' in class '.get_called_class());
-			die();
-		}
 		$this->welcome();
-		try{
-			$this->parseArgs();
-		} catch (Console $exception){
-			$this->help($exception->getMessage());
-			die();
-		}
+		$this->debugOutput('calling before run');
 		$this->beforeRun();
+		$this->debugOutput('calling run');
+
 		$this->run();
+		$this->debugOutput('calling after run');
 		$this->afterRun();
 		$this->quit();
 	}
 
 	/**
-	 * setter for the script name
-	 *
-	 * @param string $scriptName
-	 * @return Application
+	 * checks the default flags
+	 * quiet, debug, verbose
 	 */
-	protected function setScriptName($scriptName){
-		$this->scriptName = $scriptName;
-		return $this;
-	}
-
-	/**
-	 * getter for the script name
-	 *
-	 * @return string
-	 */
-	public function getScriptName(){
-		return $this->scriptName;
-	}
-
-	/**
-	 * setter for the version
-	 *
-	 * @param string $version
-	 * @return Application
-	 */
-	protected function setVersion($version){
-		$this->version = $version;
-		return $this;
-	}
-
-	/**
-	 * getter for the version
-	 *
-	 * @return string
-	 */
-	public function getVersion(){
-		return $this->version;
-	}
-
-	/**
-	 * checks the given parameters
-	 *
-	 * @return Application
-	 * @throws \York\Exception\Console
-	 */
-	private final function check(){
-		if(false === isset($this->scriptName) || true === $this->scriptName){
-			throw new Console('ensure scriptname is set!');
+	protected function checkDefaultFlags(){
+		$this->isQuietEnabled = true === Flag::Factory('quiet', 'q')->isEnabled();
+		$this->isColorEnabled = false === Flag::Factory('no-colors')->isEnabled() && false ===  Flag::Factory('no-color')->isEnabled() ;
+		$this->isDebugEnabled = true === Flag::Factory('debug', 'd')->isEnabled();
+		$this->isVerboseEnabled = true === Flag::Factory('verbose', 'v')->isEnabled();
+		if(true === Flag::Factory('fast')->isEnabled()){
+			$this->defaultTypingDelay = 0;
+			$this->typingDelay = 0;
+			$this->defaultCarriageReturnDelay = 0;
+			$this->carriageReturnDelay = 0;
 		}
-
-		if(false === isset($this->version) || true === $this->version){
-			throw new Console('ensure scriptname is set!');
-		}
-
-		if(false === \York\Helper\Application::isCli()){
-			throw new Console('tried to run cli script in non-cli environment!');
-		}
-		return $this;
 	}
 
 	/**
-	 * @return array
+	 * displays the version of this script
 	 */
-	protected function getParameters(){
-		return $this->parameters;
+	protected function showVersion(){
+		$this
+			->clearScreen()
+			->welcome()
+			->output('Script: '.$this->colorString($this->scriptName, Style::FOREGROUND_YELLOW))
+			->output('Version: '.$this->colorString($this->version, Style::FOREGROUND_YELLOW));
 	}
 
 	/**
-	 * getter for a parameter
-	 *
-	 * @param string $key
-	 * @param mixed $default
-	 * @return mixed
+	 * wrapper for help function
 	 */
-	protected function getParameter($key, $default = null){
-		if(false === array_key_exists($key, $this->parameters)){
-			return $default;
-		}
+	protected final function helpWrap(){
+		$this->isQuietEnabled = false;
 
-		return $this->parameters[$key];
+		$this
+			->clearScreen()
+			->welcome();
+
+		$this->help();
+		$this
+			->defaultHelp()
+			->quit();
 	}
 
 	/**
-	 * parse the given arguments
-	 *
-	 * @return Application
-	 * @throws \York\Exception\Console
+	 * @return $this
 	 */
-	protected function parseArgs(){
-		$this->argc = $_SERVER['argc'];
-		$this->argv = $_SERVER['argv'];
-		if(1 !== $this->argc % 2){
-			throw new Console('can not parse arguments. make sure that --$key $value is correct!');
-		}
-
-		for($counter = 1; $counter < sizeof($this->argv); $counter++){
-			$this->parameters[substr($this->argv[$counter], 2, strlen($this->argv[$counter]))] = $this->argv[++$counter];
-		}
-
-		return $this;
+	protected function defaultHelp(){
+		return $this
+			->newLine(2)
+			->output('default and general and overall flag options:')
+			->output('-v | --verbose: much more output')
+			->output('-d | --debug: enable debug output')
+			->output('-q | --quiet: no output')
+			->output('-h | --help: display help')
+			->output('-V | --version: display the version')
+			->output('--no-colors: disable colored output')
+			->output('--fast: disable delayed / typing output')
+		;
 	}
 
 	/**
 	 * output the given strings if the debug mode is enabled
 	 *
 	 * @param string[] $args
-	 * @return Application
+	 * @return $this
 	 */
 	public function debugOutput($args = array()){
 		if(false === $this->isDebugEnabled){
@@ -241,6 +229,42 @@ abstract class Application {
 		}
 
 		foreach(func_get_args() as $current){
+			$current =  '[DeBuG]: '.$current;
+			if(true === $this->isColorEnabled){
+				$current = Style::styleString($current, Style::FOREGROUND_PURPLE);
+			}
+			$this->output($current);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param array $args
+	 * @return $this
+	 */
+	public function warningOutput($args = array()){
+		foreach(func_get_args() as $current){
+			$current =  '[warning]: '.$current;
+			if(true === $this->isColorEnabled){
+				$current = Style::styleString($current, Style::FOREGROUND_YELLOW);
+			}
+			$this->output($current);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param array $args
+	 * @return $this
+	 */
+	public function successOutput($args = array()){
+		foreach(func_get_args() as $current){
+			$current =  '[OK]: '.$current;
+			if(true === $this->isColorEnabled){
+				$current = Style::styleString($current, Style::FOREGROUND_GREEN);
+			}
 			$this->output($current);
 		}
 
@@ -251,10 +275,10 @@ abstract class Application {
 	 * output the given strings if the verbose mode is enabled
 	 *
 	 * @param string[] $args
-	 * @return Application
+	 * @return $this
 	 */
 	public function verboseOutput($args = array()){
-		if(false === $this->isVerboseEnabled){
+		if(false === $this->isVerboseEnabled && false === $this->isDebugEnabled){
 			return $this;
 		}
 
@@ -266,10 +290,44 @@ abstract class Application {
 	}
 
 	/**
+	 * display a red colored error string
+	 *
+	 * @param string[] $args
+	 * @return $this
+	 */
+	public function errorOutput($args = array()){
+		foreach(func_get_args() as $current){
+			$current =  '[ERROR]: '.$current;
+			if(true === $this->isColorEnabled){
+				$current = Style::styleString($current, Style::FOREGROUND_RED);
+			}
+			$this->output($current);
+		}
+
+		return $this;
+	}
+
+	/**
+	 * display a new line $amount times
+	 *
+	 * @param integer $amount
+	 * @return $this
+	 */
+	public function newLine($amount = 1){
+		foreach(range(0, $amount) as $counter){
+			$this->outputPrefix = '';
+			$this->output('');
+			$this->outputPrefix = $this->defaultOutputPrefix;
+		}
+
+		return $this;
+	}
+
+	/**
 	 * output all given strings if quiet mode is not enabled
 	 *
 	 * @param string[] $args
-	 * @return Application
+	 * @return $this
 	 */
 	public function output($args = array()){
 		if(true === $this->isQuietEnabled){
@@ -277,41 +335,96 @@ abstract class Application {
 		}
 
 		foreach(func_get_args() as $current){
-			echo $current.PHP_EOL;
+			foreach(str_split($this->outputPrefix.$current.PHP_EOL) as $char){
+				\York\Dependency\Manager::get('writer')->write($char);
+				usleep($this->typingDelay);
+			}
+			usleep($this->carriageReturnDelay);
 		}
 
 		return $this;
 	}
 
+
+
 	/**
 	 * clear the screen
 	 *
-	 * @return Application
+	 * @return $this
 	 */
 	protected function clearScreen(){
+		if(true === $this->isQuietEnabled){
+			return $this;
+		}
+
 		system('clear');
 
 		return $this;
 	}
 
 	/**
+	 * color the string if colors are enabled
+	 *
+	 * @param string $string
+	 * @param string $foreGround
+	 * @return string
+	 */
+	public function colorString($string, $foreGround = Style::FOREGROUND_RED){
+		if(true === $this->isColorEnabled){
+			$string = Style::styleString($string, $foreGround);
+		}
+
+		return $string;
+	}
+
+	/**
 	 * prints the headline
 	 *
-	 * @return Application
+	 * @return $this
 	 */
 	private final function welcome(){
-		$message = <<<TEXT
-__   __         _       ____ _     ___      _                _ _           _   _
-\ \ / /__  _ __| | __  / ___| |   |_ _|    / \   _ __  _ __ | (_) ___ __ _| |_(_) ___  _ __
- \ V / _ \| '__| |/ / | |   | |    | |    / _ \ | '_ \| '_ \| | |/ __/ _` | __| |/ _ \| '_ \
-  | | (_) | |  |   <  | |___| |___ | |   / ___ \| |_) | |_) | | | (_| (_| | |_| | (_) | | | |
-  |_|\___/|_|  |_|\_\  \____|_____|___| /_/   \_\ .__/| .__/|_|_|\___\__,_|\__|_|\___/|_| |_|
-                                                |_|   |_|
-____________________________________
-{$this->scriptName} - v. {$this->version}
-____________________________________
-TEXT;
-		$this->output($message);
+		if(true === $this->isQuietEnabled){
+			return $this;
+		}
+
+		$nameAndVersion = $this->scriptName.' v'.$this->version;
+
+		if(true === $this->isColorEnabled){
+			$nameAndVersion = Style::styleString($nameAndVersion, Style::FOREGROUND_YELLOW);
+		}
+
+		$message = Parser::parseFile(__DIR__.'/header', array(
+			'nameAndVersion' => $nameAndVersion
+		));
+
+		$this->typingDelay = 0;
+		$this->carriageReturnDelay = 0;
+
+		if(false === $this->isColorEnabled){
+			$this->output($message);
+		}else{
+			$messageRows = explode(PHP_EOL, $message);
+
+			$rainbow = array(
+				Style::FOREGROUND_RED,
+				Style::FOREGROUND_PURPLE,
+				Style::FOREGROUND_BLUE,
+				Style::FOREGROUND_CYAN,
+				Style::FOREGROUND_GREEN,
+				Style::FOREGROUND_YELLOW,
+				Style::FOREGROUND_BROWN
+			);
+
+			$rainbow = \York\Helper\Set::array_repeat($rainbow, ceil(sizeof($messageRows) / sizeof($rainbow)));
+
+			foreach(explode(PHP_EOL, $message) as $index => $row){
+				$this->output(Style::styleString($row, $rainbow[$index]));
+			}
+		}
+
+		usleep($this->welcomeDelay);
+		$this->carriageReturnDelay = $this->defaultCarriageReturnDelay;
+		$this->typingDelay = $this->defaultTypingDelay;
 
 		return $this;
 	}
@@ -333,14 +446,14 @@ TEXT;
 	}
 
 	/**
-	 * dir au revoir
+	 * dire au revoir
 	 */
-	private final function quit(){
-		$this->output('');
-		$this->output('');
-		$this->output('.... York Cli done. bye bye');
-		$this->output('');
-		$this->output('');
+	private function quit(){
+		$this
+			->newLine(2)
+			->output('....done.')
+			->newLine()
+		;
 	}
 
 	/***
