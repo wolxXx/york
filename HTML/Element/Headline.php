@@ -17,8 +17,7 @@ class Headline extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -35,6 +34,7 @@ class Headline extends \York\HTML\DomElementAbstract{
 	 */
 	public function setSize($size){
 		$this->set('size', $size);
+
 		return $this;
 	}
 
@@ -46,12 +46,12 @@ class Headline extends \York\HTML\DomElementAbstract{
 	 */
 	public function setText($text){
 		$this->set('text', $text);
+
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$conf = $this->getConf();

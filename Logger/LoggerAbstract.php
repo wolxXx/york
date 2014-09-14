@@ -1,7 +1,5 @@
 <?php
 namespace York\Logger;
-use York\Exception\LoggerLevelNotAllowed;
-
 /**
  * abstract class for all loggers
  *
@@ -9,7 +7,7 @@ use York\Exception\LoggerLevelNotAllowed;
  * @version 3.0
  * @package York\Logger
  */
-abstract class LoggerAbstract implements LoggerInterface{
+abstract class LoggerAbstract implements \York\Logger\LoggerInterface{
 	/**
 	 * levels of the logger
 	 *
@@ -24,6 +22,7 @@ abstract class LoggerAbstract implements LoggerInterface{
 	 */
 	public function clearLevels(){
 		$this->levels = array();
+
 		return $this;
 	}
 
@@ -31,29 +30,33 @@ abstract class LoggerAbstract implements LoggerInterface{
 	 * overwrites all levels
 	 *
 	 * @param string[] $levels
-	 * @return \York\Logger\LoggerAbstract
+	 * @return $this
 	 */
 	public function setLevels($levels = array()){
 		$this->clearLevels();
 		foreach($levels as $current){
 			$this->addLevel($current);
 		}
+
 		return $this;
 	}
 
 	/**
 	 * adds a level
+	 *
 	 * @param string $level
 	 * @return \York\Logger\LoggerAbstract
-	 * @throws LoggerLevelNotAllowed
+	 * @throws \York\Exception\LoggerLevelNotAllowed
 	 */
 	public function addLevel($level){
 		if(false === \York\Dependency\Manager::get('logger')->isAllowedLevel($level)){
-			throw new LoggerLevelNotAllowed();
+			throw new \York\Exception\LoggerLevelNotAllowed();
 		}
+
 		if(false === in_array($level, $this->levels)){
 			$this->levels[] = $level;
 		}
+
 		return $this;
 	}
 
@@ -61,7 +64,6 @@ abstract class LoggerAbstract implements LoggerInterface{
 	 * setter for the level
 	 *
 	 * @param string $level
-	 * @throws LoggerLevelNotAllowed
 	 * @return \York\Logger\LoggerAbstract
 	 */
 	public function setLevel($level){
@@ -77,5 +79,13 @@ abstract class LoggerAbstract implements LoggerInterface{
 	 */
 	public function getLevels(){
 		return $this->levels;
+	}
+
+	/**
+	 * @param integer $level
+	 * @return boolean
+	 */
+	public function hasLevel($level){
+		return true === in_array($level, $this->levels);
 	}
 }

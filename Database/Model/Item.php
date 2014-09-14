@@ -29,7 +29,7 @@ abstract class Item{
 	/**
 	 * list of class members that have direct correspondence to the database
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	protected $flatMembers;
 
@@ -41,19 +41,30 @@ abstract class Item{
 		$this->data = new Simple();
 		$this->table = $table;
 		$this->id = $id;
+		if(null === $id && true === in_array('created', $this->flatMembers)){
+			$this->setCreated(\York\Helper\Date::getDateTime());
+		}
 		$this->isModified = false;
 	}
 
+	/**
+	 * @return string
+	 */
 	public function __toString(){
 		return get_called_class();
 	}
 
 	/**
-	 * @return \York\Database\Blueprint\ItemInterface
+	 * @return $this
 	 */
 	public function validate(){
-
+		return $this;
 	}
+
+	/**
+	 * @return \York\Database\Model\Manager
+	 */
+	abstract function getManager();
 
 	/**
 	 * @param array $data
@@ -66,6 +77,11 @@ abstract class Item{
 		return $this;
 	}
 
+	/**
+	 * @param string $key
+	 * @param mixed $value
+	 * @return $this
+	 */
 	public function setReferenced($key, $value){
 		if(false === in_array($key, $this->referencedMembers) || false === $value instanceof Item){
 			return $this;
@@ -74,6 +90,19 @@ abstract class Item{
 		$this->$key = $value;
 
 		return $this;
+	}
+
+	/***
+	 * @param string $model
+	 * @param integer $id
+	 * @return Item
+	 */
+	public function getReferenced($model, $id){
+		if(null === $this->$model){
+			$this->$model = \York\Dependency\Manager::get(lcfirst($model).'Manager')->getById($id);
+		}
+
+		return $this->$model;
 	}
 
 	/**
@@ -92,9 +121,11 @@ abstract class Item{
 		if($value === $this->$key){
 			return $this;
 		}
+
 		if(true === in_array($key, $this->flatMembers)){
 			$this->data->set($key, $value);
 		}
+
 		$this->$key = $value;
 		$this->isModified = true;
 
@@ -144,7 +175,7 @@ abstract class Item{
 	/**
 	 * getter for the id
 	 *
-	 * @return int
+	 * @return integer
 	 */
 	public function getId(){
 		return $this->id;
@@ -160,10 +191,23 @@ abstract class Item{
 	}
 
 	/**
+	 * setter for modified flag
+	 * disabled saving! handle with care!
+	 *
+	 * @param boolean $modified
+	 * @return $this
+	 */
+	public function setIsModified($modified){
+		$this->isModified = true === $modified;
+
+		return $this;
+	}
+
+	/**
 	 * delete the set in the database
 	 *
 	 * @throws ModelNotSaved
-	 * @return boolean\DateTime
+	 * @return boolean
 	 */
 	public function delete(){
 		if(null === $this->getId()){
@@ -179,6 +223,7 @@ abstract class Item{
 	 *
 	 */
 	public function save(){
+		$this->validate();
 		if(false === $this->isModified()){
 			return $this;
 		}
@@ -190,19 +235,13 @@ abstract class Item{
 				->save()
 				->getLastInsertId();
 
-			$this->isModified = false;
-			$this->validate();
-
-			return $this;
+			return $this->getManager()->getById($this->id);
 		}
 
 		Factory::getUpdateObject($this->getTable(), $this->getId())
 			->setData($this->data->getAll())
 			->update();
 
-		$this->isModified = false;
-		$this->validate();
-
-		return $this;
+		return $this->getManager()->getById($this->id);
 	}
 }

@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Dependency extends \York\Exception\York{}
+class Dependency extends \York\Exception\General{}

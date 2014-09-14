@@ -67,7 +67,7 @@ class Manager{
 		$resultObject = new \York\Database\QueryResult($result, $queryStringObject->getQueryString(), $this->connection->getError());
 		try{
 			$this->log($resultObject, $start, $end);
-		}catch (\York\Exception\York $exception){
+		}catch (\York\Exception\General $exception){
 			Dependency::get('logger')->log('query exception: '.$exception->getMessage(), \York\Logger\Manager::LEVEL_DATABASE_ERROR);
 		}
 		return $resultObject;
@@ -78,7 +78,7 @@ class Manager{
 	 * as default, it only logs if there was an error while querying or the execution of the query took more than one second
 	 * to enable forced logging, set DatabaseManager->setForceLogging(true)
 	 *
-	 * @param QueryResultObject $queryResultObject
+	 * @param QueryResult $queryResultObject
 	 * @param float $start
 	 * @param float $end
 	 */

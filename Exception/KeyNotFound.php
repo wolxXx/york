@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class KeyNotFound extends York{}
+class KeyNotFound extends \York\Exception\General{}

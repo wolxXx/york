@@ -124,4 +124,26 @@ class Session extends StorageAbstract implements StorageInterface{
 		$this->data = array();
 		return $this;
 	}
+
+	/**
+	 * removes the data for the key
+	 *
+	 * @param string $key
+	 * @return StorageInterface
+	 */
+	public function removeKey($key)
+	{
+		// TODO: Implement removeKey() method.
+	}
+
+	/**
+	 * removes the data if set
+	 *
+	 * @param mixed $data
+	 * @return StorageInterface
+	 */
+	public function removeData($data)
+	{
+		// TODO: Implement removeData() method.
+	}
 }

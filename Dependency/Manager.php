@@ -1,8 +1,5 @@
 <?php
 namespace York\Dependency;
-use York\Exception\Dependency;
-use York\Helper\Application as ApplicationHelper;
-use York\Helper\Set;
 
 /**
  * dependency manager
@@ -57,7 +54,7 @@ class Manager{
 	 * @return string
 	 */
 	protected function getPathToApplicationConfiguration(){
-		return ApplicationHelper::getApplicationRoot().'Configuration/dependency';
+		return \York\Helper\Application::getApplicationRoot().'Configuration/dependency';
 	}
 
 	/**
@@ -66,7 +63,7 @@ class Manager{
 	 *
 	 * @param $pathToFile
 	 * @return array
-	 * @throws Dependency
+	 * @throws \York\Exception\Dependency
 	 */
 	protected function parseConfigurationFile($pathToFile){
 		if(false === file_exists($pathToFile)){
@@ -76,18 +73,18 @@ class Manager{
 		$configuration = @parse_ini_file($pathToFile, true, INI_SCANNER_NORMAL);
 
 		if(false === $configuration){
-			throw new Dependency(sprintf('unable to parse %s', $pathToFile));
+			throw new \York\Exception\Dependency(sprintf('unable to parse %s', $pathToFile));
 		}
 
 		return $configuration;
 	}
 
 	/**
-	 * @throws Dependency
+	 * @throws \York\Exception\Dependency
 	 */
 	protected function __construct(){
 		$this->instances = array();
-		$this->configuration = Set::merge(
+		$this->configuration = \York\Helper\Set::merge(
 			$this->parseConfigurationFile($this->getPathToDefaultConfiguration()),
 			$this->parseConfigurationFile($this->getPathToApplicationConfiguration())
 		);
@@ -118,12 +115,14 @@ class Manager{
 	 *
 	 * @param $type
 	 * @param $object
-	 * @return \York\Dependency\Manager
+	 * @param bool $isShared
+	 * @return $this
 	 */
-	public static function setDependency($type, &$object){
+	public static function setDependency($type, &$object, $isShared = true){
 		$manager = self::getInstance();
 		$manager->instances[$type] = $object;
 		$manager->configuration[$type]['class'] = get_class($object);
+		$manager->configuration[$type]['shared'] = true === $isShared?  '1' : '0';
 
 		return $manager;
 	}
@@ -139,13 +138,11 @@ class Manager{
 	}
 
 	/**
-	 * checks if the selected class is defined as singleton class
-	 *
-	 * @param $type
+	 * @param string $type
 	 * @return boolean
 	 */
-	protected function isShared($type){
-		return isset($this->configuration[$type]['shared']) && '1' === $this->configuration[$type]['shared'];
+	public static function isShared($type){
+		return isset(self::getInstance()->configuration[$type]['shared']) && '1' === self::getInstance()->configuration[$type]['shared'];
 	}
 
 	/**
@@ -159,11 +156,11 @@ class Manager{
 		$manager = self::getInstance();
 
 		if(false === $manager->hasDependencyConfigured($type)){
-			throw new Dependency(sprintf('unable to get dependency %s', $type));
+			throw new \York\Exception\Dependency(sprintf('unable to get dependency %s', $type));
 		}
 
 		if(false === isset($manager->configuration[$type]['class'])){
-			throw new Dependency(sprintf('not fully qualified dependency %s', $type));
+			throw new \York\Exception\Dependency(sprintf('not fully qualified dependency %s', $type));
 		}
 
 		return $manager->configuration[$type]['class'];
@@ -181,13 +178,13 @@ class Manager{
 	 *
 	 * @param string  $type
 	 * @return mixed
-	 * @throws Dependency
+	 * @throws \York\Exception\Dependency
 	 */
 	public static function get($type){
 		$manager = self::getInstance();
 		$className = self::getClassNameForDependency($type);
 
-		if(false === $manager->isShared($type)){
+		if(false === self::isShared($type)){
 			return new $className();
 		}
 
@@ -196,5 +193,71 @@ class Manager{
 		}
 
 		return $manager->instances[$type];
+	}
+
+	/** @return \York\Request\Api\Code */
+	public static function getApiCode()
+	{
+		return self::get('apiCode');
+	}
+
+	/** @return \York\Request\Manager */
+	public static function getRequestManager()
+	{
+		return self::get('requestManager');
+	}
+
+	/** @return \York\Request\Data */
+	public static function getRequestData()
+	{
+		return self::get('requestData');
+	}
+
+	/** @return \York\Database\Manager */
+	public static function getDatabaseManager()
+	{
+		return self::get('databaseManager');
+	}
+
+	/** @return \York\Logger\Manager */
+	public static function getLogger()
+	{
+		return self::get('logger');
+	}
+
+	/** @return \York\Storage\Session */
+	public static function getSession()
+	{
+		return self::get('session');
+	}
+
+	/** @return \York\View\Splash\Manager */
+	public static function getSplashManager()
+	{
+		return self::get('splashManager');
+	}
+
+	/** @return \York\View\Manager */
+	public static function getViewManager()
+	{
+		return self::get('viewManager');
+	}
+
+	/** @return \York\Storage\Application */
+	public static function getDatabaseConfiguration()
+	{
+		return self::get('databaseConfiguration');
+	}
+
+	/** @return \York\Storage\Application */
+	public static function getApplicationConfiguration()
+	{
+		return self::get('applicationConfiguration');
+	}
+
+	/** @return \York\View\Asset\Manager */
+	public static function getAssetManager()
+	{
+		return self::get('assetManager');
 	}
 }

@@ -17,8 +17,7 @@ class Textarea extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -36,6 +35,7 @@ class Textarea extends \York\HTML\DomElementAbstract{
 	 */
 	public function setText($text){
 		$this->set('text', $text);
+
 		return $this;
 	}
 
@@ -47,6 +47,7 @@ class Textarea extends \York\HTML\DomElementAbstract{
 	 */
 	public function setRows($rows){
 		$this->set('rows', $rows);
+
 		return $this;
 	}
 
@@ -58,12 +59,12 @@ class Textarea extends \York\HTML\DomElementAbstract{
 	 */
 	public function setCols($cols){
 		$this->set('cols', $cols);
+
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$this->displayLabelBefore();
@@ -74,10 +75,12 @@ class Textarea extends \York\HTML\DomElementAbstract{
 
 		/*
 		 * jepp, simply echo. had some issues with breaks in first and last line in the textarea
+		 * @todo make clean if line breaks issue is fixed
 		 */
 		echo sprintf('%s%s%s', \York\HTML\Core::openTag('textarea', $conf), $text, \York\HTML\Core::closeTag('textarea'));
 
 		$this->displayLabelAfter();
+
 		return $this;
 	}
 }

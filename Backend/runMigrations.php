@@ -48,6 +48,7 @@ class runMigrations extends Application{
 			->output('migrations tool. lists (new and finished) migrations.')
 			->newLine()
 			->output('set some of these flags to execute tasks:')
+			->output('-e | --execute: run all new migrations')
 			->output('-f | --finished: list all finished migrations')
 			->output('-l | --list: list all migrations')
 			->output('-n | --new: lists all new migrations')
@@ -385,4 +386,4 @@ class runMigrations extends Application{
 	}
 }
 
-new runMigrations('migrations tool', '0.1');
+new runMigrations('migrations tool', '0.3');

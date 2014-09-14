@@ -1,11 +1,10 @@
 <?php
 namespace York\Validator;
-
 /**
  * validator interface
  *
  * @author wolxXx
- * @version 3.0
+ * @version 3.1
  * @package York\Validator
  */
 interface ValidatorInterface{

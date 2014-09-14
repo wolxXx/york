@@ -19,8 +19,7 @@ class Grid extends \York\HTML\ContainableDomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -36,6 +35,7 @@ class Grid extends \York\HTML\ContainableDomElementAbstract{
 	 */
 	public function setSize($size){
 		$this->set('size', $size);
+
 		return $this;
 	}
 
@@ -46,12 +46,12 @@ class Grid extends \York\HTML\ContainableDomElementAbstract{
 	 */
 	public function clear(){
 		\York\HTML\Element\Clear::Factory()->display();
+
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 * @todo really?! need to do this vernünftich, junge!
 	 */
 	public function display(){
@@ -62,6 +62,7 @@ class Grid extends \York\HTML\ContainableDomElementAbstract{
 		$grid->addClass('grid_'.$size);
 		$grid->addChildren($this->children);
 		$grid->display();
+
 		return $this;
 	}
 }

@@ -37,9 +37,10 @@ class Flag {
 	 * @param string $short
 	 */
 	public function __construct($long, $short = ''){
-		$this->short = $short;
-		$this->long = $long;
-		$this->init();
+		$this
+			->setShortOption($short)
+			->setLongOption($long)
+			->init();
 	}
 
 	/**
@@ -55,10 +56,22 @@ class Flag {
 
 	/**
 	 * check the getopt result if the flag is enabled
+	 * @return $this
 	 */
-	protected function init(){
-		$options = getopt($this->short, array($this->long));
+	public function init(){
+		$options = $this->parseArgs();
 		$this->isEnabled = true === isset($options[$this->short]) || true === isset($options[$this->long]);
+
+		return $this;
+	}
+
+	/**
+	 * parse the options
+	 *
+	 * @return array
+	 */
+	public function parseArgs(){
+		return getopt($this->short, array($this->long));
 	}
 
 	/**
@@ -68,5 +81,39 @@ class Flag {
 	 */
 	public function isEnabled(){
 		return true === $this->isEnabled;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getLongOption(){
+		return $this->long;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getShortOption(){
+		return $this->short;
+	}
+
+	/**
+	 * @param string $long
+	 * @return $this
+	 */
+	public function setLongOption($long){
+		$this->long = $long;
+
+		return $this->init();
+	}
+
+	/**
+	 * @param string $short
+	 * @return $this
+	 */
+	public function setShortOption($short){
+		$this->short = $short;
+
+		return $this->init();
 	}
 }

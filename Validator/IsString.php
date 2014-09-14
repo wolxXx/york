@@ -1,7 +1,5 @@
 <?php
 namespace York\Validator;
-use York\Exception\Validator;
-
 /**
  * validator for checking that the given data is a string
  *
@@ -15,7 +13,7 @@ class IsString implements ValidatorInterface{
 	 */
 	public function isValid($data){
 		if(false === is_string($data)){
-			throw new Validator('given data is not a string');
+			throw new \York\Exception\Validator('given data is not a string');
 		}
 
 		return true;

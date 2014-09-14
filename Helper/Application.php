@@ -65,6 +65,14 @@ class Application{
 	}
 
 	/**
+	 * @param string $path
+	 * @return string
+	 */
+	public static function getRelativePathInApplication($path){
+		return trim(str_replace(self::getDocRoot(), '', $path), ' /');
+	}
+
+	/**
 	 * provides the path of the docroot with tailing slash
 	 *
 	 * @return string
@@ -145,7 +153,7 @@ class Application{
 	 * saves it in the default stack
 	 */
 	public static function grabHostName(){
-		Dependency::get('applicationConfiguration')->set('hostname', php_uname("n"));
+		\York\Dependency\Manager::getApplicationConfiguration()->set('hostname', php_uname("n"));
 	}
 
 	/**
@@ -165,5 +173,63 @@ class Application{
 		$mode = $split[1];
 		Dependency::get('applicationConfiguration')->set('version', $version);
 		Dependency::get('applicationConfiguration')->set('mode', $mode);
+	}
+
+	/**
+	 * transcodes the php error codes to string
+	 *
+	 * @param integer $code
+	 * @return string
+	 */
+	public static function errorCodeToString($code){
+		$return = '';
+		switch($code){
+			case E_ERROR:{
+				$return = 'E_ERROR'; // 1
+			}break;
+			case E_WARNING:{
+				$return = 'E_WARNING'; // 2
+			}break;
+			case E_PARSE:{
+				$return = 'E_PARSE'; // 4
+			}break;
+			case E_NOTICE:{
+				$return = 'E_NOTICE'; // 8
+			}break;
+			case E_CORE_ERROR:{
+				$return = 'E_CORE_ERROR'; // 16
+			}break;
+			case E_CORE_WARNING:{
+				$return = 'E_CORE_WARNING'; // 32
+			}break;
+			case E_CORE_ERROR:{
+				$return = 'E_COMPILE_ERROR'; // 64
+			}break;
+			case E_CORE_WARNING:{
+				$return = 'E_COMPILE_WARNING'; // 128
+			}break;
+			case E_USER_ERROR:{
+				$return = 'E_USER_ERROR'; // 256
+			}break;
+			case E_USER_WARNING:{
+				$return = 'E_USER_WARNING'; // 512
+			}break;
+			case E_USER_NOTICE:{
+				$return = 'E_USER_NOTICE'; // 1024
+			}break;
+			case E_STRICT:{
+				$return = 'E_STRICT'; // 2048
+			}break;
+			case E_RECOVERABLE_ERROR:{
+				$return = 'E_RECOVERABLE_ERROR'; // 4096
+			}break;
+			case E_DEPRECATED:{
+				$return = 'E_DEPRECATED'; // 8192
+			}break;
+			case E_USER_DEPRECATED:{
+				$return = 'E_USER_DEPRECATED'; // 16384
+			}break;
+		}
+		return $return;
 	}
 }

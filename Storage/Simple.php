@@ -1,13 +1,10 @@
 <?php
 namespace York\Storage;
-use York\Exception\KeyNotFound;
-use York\Helper\Set;
-
 /**
  * simple storage
  *
  * @author wolxXx
- * @version 3.0
+ * @version 3.1
  * @package York\Storage
  */
 class Simple implements StorageInterface{
@@ -30,7 +27,7 @@ class Simple implements StorageInterface{
 	 */
 	public function get($key){
 		if(false === isset($this->data[$key])){
-			throw new KeyNotFound(sprintf('key % not set', $key));
+			throw new \York\Exception\KeyNotFound(sprintf('key %s not set', $key));
 		}
 
 		return $this->data[$key];
@@ -48,6 +45,7 @@ class Simple implements StorageInterface{
 	 */
 	public function set($key, $value){
 		$this->data[$key] = $value;
+
 		return $this;
 	}
 
@@ -64,7 +62,7 @@ class Simple implements StorageInterface{
 	public function getSafely($key, $default = null){
 		try{
 			return $this->get($key);
-		}catch (KeyNotFound $exception){
+		}catch (\York\Exception\KeyNotFound $exception){
 			return $default;
 		}
 	}
@@ -80,7 +78,7 @@ class Simple implements StorageInterface{
 	 * @inheritdoc
 	 */
 	public function remove($key){
-		$this->data = Set::removeValue($this->data, $key);
+		$this->data = \York\Helper\Set::removeValue($this->data, $key);
 	}
 
 	/**
@@ -90,5 +88,16 @@ class Simple implements StorageInterface{
 		$this->data = array();
 
 		return $this;
+	}
+
+	/**
+	 * removes the data if set
+	 *
+	 * @param mixed $data
+	 * @return StorageInterface
+	 */
+	public function removeData($data)
+	{
+		// TODO: Implement removeData() method.
 	}
 }

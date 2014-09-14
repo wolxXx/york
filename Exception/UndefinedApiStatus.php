@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class UndefinedApiStatus extends York{}
+class UndefinedApiStatus extends \York\Exception\General{}

@@ -1,18 +1,20 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: rene
- * Date: 27.01.14
- * Time: 14:42
- */
-
 namespace York\FileSystem\ArchiveUnpacker;
-
-
+/**
+ * interface for all unpackers
+ *
+ * @package York\FileSystem\ArchiveUnpacker
+ * @author wolxXx
+ * @version 3.1
+ */
 interface UnpackerInterface {
+	/**
+	 * @param Configuration $configuration
+	 */
+	public function __construct(\York\FileSystem\ArchiveUnpacker\Configuration $configuration);
+
+	/**
+	 * @return \York\Type\Boolean
+	 */
 	public function unpack();
-	public function setSource();
-	public function setTarget();
-	public function getSource();
-	public function getTarget();
-} 
+}

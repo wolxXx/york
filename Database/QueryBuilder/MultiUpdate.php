@@ -23,13 +23,6 @@ class MultiUpdate extends \York\Database\QueryBuilder{
 	protected $table;
 
 	/**
-	 * the conditions which items should be updated
-	 *
-	 * @var array
-	 */
-	protected $conditions;
-
-	/**
 	 * an instance of the DatabaseManager
 	 *
 	 * @var \York\Database\Manager
@@ -42,6 +35,7 @@ class MultiUpdate extends \York\Database\QueryBuilder{
 	 * @param string $table
 	 * @param array $data
 	 * @param array $conditions
+	 * @param null $databaseManager
 	 */
 	public function __construct($table = null, $data = null, $conditions = null, $databaseManager = null){
 		$this
@@ -53,13 +47,15 @@ class MultiUpdate extends \York\Database\QueryBuilder{
 
 	/**
 	 * @param null $databaseManager
-	 * @return \York\Database\QueryBuilder\MultiUpdate
+	 * @return $this
 	 */
 	public function setDatabaseManager($databaseManager = null){
 		if(null === $databaseManager){
-			$databaseManager = \York\Database\Manager::getInstance();
+			$databaseManager = \York\Dependency\Manager::get('databaseManager');
 		}
+
 		$this->databaseManager = $databaseManager;
+
 		return $this;
 	}
 
@@ -67,19 +63,20 @@ class MultiUpdate extends \York\Database\QueryBuilder{
 	 * setter for the table name
 	 *
 	 * @param string $table
-	 * @return \York\Database\QueryBuilder\MultiUpdate
+	 * @return $this
 	 */
 	public function setTable($table){
 		$this->table = $table;
+
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see QueryBuilder::setConditions()
+	 * @inheritdoc
 	 */
 	public function setConditions($conditions){
 		$this->conditions = array('where' => $conditions);
+
 		return $this;
 	}
 
@@ -87,7 +84,7 @@ class MultiUpdate extends \York\Database\QueryBuilder{
 	 * setter for the data array
 	 *
 	 * @param array $data
-	 * @return \York\Database\QueryBuilder\MultiUpdate
+	 * @return $this
 	 */
 	public function setData($data){
 		$this->data = $data;
@@ -95,8 +92,7 @@ class MultiUpdate extends \York\Database\QueryBuilder{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see QueryBuilder::checkConditions()
+	 * @inheritdoc
 	 */
 	protected function checkConditions(){
 		if(null === $this->conditions){
@@ -125,8 +121,7 @@ class MultiUpdate extends \York\Database\QueryBuilder{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see QueryBuilder::generateQuery()
+	 * @inheritdoc
 	 */
 	public function generateQuery(){
 		$this->checkConditions();
@@ -134,11 +129,14 @@ class MultiUpdate extends \York\Database\QueryBuilder{
 
 		$text = '';
 		$connection = $this->databaseManager->getConnection();
+
 		foreach ($this->data as $key => $value){
 			$text .= sprintf("`%s` = '%s', ", $key, $connection->escape($value));
 		}
+
 		$text = rtrim($text, ' ,');
 		$query = sprintf("UPDATE `%s` SET %s WHERE %s;", $this->table, $text, $where);
+
 		return $query;
 	}
 

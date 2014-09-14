@@ -1,7 +1,5 @@
 <?php
 namespace York\Validator;
-use York\Exception\Validator;
-
 /**
  * validator for checking that the given data is not empty
  *
@@ -15,7 +13,7 @@ class NotEmpty implements ValidatorInterface{
 	 */
 	public function isValid($data){
 		if(true === empty($data)){
-			throw new Validator('given data is empty');
+			throw new \York\Exception\Validator('given data is empty');
 		}
 
 		return true;

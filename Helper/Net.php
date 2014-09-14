@@ -9,6 +9,43 @@ namespace York\Helper;
  */
 class Net{
 	/**
+	 * creates a more understandable error message for file upload error numbers
+	 *
+	 * @param $errorNumber
+	 * @return string
+	 */
+	public static function uploadErrorNumberToString($errorNumber){
+		switch($errorNumber){
+			case UPLOAD_ERR_CANT_WRITE:{
+				return Translator::translate('Konnte Datei nicht schreiben.');
+			}break;
+			case UPLOAD_ERR_EXTENSION:{
+				return Translator::translate('Dateityp nicht akzeptiert.');
+			}break;
+			case UPLOAD_ERR_FORM_SIZE:{
+				return Translator::translate('Datei zu groß.');
+			}break;
+			case UPLOAD_ERR_INI_SIZE:{
+				return Translator::translate('Datei zu groß.');
+			}break;
+			case UPLOAD_ERR_NO_FILE:{
+				return Translator::translate('Keine Datei gesendet.');
+			}break;
+			case UPLOAD_ERR_NO_TMP_DIR:{
+				return Translator::translate('Kein Temp-Ordner gefunden.');
+			}break;
+			case UPLOAD_ERR_OK:{
+				return Translator::translate('Kein Fehler aufgetreten.');
+			}break;
+			case UPLOAD_ERR_PARTIAL:{
+				return Translator::translate('Unvollständiger Upload.');
+			}break;
+			default:{
+				return Translator::translate('Unbekannter Fehler. Mulder und Scully ermitteln schon!');
+			}break;
+		}
+	}
+	/**
 	 * checks if the syntax of the given string is a valid url
 	 *
 	 * @param string $url
@@ -93,7 +130,7 @@ class Net{
 	 * @return string
 	 */
 	public static function getRequestedProtocol(){
-		return 'http'.(true === \York\Stack::getInstance()->get('use_https', false)? 's' : '').'://';
+		return 'http'.(true === \York\Dependency\Manager::get('applicationConfiguration')->getsafely('use_https', false)? 's' : '').'://';
 	}
 
 	/**

@@ -46,10 +46,11 @@ class Manager{
 	 * setter for user is logged in
 	 *
 	 * @param boolean $userIsLoggedIn
-	 * @return \York\AccessCheck\Manager
+	 * @return $this
 	 */
 	public function setUserIsLoggedIn($userIsLoggedIn){
 		$this->userIsLoggedIn = $userIsLoggedIn;
+
 		return $this;
 	}
 
@@ -66,10 +67,11 @@ class Manager{
 	 * setter for the user level
 	 *
 	 * @param integer $userLevel
-	 * @return \York\AccessCheck\Manager
+	 * @return $this
 	 */
 	public function setUserLevel($userLevel){
 		$this->userLevel = $userLevel;
+
 		return $this;
 	}
 
@@ -86,10 +88,11 @@ class Manager{
 	 * adds a rule to the rule set
 	 *
 	 * @param \York\AccessCheck\Rule $rule
-	 * @return \York\AccessCheck\Manager
+	 * @return $this
 	 */
 	public function addRule(\York\AccessCheck\Rule $rule){
 		$this->rules[$rule->getActionName()] = $rule;
+
 		return $this;
 	}
 
@@ -106,22 +109,24 @@ class Manager{
 	 * removes a rule from the rule set
 	 *
 	 * @param string $actionName
-	 * @return \York\AccessCheck\Manager
+	 * @return $this
 	 */
 	public function removeRule($actionName){
 		if(array_key_exists($actionName, $this->rules)){
 			unset($this->rules[$actionName]);
 		}
+
 		return $this;
 	}
 
 	/**
 	 * clears all set rules
 	 *
-	 * @return \York\AccessCheck\Manager
+	 * @return $this
 	 */
 	public function clearRules(){
 		$this->rules = array();
+
 		return $this;
 	}
 
@@ -136,23 +141,16 @@ class Manager{
 	 */
 	public function checkAccess($actionName){
 		$rule = null;
-		if(true === array_key_exists($actionName, $this->rules)){
-			/*
-			 * there exists a rule for the action name
-			 */
+		if(true === $this->hasRuleForAction($actionName)){
 			$rule = $this->rules[$actionName];
-		}elseif(true === array_key_exists('*', $this->rules)){
-			/*
-			 * a wildcard exists
-			 */
+		}elseif(true === $this->hasRuleForAction('*')){
 			$rule = $this->rules['*'];
 		}
+
 		if(null !== $rule){
-			/*
-			 * a rule was found, check it!
-			 */
 			return $this->checkAccessRule($rule);
 		}
+
 		throw new \York\Exception\Apocalypse();
 	}
 
@@ -176,9 +174,11 @@ class Manager{
 		if(true === $this->hasRuleForAction($actionName)){
 			return $this->rules[$actionName]->isAuthNeeded();
 		}
-		if(array_key_exists('*', $this->rules)){
+
+		if(true === $this->hasRuleForAction('*')){
 			return $this->rules['*']->isAuthNeeded();
 		}
+
 		return false;
 	}
 
@@ -192,12 +192,15 @@ class Manager{
 		if(false === $rule->isAuthNeeded()){
 			return true;
 		}
+
 		if(false === $this->userIsLoggedIn){
 			return false;
 		}
+
 		if($rule->getLevelNeeded() <= $this->userLevel){
 			return true;
 		}
+
 		return false;
 	}
 }

@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class LoggerLevelNotAllowed extends \York\Exception\York{}
+class LoggerLevelNotAllowed extends \York\Exception\General{}

@@ -7,10 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class NotImplemented extends York{
-	public function __construct(){
-		\York\Helper::logToFile($this->getMessage(), 'todo');
-		\York\Helper::addSplash(\York\Translator::translate('Entschuldigung, diese Funktionalität wurde noch nicht umgesetzt!'));
-		\York\Helper::historyBack();
-	}
-}
+class NotImplemented extends \York\Exception\General{}

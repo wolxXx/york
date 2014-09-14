@@ -2,7 +2,7 @@
 namespace York\Helper;
 /**
  * translator class for translating
- * usage as static helper mehtods
+ * usage as static helper methods
  *
  * @author wolxXx
  * @version 3.0
@@ -16,11 +16,14 @@ class Translator{
 	 * like %s for replacing arguments
 	 *
 	 * @param string $string
-	 * @param string $args
+	 * @param string[] $args
 	 * @throws \York\Exception\Translator
 	 * @return string
 	 */
-	public static function translate($string, $args = null){
+	public static function translate($string, $args = array()){
+		if(true === empty($args)){
+			return $string;
+		}
 		try{
 			$return = @call_user_func_array('sprintf', func_get_args());
 		}catch(\Exception $x){
@@ -29,7 +32,7 @@ class Translator{
 		if(false === $return){
 			throw new \York\Exception\Translator('Translator failed! args = '.implode(' | ', func_get_args()));
 		}
-		$return = nl2br($return);
+		#$return = nl2br($return);
 		return $return;
 	}
 }

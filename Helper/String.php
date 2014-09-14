@@ -7,7 +7,54 @@ namespace York\Helper;
  * @version 3.0
  * @package York\Helper
  */
-class String {
+class String{
+	/**
+	 * cuts a string
+	 * if forceHardCut is not set to true, it takes the next letters until end of sentence(.,!,?) or end of word(' ',-,")
+	 *
+	 * @param string $text
+	 * @param integer $maxLength
+	 * @param string $suffix
+	 * @param boolean $forceHardCut
+	 * @return string
+	 */
+	public static function cutText($text, $maxLength = 50, $suffix = '...', $forceHardCut = false){
+		if(strlen($text) < $maxLength){
+			return $text;
+		}
+
+		if(null === $suffix){
+			$suffix = '...';
+		}
+		if(true === $forceHardCut){
+			if(strlen($suffix) > $maxLength){
+				return substr($text, 0, $maxLength);
+			}
+			$text = substr($text, 0, $maxLength - strlen($suffix)).$suffix;
+			return $text;
+		}
+
+		$return = substr($text, 0, $maxLength);
+		$length = strlen($text);
+
+		$endOfString = true;
+
+		while($maxLength < $length){
+			if(true === in_array($text[$maxLength], array(' ', '.', '!', '?', '-', '"', ','))){
+				$endOfString = false;
+				$return .= $text[$maxLength];
+				break;
+			}
+			$return .= $text[$maxLength];
+			$maxLength++;
+		}
+		if(false === $endOfString){
+			$return .= $suffix;
+		}
+
+		return $return;
+	}
+
 	/**
 	 * checks if a string starts with another string
 	 *

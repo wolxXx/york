@@ -9,6 +9,10 @@ namespace York;
  */
 class Router{
 	/**
+	 * @var array
+	 */
+	protected $routes = array();
+	/**
 	 * contains chars that cannot be displayed correctly in urls
 	 *
 	 * @var array
@@ -29,10 +33,13 @@ class Router{
 	 * adds an url to the router
 	 *
 	 * @param string $key
-	 * @param string $value
+	 * @param string | array | callable $value
+	 * @return $this
 	 */
 	public function addRoute($key, $value){
 		$this->routes[$key] = $value;
+
+		return $this;
 	}
 
 	/**
@@ -42,7 +49,7 @@ class Router{
 	 * @return string | null
 	 */
 	public function getRoute($key){
-		if(array_key_exists($key, $this->routes)){
+		if(array_key_exists($key, $this->getAllRoutes())){
 			return $this->routes[$key];
 		}
 		return null;
@@ -72,6 +79,7 @@ class Router{
 	 *
 	 * @param string $request
 	 * @param array $path
+	 * @return $this
 	 */
 	public function checkRoutes(&$request, &$path){
 		$route = $this->getRoute($request);
@@ -99,5 +107,6 @@ class Router{
 				}
 			}
 		}
+		return $this;
 	}
 }

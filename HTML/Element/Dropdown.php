@@ -16,8 +16,7 @@ class Dropdown extends \York\HTML\ContainableDomElementAbstract{
 		return parent::Factory($data);
 	}
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -35,14 +34,15 @@ class Dropdown extends \York\HTML\ContainableDomElementAbstract{
 	public function addChild(\York\HTML\DomElementInterface $child){
 		if($child instanceof \York\HTML\Element\DropdownElement || $child instanceof \York\HTML\Element\DropdownGroup){
 			parent::addChild($child);
+
 			return $this;
 		}
+
 		throw new \York\Exception\HTTMLGenerator('dropdown container can only contain dropdown elements or groups as children');
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$this->displayLabelBefore();

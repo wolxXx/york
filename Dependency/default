@@ -4,13 +4,19 @@ shared = true;
 
 [apiCode]
 class = '\York\Request\Api\Code';
+shared = true;
 
 [applicationConfiguration]
 class = '\York\Storage\Application';
 shared = true;
 
+[assetManager]
+class = '\York\View\Asset\Manager';
+shared = true;
+
 [authManager]
 class = '\York\Auth\Manager';
+shared = true;
 
 [databaseConfiguration]
 class = '\York\Storage\Simple';
@@ -45,6 +51,7 @@ shared = true;
 
 [session]
 class = \York\Storage\Session;
+shared = true;
 
 [splashManager]
 class = \York\View\Splash\Manager;
@@ -56,3 +63,4 @@ shared = true;
 
 [writer]
 class = '\York\Writer\Standard';
+shared = true;

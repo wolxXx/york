@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Syntax extends \York\Exception\York{}
+class Syntax extends \York\Exception\General{}

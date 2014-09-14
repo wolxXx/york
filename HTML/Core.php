@@ -1,5 +1,6 @@
 <?php
 namespace York\HTML;
+
 /**
  * collection of html element generators
  *
@@ -16,6 +17,7 @@ class Core{
 	 */
 	public static function getUniqueIdAndName(){
 		$uniqueId = uniqid();
+
 		return array(
 			'id' => 'dom_elem_id_'.$uniqueId,
 			'name' => 'dom_elem_name_'.$uniqueId
@@ -49,6 +51,7 @@ class Core{
 			}
 			$return .= sprintf(' %s="%s"', $key, $value);
 		}
+
 		return $return;
 	}
 

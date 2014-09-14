@@ -47,10 +47,11 @@ class Rule{
 	 * setter for the action name
 	 *
 	 * @param string $actionName
-	 * @return \York\AccessCheck\Rule
+	 * @return $this
 	 */
 	public function setActionName($actionName){
 		$this->actionName = $actionName;
+
 		return $this;
 	}
 
@@ -67,10 +68,11 @@ class Rule{
 	 * setter for auth needed
 	 *
 	 * @param boolean $authNeeded
-	 * @return \York\AccessCheck\Rule
+	 * @return $this
 	 */
 	public function setAuthNeeded($authNeeded){
 		$this->authNeeded = $authNeeded;
+
 		return $this;
 	}
 
@@ -87,10 +89,11 @@ class Rule{
 	 * setter for the needed level
 	 *
 	 * @param integer $levelNeeded
-	 * @return \York\AccessCheck\Rule
+	 * @return $this
 	 */
 	public function setLevelNeeded($levelNeeded){
 		$this->levelNeeded = $levelNeeded;
+
 		return $this;
 	}
 

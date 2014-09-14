@@ -1,0 +1,7 @@
+	/**
+	 * @param integer | null $id
+	 * @return \Application\Model\%%model%%
+	 */
+	public static function Factory($id = null){
+		return new \Application\Model\%%model%%($id);
+	}

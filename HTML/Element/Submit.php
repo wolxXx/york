@@ -17,8 +17,7 @@ class Submit extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -29,11 +28,7 @@ class Submit extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * removes the name property as default behaviour
-	 * but the property can be set later if wanted!
-	 *
-	 * (non-PHPdoc)
-	 * @see DomElementAbstract::init()
+	 * @inheritdoc
 	 */
 	public function init(){
 		parent::init();
@@ -48,12 +43,12 @@ class Submit extends \York\HTML\DomElementAbstract{
 	 */
 	public function setValue($value){
 		$this->set('value', $value);
+
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$this->displayLabelBefore();
@@ -65,6 +60,7 @@ class Submit extends \York\HTML\DomElementAbstract{
 		);
 
 		$this->displayLabelAfter();
+
 		return $this;
 	}
 }

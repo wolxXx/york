@@ -1,6 +1,5 @@
 <?php
 namespace York\Logger;
-
 /**
  * log manager
  *
@@ -28,16 +27,23 @@ class Manager{
 	/**
 	 * add a logger to the list of listening loggers
 	 *
-	 * @param LoggerInterface $logger
-	 * @return \York\Logger\Manager
+	 * @param \York\Logger\LoggerInterface $logger
+	 * @return $this
 	 */
-	public function addLogger(LoggerInterface $logger){
+	public function addLogger(\York\Logger\LoggerInterface $logger){
 		$this->registeredLoggers[] = $logger;
 		return $this;
 	}
 
 	public function hasLoggerForLevel($level){
+		foreach($this->registeredLoggers as $logger){
+			/** @var \York\Logger\LoggerInterface $logger */
+			if(true === $logger->hasLevel($level)){
+				return true;
+			}
+		}
 
+		return false;
 	}
 
 	/**

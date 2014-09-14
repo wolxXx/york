@@ -2,6 +2,7 @@
 namespace York;
 use York\Code\Factory;
 use York\Code\FactoryInterface;
+use York\Exception\Mailer as MailerException;
 use York\FileSystem\File;
 use York\Helper\Date;
 use York\Logger\Manager;
@@ -77,6 +78,15 @@ class Mailer implements MailerInterface{
 	 * @var string
 	 */
 	protected $encoding;
+
+	/**
+	 * factory
+	 *
+	 * @return Mailer
+	 */
+	public static function Factory(){
+		return new self();
+	}
 
 	/**
 	 * constructor
@@ -390,17 +400,25 @@ class Mailer implements MailerInterface{
 		return $this;
 	}
 
+	/**
+	 * check if everything is fine fine fine :)
+	 *
+	 * @throws Exception\Mailer
+	 */
 	protected function check(){
-		if(true === empty($this->getSubject())){
-			throw new \York\Exception\Mailer('you need to set a subject');
+		$subject = $this->getSubject();
+		$receivers = $this->getReceivers();
+		$text = $this->getText();
+		if(true === empty($subject)){
+			throw new MailerException('you need to set a subject');
 		}
 
-		if(true === empty($this->getReceivers())){
-			throw new \York\Exception\Mailer('you need to set at least one receiver');
+		if(true === empty($receivers)){
+			throw new MailerException('you need to set at least one receiver');
 		}
 
-		if(true === empty($this->getText())){
-			throw new \York\Exception\Mailer('you need to set a text');
+		if(true === empty($text)){
+			throw new MailerException('you need to set a text');
 		}
 	}
 

@@ -1,13 +1,9 @@
 <?php
 namespace York\View;
-use York\Dependency\Manager as Dependency;
-use York\Helper\Application;
-use York\Helper\String;
-use York\Helper\Translator;
 
 /**
  * the loader / the bridge to the view
- * extracts the setted vars to the view
+ * extracts the set vars to the view
  * handles partials
  * holds JavaScript, JavaScriptFiles, CSS and CSSFiles
  *
@@ -25,13 +21,6 @@ class Manager{
 	private $params = array();
 
 	/**
-	 * an instance of the stack
-	 *
-	 * @var \York\Stack
-	*/
-	private $stack;
-
-	/**
 	 * the name of the layout
 	 *
 	 * @var string
@@ -47,19 +36,19 @@ class Manager{
 
 	/**
 	 * additional javascripts for the view
-	 * usefull for pushing javascripts to the html's head-section
+	 * useful for pushing javascripts to the html's head-section
 	 * makes cleaner html output
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	private $javascriptFiles = array();
 
 	/**
 	 * additional css for the view
-	 * usefull for pushing css to the html's head-section
+	 * useful for pushing css to the html's head-section
 	 * makes cleaner html output
 	 *
-	 * @var array
+	 * @var string[]
 	*/
 	private $cssFiles = array();
 
@@ -96,10 +85,9 @@ class Manager{
 	 */
 	public final function __construct(){
 		$this->params = array();
-		$this->stack = Dependency::get('applicationConfiguration');
-		$this->setLayoutPath($this->stack->getSafely('layoutPath', Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR.'Layout'));
+		$this->setLayoutPath(\York\Dependency\Manager::get('applicationConfiguration')->getSafely('layoutPath', \York\Helper\Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR.'Layout'));
 		$this->setLayout($this->layout);
-		$this->setViewPath($this->stack->getSafely('viewPath', Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR));
+		$this->setViewPath(\York\Dependency\Manager::get('applicationConfiguration')->getSafely('viewPath', \York\Helper\Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR));
 	}
 
 	/**
@@ -109,7 +97,8 @@ class Manager{
 	 * @return \York\View\Manager
 	 */
 	public function setViewPath($path){
-		$this->viewPath = String::addTailingSlashIfNeeded($path);
+		$this->viewPath = \York\Helper\String::addTailingSlashIfNeeded($path);
+
 		return $this;
 	}
 
@@ -129,7 +118,8 @@ class Manager{
 	 * @return \York\View\Manager
 	 */
 	public function setLayoutPath($path){
-		$this->layoutPath = String::addTailingSlashIfNeeded($path);
+		$this->layoutPath = \York\Helper\String::addTailingSlashIfNeeded($path);
+
 		return $this;
 	}
 
@@ -150,6 +140,7 @@ class Manager{
 	 */
 	public function set($key, $value){
 		$this->params[$key] = $value;
+
 		return $this;
 	}
 
@@ -160,9 +151,10 @@ class Manager{
 	 * @return mixed|null
 	 */
 	function get($key){
-		if(array_key_exists($key, $this->params)){
+		if(true === array_key_exists($key, $this->params)){
 			return $this->params[$key];
 		}
+
 		return null;
 	}
 
@@ -170,14 +162,16 @@ class Manager{
 	 * sets a layout
 	 *
 	 * @param string $name
+	 * @throws \York\Exception\NoView
 	 * @return \York\View\Manager
 	 */
 	function setLayout($name = 'main'){
 		$this->layout = $name;
 		$path = $this->layoutPath.$this->layout.'.php';
 		if(false === file_exists($path)){
-			throw new \York\Exception\NoView('layout "'.$name.'" not found!');
+			throw new \York\Exception\NoView(sprintf('layout "%s" not found!', $name));
 		}
+
 		return $this;
 	}
 
@@ -211,32 +205,43 @@ class Manager{
 	 */
 	function getView($file_name){
 		if($this->layout !== $this->defaultLayout){
-			$prefix = String::addTailingSlashIfNeeded($this->layout);
+			$prefix = \York\Helper\String::addTailingSlashIfNeeded($this->layout);
 		}else{
-			$prefix = String::addTailingSlashIfNeeded('Main');
+			$prefix = \York\Helper\String::addTailingSlashIfNeeded('Main');
 		}
 		$possibleMatches = array(
+			#views/search/index
+			$this->viewPath.$prefix.strtolower(\York\Dependency\Manager::get('applicationConfiguration')->get('controller')).DIRECTORY_SEPARATOR.$file_name,
+
+			#views/search/index
+			$this->viewPath.'Main/'.strtolower(\York\Dependency\Manager::get('applicationConfiguration')->get('controller')).DIRECTORY_SEPARATOR.$file_name,
+
 			#'views/mobile/api/foo'
-			$this->viewPath.$prefix.$this->stack->get('controller').DIRECTORY_SEPARATOR.$file_name,
+			$this->viewPath.$prefix.\York\Dependency\Manager::get('applicationConfiguration')->get('controller').DIRECTORY_SEPARATOR.$file_name,
 
 			#'/views/mobile/foo'
 			$this->viewPath.$prefix.$file_name,
 
 			#'/views/api/foo'
-			$this->viewPath.$this->stack->get('controller').DIRECTORY_SEPARATOR.$file_name,
+			$this->viewPath.\York\Dependency\Manager::get('applicationConfiguration')->get('controller').DIRECTORY_SEPARATOR.$file_name,
 
 			#'/views/foo'
 			$this->viewPath.$file_name,
 
 			#'/views/foo'
-			$this->viewPath.'Main/'.$file_name
+			$this->viewPath.'Main/'.$file_name,
+
+			#'/views/foo'
+			$this->viewPath.'Main/'.\York\Dependency\Manager::get('applicationConfiguration')->get('controller').'/'.$file_name
 		);
+
 		foreach($possibleMatches as $current){
 			$current .= '.php';
 			if(true === is_file($current)){
 				return $current;
 			}
 		}
+
 		return null;
 	}
 
@@ -264,8 +269,8 @@ class Manager{
 		if(false === file_exists($this->layoutPath.$this->layout.'.php')){
 			$this->layout = $this->defaultLayout;
 		}
-
-		require($this->layoutPath.$this->layout.'.php');
+		$path = sprintf('%s%s.php', $this->layoutPath, $this->layout);
+		require($path);
 		return $this;
 	}
 
@@ -276,14 +281,16 @@ class Manager{
 	 * @param string $name
 	 * @param mixed $datas
 	 * @param boolean $passtrough
-	 * @return \York\View\Manager
+	 * @return $this
 	 */
 	function partial($name, $datas = null, $passtrough = false){
 		$file = $this->getView($name);
 		if(null === $file){
-			\York\Helper::logerror(sprintf('partial "%s" not found!', $name));
+			\York\Dependency\Manager::get('logger')->log(sprintf('partial "%s" not found!', $name), \York\Logger\Manager::LEVEL_DEBUG);
+
 			return $this;
 		}
+
 		if(true === is_array($datas) && false === $passtrough){
 			foreach($datas as $key => $value){
 				$$key = $value;
@@ -291,8 +298,10 @@ class Manager{
 		}else{
 			$this->params['data'] = $datas;
 		}
+
 		extract($this->params);
-		include $file;
+		require $file;
+
 		return $this;
 	}
 
@@ -477,6 +486,14 @@ class Manager{
 		while(ob_get_level() > 1){
 			ob_get_clean();
 		}
+		return $this;
+	}
+
+	public function clearInstance(){
+		$this->clearBuffer();
+		$this->clearAllCss();
+		$this->clearAllJavascript();
+
 		return $this;
 	}
 

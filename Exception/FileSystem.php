@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class FileSystem extends York{}
+class FileSystem extends \York\Exception\General{}

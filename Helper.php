@@ -205,63 +205,7 @@ class Helper2{
 		$stack->set('splash', null);
 	}
 
-	/**
-	 * transcodes the php error codes to string
-	 *
-	 * @param integer $code
-	 * @return string
-	 */
-	public static function errorCodeToString($code){
-		$return = '';
-		switch($code){
-			case E_ERROR:{
-				$return = 'E_ERROR'; // 1
-			}break;
-			case E_WARNING:{
-				$return = 'E_WARNING'; // 2
-			}break;
-			case E_PARSE:{
-				$return = 'E_PARSE'; // 4
-			}break;
-			case E_NOTICE:{
-				$return = 'E_NOTICE'; // 8
-			}break;
-			case E_CORE_ERROR:{
-				$return = 'E_CORE_ERROR'; // 16
-			}break;
-			case E_CORE_WARNING:{
-				$return = 'E_CORE_WARNING'; // 32
-			}break;
-			case E_CORE_ERROR:{
-				$return = 'E_COMPILE_ERROR'; // 64
-			}break;
-			case E_CORE_WARNING:{
-				$return = 'E_COMPILE_WARNING'; // 128
-			}break;
-			case E_USER_ERROR:{
-				$return = 'E_USER_ERROR'; // 256
-			}break;
-			case E_USER_WARNING:{
-				$return = 'E_USER_WARNING'; // 512
-			}break;
-			case E_USER_NOTICE:{
-				$return = 'E_USER_NOTICE'; // 1024
-			}break;
-			case E_STRICT:{
-				$return = 'E_STRICT'; // 2048
-			}break;
-			case E_RECOVERABLE_ERROR:{
-				$return = 'E_RECOVERABLE_ERROR'; // 4096
-			}break;
-			case E_DEPRECATED:{
-				$return = 'E_DEPRECATED'; // 8192
-			}break;
-			case E_USER_DEPRECATED:{
-				$return = 'E_USER_DEPRECATED'; // 16384
-			}break;
-		}
-		return $return;
-	}
+
 
 	/**
 	 * creates a more understandable error message for file upload errnos

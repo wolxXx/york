@@ -17,8 +17,7 @@ class DropdownGroup extends \York\HTML\ContainableDomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -37,8 +36,10 @@ class DropdownGroup extends \York\HTML\ContainableDomElementAbstract{
 	public function addChild(\York\HTML\DomElementInterface $child){
 		if($child instanceof \York\HTML\Element\DropdownElement){
 			parent::addChild($child);
+
 			return $this;
 		}
+
 		throw new \York\Exception\HTTMLGenerator('dropdown group container can only contain dropdown elements as children');
 	}
 
@@ -57,8 +58,7 @@ class DropdownGroup extends \York\HTML\ContainableDomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$conf = $this->getConf();
@@ -75,6 +75,7 @@ class DropdownGroup extends \York\HTML\ContainableDomElementAbstract{
 		\York\HTML\Core::out(
 			\York\HTML\Core::closeTag('optgroup')
 		);
+
 		return $this;
 	}
 }

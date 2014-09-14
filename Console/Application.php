@@ -1,8 +1,5 @@
 <?php
 namespace York\Console;
-use York\Exception\Console;
-use York\Template\Parser;
-
 /**
  * abstract class for console applications
  * parameters / arguments must be passed via "--key value"
@@ -122,14 +119,14 @@ abstract class Application {
 		$this->carriageReturnDelay = $this->defaultCarriageReturnDelay;
 		$this->typingDelay = $this->defaultTypingDelay;
 
-		$this->init();
+		#$this->init();
 	}
 
 	/**
 	 * run the application
 	 *
 	 */
-	protected final function init(){
+	public final function init(){
 		$this->checkDefaultFlags();
 
 		if(true == Flag::Factory('help', 'h')->isEnabled()){
@@ -393,7 +390,7 @@ abstract class Application {
 			$nameAndVersion = Style::styleString($nameAndVersion, Style::FOREGROUND_YELLOW);
 		}
 
-		$message = Parser::parseFile(__DIR__.'/header', array(
+		$message = \York\Template\Parser::parseFile(__DIR__.'/header', array(
 			'nameAndVersion' => $nameAndVersion
 		));
 

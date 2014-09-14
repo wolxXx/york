@@ -1,7 +1,5 @@
 <?php
 namespace York\View\Splash;
-use York\View\Splash\ItemInterface;
-
 /**
  * a splash item
  *
@@ -9,7 +7,7 @@ use York\View\Splash\ItemInterface;
  * @version 3.0
  * @package York\View\Splash
  */
-class Item implements ItemInterface{
+class Item implements \York\View\Splash\ItemInterface{
 	/**
 	 * the displayed text
 	 *

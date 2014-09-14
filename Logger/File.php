@@ -1,14 +1,11 @@
 <?php
 namespace York\Logger;
-use York\Exception\FileSystem;
-use York\Helper\Application;
-
 /**
  * log file writer
  * writes all log messages for the the given levels to the given file
  *
  * @author wolxXx
- * @version 3.0
+ * @version 3.1\York\Template\Parser::DELIMITER;
  * @package York\Logger
  */
 class File extends LoggerAbstract{
@@ -41,11 +38,13 @@ class File extends LoggerAbstract{
 	 *
 	 * @param $filePath
 	 * @return $this
-	 * @throws FileSystem
-	 * @todo use filesystem helpers!
+	 * @throws \York\Exception\FileSystem
 	 */
 	public function setFilePath($filePath){
-		$this->file = new \York\FileSystem\File(Application::getProjectRoot().'log/'.basename($filePath), true);
+		$logPath = \York\Helper\Application::getProjectRoot().'log/';
+		new \York\FileSystem\Directory($logPath, true);
+		$this->file = new \York\FileSystem\File($logPath.basename($filePath), true);
+
 		return $this;
 	}
 
@@ -58,7 +57,6 @@ class File extends LoggerAbstract{
 		fwrite($file, $message);
 		fclose($file);
 
-		#file_put_contents($this->file->getFullName(), file_get_contents($this->file->getFullName()).$message.PHP_EOL.PHP_EOL);
 		return $this;
 	}
 

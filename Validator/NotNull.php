@@ -1,7 +1,5 @@
 <?php
 namespace York\Validator;
-use York\Exception\Validator;
-
 /**
  * validator for checking that the given data is not null
  *
@@ -15,7 +13,7 @@ class NotNull implements ValidatorInterface{
 	 */
 	public function isValid($data){
 		if(null === $data){
-			throw new Validator('given data is null');
+			throw new \York\Exception\Validator('given data is null');
 		}
 
 		return true;

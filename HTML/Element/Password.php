@@ -1,5 +1,6 @@
 <?php
 namespace York\HTML\Element;
+
 /**
  * a password input element
  *
@@ -8,6 +9,7 @@ namespace York\HTML\Element;
  * @package York\HTML\Element
 */
 class Password extends \York\HTML\DomElementAbstract{
+
 	/**
 	 * @param array $data
 	 * @return \York\HTML\Element\Password
@@ -17,8 +19,7 @@ class Password extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -28,8 +29,7 @@ class Password extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$this->displayLabelBefore();
@@ -41,6 +41,7 @@ class Password extends \York\HTML\DomElementAbstract{
 		);
 
 		$this->displayLabelAfter();
+
 		return $this;
 	}
 }

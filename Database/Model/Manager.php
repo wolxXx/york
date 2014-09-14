@@ -44,6 +44,8 @@ abstract class Manager implements ManagerInterface{
 			throw new Autoload(sprintf('cannot load %s as blueprint in %s', $class, __CLASS__));
 		}
 
+
+
 		return new $class();
 	}
 
@@ -53,6 +55,7 @@ abstract class Manager implements ManagerInterface{
 	 *
 	 * @param \ReflectionProperty $property
 	 * @param array $data
+	 * @param bool $preventReferencing
 	 * @return mixed
 	 */
 	protected function matchDeclaredVar(\ReflectionProperty $property, array $data, $preventReferencing = false){
@@ -68,11 +71,13 @@ abstract class Manager implements ManagerInterface{
 		foreach(explode(PHP_EOL,$comment) as $part){
 			$part = trim($part);
 			if(false !== strstr($part, '@var')){
-				$type = explode(' ', str_replace('@var', '', $part))[1];
+				$type =explode(' ', str_replace('@var', '', $part));
+				$type = $type[1];
 				continue;
 			}
 			if(false !== strstr($part, '@identifiedBy')){
-				$identifiedBy = explode(' ', str_replace('@identifiedBy', '', $part))[1];
+				$identifiedBy = explode(' ', str_replace('@identifiedBy', '', $part));
+				$identifiedBy = $identifiedBy[1];
 				continue;
 			}
 		}
@@ -137,9 +142,42 @@ abstract class Manager implements ManagerInterface{
 	}
 
 	/**
+	 * @param string $field
+	 * @param mixed  $value
+	 * @return null | \York\Database\Blueprint\ItemInterface
+	 */
+	public function getBy($field, $value){
+		$results = $this->findBy($field, $value);
+		if(true === empty($results)){
+			return null;
+		}
+
+		return $results[0];
+	}
+
+	/**
+	 * @param string $field
+	 * @param mixed $value
+	 * @return \York\Database\Blueprint\ItemInterface[]
+	 */
+	public function findBy($field, $value){
+		return $this->find(new \York\Database\QueryBuilder\Select(
+			array(
+				'from' => array(
+					$this->getTableName()
+				),
+				'where' => array(
+					$field => $value
+				)
+			)
+		));
+	}
+
+	/**
 	 * create a model by the fetch result from the database
 	 *
 	 * @param \York\Database\FetchResult $result
+	 * @param bool $preventReferencing
 	 * @return null|\York\Database\Blueprint\ItemInterface
 	 */
 	protected function createByResult($result, $preventReferencing = false){
@@ -171,10 +209,11 @@ abstract class Manager implements ManagerInterface{
 
 
 		foreach($instance->referencedMembers as $referenced){
-			$instance->setReferenced($referenced, $this->matchDeclaredVar($reflection->getProperty($referenced), $resultData));
+			#$instance->setReferenced($referenced, $this->matchDeclaredVar($reflection->getProperty($referenced), $resultData));
 		}
 
 		$instance->validate();
+		$instance->setIsModified(false);
 
 		return $instance;
 	}
@@ -185,11 +224,36 @@ abstract class Manager implements ManagerInterface{
 	 */
 	public function findOne(\York\Database\QueryBuilder $query){
 		$result = $this->find($query);
-		if(null !== $result){
-			$result = reset($result);
+
+		if(true === empty($result)){
+			return null;
 		}
 
+		$result = reset($result);
+
 		return $result;
+	}
+
+	/**
+	 * @param \York\Database\QueryBuilder\QueryString $queryString
+	 * @return \York\Database\Blueprint\ItemInterface[]
+	 */
+	public function findByQueryString(\York\Database\QueryBuilder\QueryString $queryString){
+		$model = new Model();
+		$results = $model->findAllByQueryString($queryString);
+		$return = array();
+
+		foreach($results as $current){
+			$currentBlueprint = $this->createByResult($current, true);
+
+			if(null === $currentBlueprint){
+				continue;
+			}
+
+			$return[] = $currentBlueprint;
+		}
+
+		return $return;
 	}
 
 	/**
@@ -226,9 +290,29 @@ abstract class Manager implements ManagerInterface{
 	public function findAll(){
 		return $this->find(new \York\Database\QueryBuilder\Select(array(
 			'from' => array(
-				$this->tableName
+				$this->getTableName()
 			)
 		)));
+	}
+
+	/**
+	 * checks if the requested table has a clumn named is_active, if so, select omly the items with is_active = true, otherwise select all items
+	 *
+	 * @return \York\Database\Blueprint\ItemInterface[]
+	 */
+	public function findAllActives(){
+		if(false === \York\Database\Information::columnExists(\Application\Configuration\Dependency::getDatabaseConfiguration()->get('db_host'), $this->getTableName(), 'is_active')){
+			return $this->findAll();
+		}
+
+		return $this->find(new \York\Database\QueryBuilder\Select(array(
+			'from' => array(
+				$this->getTableName()
+			),
+			'where' => array(
+				'is_active' => true
+			)
+		)), true);
 	}
 
 	/**

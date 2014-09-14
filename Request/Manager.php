@@ -55,7 +55,7 @@ class Manager{
 	/**
 	 * an instance of the stack
 	 *
-	 * @var \York\Stack
+	 * @var \York\Storage\Simple
 	 */
 	protected $stack;
 
@@ -73,11 +73,18 @@ class Manager{
 	 * checks if request is ajax, post and mobile
 	 */
 	protected function init(){
-		$this->stack = \York\Dependency\Manager::get('applicationConfiguration');
-		$this->dataObject = new \York\Request\Data();
+		$this->stack = \York\Dependency\Manager::getApplicationConfiguration();
+		$this->dataObject = \York\Dependency\Manager::getRequestData();
 		$this->checkIfRequestIsAjax();
 		$this->checkIfRequestIsPost();
 		$this->checkIfRequestIsMobile();
+	}
+
+	/**
+	 * @return \York\Request\Data
+	 */
+	public function getDataObject(){
+		return $this->dataObject;
 	}
 
 	/**
@@ -111,12 +118,16 @@ class Manager{
 		$this->isMobile = false;
 		if('mobile' === $this->stack->getSafely('version', 'main')){
 			$this->isMobile = true;
+
 			return $this;
 		}
+
 		$detect = new \Mobile_Detect();
+
 		if($detect->isMobile()){
 			$this->isMobile = true;
 		}
+
 		return $this;
 	}
 
@@ -145,43 +156,5 @@ class Manager{
 	 */
 	public function isMobile(){
 		return $this->isMobile;
-	}
-
-	/**
-	 * logs the post data
-	 * fields named "pass", "password" or "passwort" are replaced with ****
-	 *
-	 * @return Manager
-	 */
-	public function postLog(){
-		if(false === $this->isPost()){
-			return $this;
-		}
-
-		$delim = ' | ';
-		$txt = \York\Helper\Date::getDate().$delim;
-		$txt .= \York\Helper\Net::getUserIP().$delim;
-		$txt .= true === \York\Auth\Manager::isLoggedIn()? 'true ('.\York\Auth\Manager::getUserNick().')'.$delim : 'false'.$delim;
-		$txt .= \York\Helper\Net::getCurrentURI().$delim;
-		$txt .= "\nvalues:\n";
-		foreach($this->dataObject->getRawPOST() as $key => $value){
-			if(in_array($key, $this->ignoredPostForLog)){
-				$value = '****';
-			}
-			if(in_array($key, array('base64data'))){
-				$value = '[base64data length: '.strlen($value).']';
-			}
-			if(true === is_array($value)){
-				$newvalue = '';
-				foreach($value as $x => $y){
-					$newvalue .= "$x = $y, ";
-				}
-				$value = trim($newvalue);
-			}
-			$txt .= "$key: $value\n";
-		}
-		$txt .= "________________\n";
-		\York\Dependency\Manager::get('logger')->log($txt, \York\Logger\Manager::LEVEL_LOG_POST);
-		return $this;
 	}
 }

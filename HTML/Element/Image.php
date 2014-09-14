@@ -17,8 +17,7 @@ class Image extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -35,34 +34,26 @@ class Image extends \York\HTML\DomElementAbstract{
 	 */
 	public function setSrc($src){
 		$this->set('src', $src);
+
 		return $this;
 	}
 
 	/**
-	 * overwrites the default setLabel method
-	 * because who needs a label for an image?
-	 *
-	 * (non-PHPdoc)
-	 * @see DomElementAbstract::setLabel()
+	 * @inheritdoc
 	 */
 	function setLabel(\York\HTML\Element\Label $label){
 		return $this;
 	}
 
 	/**
-	 * overwrites the default setLabel method
-	 * because who needs a label for an image
-	 *
-	 * (non-PHPdoc)
-	 * @see DomElementAbstract::addLabel()
+	 * @inheritdoc
 	 */
 	function addLabel($label = null, $position = 'before'){
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$conf = $this->getConf();
@@ -70,6 +61,7 @@ class Image extends \York\HTML\DomElementAbstract{
 			\York\HTML\Core::openSingleTag('img', $conf),
 			\York\HTML\Core::closeSingleTag()
 		);
+
 		return $this;
 	}
 }

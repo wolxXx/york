@@ -17,8 +17,7 @@ class DropdownElement extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -34,6 +33,7 @@ class DropdownElement extends \York\HTML\DomElementAbstract{
 	 */
 	public function setIsSelected($isSelected = true){
 		$this->set('selected', true === $isSelected? 'selected' : null);
+
 		return $this;
 	}
 
@@ -45,6 +45,7 @@ class DropdownElement extends \York\HTML\DomElementAbstract{
 	 */
 	public function setValue($value){
 		$this->set('value', $value);
+
 		return $this;
 	}
 
@@ -56,6 +57,7 @@ class DropdownElement extends \York\HTML\DomElementAbstract{
 	 */
 	public function setText($text){
 		$this->set('text', $text);
+
 		return $this;
 	}
 
@@ -73,8 +75,7 @@ class DropdownElement extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$conf = $this->getConf();
@@ -85,6 +86,7 @@ class DropdownElement extends \York\HTML\DomElementAbstract{
 			$text,
 			\York\HTML\Core::closeTag('option')
 		);
+
 		return $this;
 	}
 }

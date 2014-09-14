@@ -8,13 +8,24 @@ namespace York\FileSystem;
  * @package York\FileSystem
  */
 class File{
+	/***
+	 * @var string
+	 */
 	protected $path;
 
-	public function __construct($path, $createIfNotExists = false){
+	/**
+	 * @param string $path
+	 * @param boolean $createIfNotExists
+	 */
+	public final function __construct($path, $createIfNotExists = false){
 		$this->path = $path;
 		$this->init(true === $createIfNotExists);
 	}
 
+	/**
+	 * @param boolean $createIfNotExists
+	 * @throws \York\Exception\FileSystem
+	 */
 	protected function init($createIfNotExists){
 		if(false === file_exists($this->path)){
 			if(false === $createIfNotExists){
@@ -23,7 +34,7 @@ class File{
 			try{
 				touch($this->path);
 				chmod($this->path, 0774);
-			}catch (\York\Exception\York $exception){
+			}catch (\York\Exception\General $exception){
 				throw new \York\Exception\FileSystem(sprintf('cannot touch file %s', $this->path));
 			}
 		}
@@ -37,10 +48,23 @@ class File{
 		}
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getContent(){
+		return file_get_contents($this->getFullName());
+	}
+
+	/**
+	 * @return string
+	 */
 	public function getType(){
 		return \York\Helper\FileSystem::getFileType($this->path);
 	}
 
+	/**
+	 * @return string
+	 */
 	public function getFullName(){
 		return $this->path;
 	}

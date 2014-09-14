@@ -1,6 +1,5 @@
 <?php
 namespace York\Template;
-
 /**
  * simple template parser
  *
@@ -56,8 +55,10 @@ class Parser{
 	/**
 	 * replace the placeholders with the given params
 	 *
-	 * @param string $file
+	 * @param $content
 	 * @param array $params
+	 * @param null $delimiter
+	 * @internal param string $file
 	 * @return string
 	 */
 	protected static function parse($content, array $params, $delimiter = null){

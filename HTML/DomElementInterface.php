@@ -1,5 +1,6 @@
 <?php
 namespace York\HTML;
+
 /**
  * interface for html elements
  *
@@ -14,6 +15,13 @@ interface DomElementInterface{
 	 * @return \York\HTML\DomElementInterface
 	 */
 	public function display();
+
+	/**
+	 * get the generated markup
+	 *
+	 * @return string
+	 */
+	public function getMarkup();
 
 	/**
 	 * returns the default config for this element

@@ -23,4 +23,10 @@ interface LoggerInterface{
 	 * @return integer[]
 	 */
 	public function getLevels();
+
+	/**
+	 * @param integer $level
+	 * @return boolean
+	 */
+	public function hasLevel($level);
 }

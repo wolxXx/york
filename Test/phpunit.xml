@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         bootstrap="Bootstrap.php"
+         processIsolation="false"
+         stopOnError="false"
+         stopOnFailure="false"
+         stopOnIncomplete="false"
+         stopOnSkipped="false"
+         syntaxCheck="true"
+         strict="false"
+         verbose="true">
+
+
+    <!--<testsuites>
+        <testsuite name="MamUnitTestsSuite">
+            <directory suffix="Test.php">../../library</directory>
+        </testsuite>
+    </testsuites>
+    -->
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">../York</directory>
+            <directory suffix=".php">../../York</directory>
+            <exclude>
+                <directory>../../ibrary/*/tests</directory>
+                <directory>../../library/vendor</directory>
+            </exclude>
+        </whitelist>
+    </filter>
+    <!--
+        <groups>
+            <exclude>
+                <group>integration</group>
+            </exclude>
+        </groups>
+    -->
+    <php>
+        <ini name="zend.enable_gc" value="1" />
+    </php>
+
+</phpunit>

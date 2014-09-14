@@ -7,9 +7,10 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class NotAllowed extends Auth{
+class NotAllowed extends \York\Exception\Auth{
 	public function __construct(){
-		\York\Helper::addSplash(\York\Translator::translate('Diese Seite ist für dich nicht bestimmt!'));
-		\York\Helper::redirect('/error/403');
+		\York\Dependency\Manager::get('splashManager')->addText(\York\Helper\Translator::translate('Diese Seite ist für dich nicht bestimmt!'));
+		$redirect = new \York\Redirect('/error/403');
+		$redirect->redirect();
 	}
 }

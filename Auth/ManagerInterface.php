@@ -1,20 +1,17 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: wolxxx
- * Date: 08.01.14
- * Time: 19:48
- */
-
 namespace York\Auth;
-
-
+/**
+ * Interface ManagerInterface
+ * @package York\Auth
+ * @version 3.0
+ * @author wolxXx
+ */
 interface ManagerInterface {
 	/**
-	 * checks if the provided passwod matches the saved one
+	 * checks if the provided password matches the saved one
 	 *
 	 * @param string $password
-	 * @param \York\Database\FetchResult $user
+	 * @param \Application\Model\User $user
 	 * @return boolean
 	 */
 	public static function isUserPasswordOk($password, $user);
@@ -44,14 +41,14 @@ interface ManagerInterface {
 	/**
 	 * creates auth session data
 	 *
-	 * @param \York\Database\FetchResult $result
+	 * @param \Application\Model\User $result
 	 */
 	public static function login($result = null);
 
 	/**
 	 * setter for the user
 	 *
-	 * @param \York\Database\FetchResult $user
+	 * @param \Application\Model\User $user
 	 */
 	public static function setUser($user);
 

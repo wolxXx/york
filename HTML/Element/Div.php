@@ -17,8 +17,7 @@ class Div extends \York\HTML\ContainableDomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -26,8 +25,7 @@ class Div extends \York\HTML\ContainableDomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$conf = $this->getConf();
@@ -40,6 +38,7 @@ class Div extends \York\HTML\ContainableDomElementAbstract{
 			$current->display();
 		}
 		\York\HTML\Core::out(\York\HTML\Core::closeTag('div'));
+
 		return $this;
 	}
 }

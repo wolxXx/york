@@ -17,13 +17,14 @@ class Br extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		\York\HTML\Core::out('');
 		echo \York\HTML\Core::openSingleTag('br');
 		echo \York\HTML\Core::closeSingleTag();
 		\York\HTML\Core::out('');
+
+		return $this;
 	}
 }

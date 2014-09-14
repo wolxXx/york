@@ -1,13 +1,11 @@
 <?php
 namespace York\Database;
-use York\Exception;
-use York\Exception\Database;
 /**
  * connection to a mysqli database
  * see it as an improved mysql wrapper class
  *
  * @author wolxXx
- * @version 3.0
+ * @version 3.1
  * @package York\Database
  */
 class Connection{
@@ -16,49 +14,49 @@ class Connection{
 	 *
 	 * @var string
 	 */
-	private $host;
+	protected $host;
 
 	/**
 	 * database schema
 	 *
 	 * @var string
 	 */
-	private $schema;
+	protected $schema;
 
 	/**
 	 * user name
 	 *
 	 * @var string
 	 */
-	private $user;
+	protected $user;
 
 	/**
 	 * password
 	 *
 	 * @var string
 	 */
-	private $password;
+	protected $password;
 
 	/**
 	 * the last occurred error
 	 *
 	 * @var string
 	 */
-	private $error;
+	protected $error;
 
 	/**
 	 * real database connection
 	 *
 	 * @var \mysqli
 	 */
-	private $connection;
+	protected $connection;
 
 	/**
 	 * the last executed query
 	 *
 	 * @var string
 	 */
-	private $lastQuery;
+	protected $lastQuery;
 
 	/**
 	 * set credentials
@@ -87,15 +85,15 @@ class Connection{
 	/**
 	 * create a database connection
 	 *
-	 * @throws Database
-	 * @return Connection
+	 * @throws \York\Exception\Database
+	 * @return $this
 	 */
 	public function connect(){
 		$this->connection = new \mysqli($this->host, $this->user, $this->password);
 		$this->connection->select_db($this->schema);
 
 		if(null !== $this->connection->connect_error){
-			throw new Database('db-error: '.$this->connection->connect_error);
+			throw new \York\Exception\Database(sprintf('db-error: %s', $this->connection->connect_error));
 		}
 
 		return $this;
@@ -104,7 +102,7 @@ class Connection{
 	/**
 	 * disconnect from database
 	 *
-	 * @return \York\Database\Connection
+	 * @return $this
 	 */
 	public function disconnect(){
 		if(
@@ -132,6 +130,13 @@ class Connection{
 	 * @return integer
 	 */
 	public function getErrno(){
+		return $this->getErrorNumber();
+	}
+
+	/**
+	 * @return integer
+	 */
+	public function getErrorNumber(){
 		return $this->connection->errno;
 	}
 
@@ -153,11 +158,7 @@ class Connection{
 	 */
 	public function query($query){
 		$this->lastQuery = $query;
-		/**
-		 * @var \York\Logger\Manager $logger
-		 */
-		$logger = \York\Dependency\Manager::get('logger');
-		$logger->log($query, $logger::LEVEL_DATABASE_DEBUG);
+		\York\Dependency\Manager::getLogger()->log($query, \York\Logger\Manager::LEVEL_DATABASE_DEBUG);
 
 		return $this->connection->query($query);
 	}
@@ -177,9 +178,9 @@ class Connection{
 	}
 
 	/**
-	 * returns the last insert id
+	 * returns the last inserted id
 	 *
-	 * @return integer
+	 * @return integer | null
 	 */
 	public function getLastInsertId(){
 		return $this->connection->insert_id;
@@ -192,7 +193,7 @@ class Connection{
 	 * @return \York\Database\QueryResult
 	 */
 	public function clearTable($tableName){
-		$query = 'truncate '.$tableName;
+		$query = sprintf('truncate %s', $tableName);
 		$result = $this->query($query);
 		return new QueryResult($result, $query, $this->connection->error);
 	}
@@ -211,7 +212,7 @@ class Connection{
 	 * returns this object in sense of fluent interfaces
 	 *
 	 * @param string $host
-	 * @return \York\Database\Connection
+	 * @return $this
 	 */
 	public function setHost($host){
 		$this->host = $host;
@@ -224,7 +225,7 @@ class Connection{
 	 * returns this object in sense of fluent interfaces
 	 *
 	 * @param string $schema
-	 * @return \York\Database\Connection
+	 * @return $this
 	 */
 	public function setSchema($schema){
 		$this->schema = $schema;
@@ -246,7 +247,7 @@ class Connection{
 	 * returns this object in sense of fluent interfaces
 	 *
 	 * @param string $user
-	 * @return \York\Database\Connection
+	 * @return $this
 	 */
 	public function setUser($user){
 		$this->user = $user;
@@ -259,7 +260,7 @@ class Connection{
 	 * returns this object in sense of fluent interfaces
 	 *
 	 * @param string $password
-	 * @return \York\Database\Connection
+	 * @return $this
 	 */
 	public function setPassword($password){
 		$this->password = $password;

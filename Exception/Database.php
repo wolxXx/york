@@ -7,7 +7,7 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Database extends York{
+class Database extends \York\Exception\General{
 	public function __construct($message){
 		/**
 		 * @var \York\Logger\Manager $logger

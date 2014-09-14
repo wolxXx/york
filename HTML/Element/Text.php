@@ -21,6 +21,7 @@ class Text extends \York\HTML\Element\Input{
 	 */
 	public function setText($text){
 		$this->set('text', $text);
+
 		return $this;
 	}
 }

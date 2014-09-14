@@ -11,12 +11,13 @@
 	private function set%%name%%($%%name%%){
 		throw new \York\Exception\Database('setting model items is not supported yet!');
 	}
+
 	/**
 	 * getter for the %%name%%
 	 * @return \Application\Model\%%name%%
 	*/
 	public function get%%name%%(){
-		return $this->%%name%%;
+		return $this->getReferenced('%%name%%', $this->%%identified%%);
 	}
 
 

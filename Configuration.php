@@ -69,6 +69,7 @@ abstract class Configuration{
 	 * @throws Apocalypse
 	 */
 	public final function checkConfig(){
+		return true;
 		$needed = array(
 			Dependency::get('databaseConfiguration')->get('db_host'),
 			Dependency::get('databaseConfiguration')->get('db_user'),

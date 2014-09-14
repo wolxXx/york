@@ -1,5 +1,6 @@
 <?php
 namespace York\HTML\Element;
+
 /**
  * container for form elements
  *
@@ -25,8 +26,7 @@ class Form extends \York\HTML\ContainableDomElementAbstract{
 	protected $isUploadForm = false;
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -45,6 +45,7 @@ class Form extends \York\HTML\ContainableDomElementAbstract{
 	 */
 	public function setMethod($method){
 		$this->set('method', 'post' === $method? 'post' : 'get');
+
 		return $this;
 	}
 
@@ -67,12 +68,12 @@ class Form extends \York\HTML\ContainableDomElementAbstract{
 	 */
 	public function setIsUploadForm($isUploadForm = true){
 		$this->isUploadForm = true === $isUploadForm;
+
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$this->displayLabelBefore();

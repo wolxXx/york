@@ -1,13 +1,13 @@
 <?php
 namespace York\Storage;
 /**
- * interface for storages
+ * interface for storage
  *
  * @author wolxXx
- * @version 3.0
+ * @version 3.2
  * @package York\Storage
  */
-interface StorageInterface {
+interface StorageInterface{
 	/**
 	 * getter for data
 	 *
@@ -57,6 +57,22 @@ interface StorageInterface {
 	 * @return StorageInterface
 	 */
 	public function remove($key);
+
+	/**
+	 * removes the data for the key
+	 *
+	 * @param string $key
+	 * @return StorageInterface
+	 */
+	public function removeKey($key);
+
+	/**
+	 * removes the data if set
+	 *
+	 * @param mixed $data
+	 * @return StorageInterface
+	 */
+	public function removeData($data);
 
 	/**
 	 * clears all set data

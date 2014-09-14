@@ -47,7 +47,7 @@ class Model{
 	 * @throws Apocalypse
 	 */
 	public function __call($function, $params){
-		foreach($this->availableModels as $current){
+			foreach($this->availableModels as $current){
 			if(true === method_exists($current, $function)){
 				return call_user_func_array(array($current, $function), $params);
 			}

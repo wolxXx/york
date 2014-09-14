@@ -7,6 +7,4 @@ namespace York\HTML;
  * @version 3.0
  * @package York\HTML
  */
-class Factory{
-
-}
+class Factory{}

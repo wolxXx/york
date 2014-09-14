@@ -17,11 +17,11 @@ class Time extends \York\HTML\Element\Date{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$this->set('format', '%Y-%m-%d %H:%M');
+
 		return parent::display();
 	}
 }

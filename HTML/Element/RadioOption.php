@@ -17,8 +17,7 @@ class RadioOption extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -39,8 +38,7 @@ class RadioOption extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		if(null === $this->label){
@@ -49,12 +47,20 @@ class RadioOption extends \York\HTML\DomElementAbstract{
 		$this->displayLabelBefore();
 
 		$conf = $this->getConf();
+
+		if(true === $conf['checked']){
+			$conf['checked'] = 'checked';
+		}else{
+			unset($conf['checked']);
+		}
+
 		\York\HTML\Core::out(
 			\York\HTML\Core::openSingleTag('input', $conf),
 			\York\HTML\Core::closeSingleTag('input')
 		);
 
 		$this->displayLabelAfter();
+
 		return $this;
 	}
 }

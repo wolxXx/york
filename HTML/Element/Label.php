@@ -26,8 +26,7 @@ class Label extends \York\HTML\DomElementAbstract{
 	protected $position = 'before';
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -45,6 +44,7 @@ class Label extends \York\HTML\DomElementAbstract{
 	 */
 	public function setPosition($position = null){
 		$this->position = 'before' === $position? 'before' : 'after';
+
 		return $this;
 	}
 
@@ -58,22 +58,14 @@ class Label extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * overwrites the default setLabel method
-	 * because who needs a label for a label for a label? :)
-	 *
-	 * (non-PHPdoc)
-	 * @see DomElementAbstract::setLabel()
+	 * @inheritdoc
 	 */
 	function setLabel(\York\HTML\Element\Label $label){
 		return $this;
 	}
 
 	/**
-	 * overwrites the default setLabel method
-	 * because who needs a label for a label for a label? :)
-	 *
-	 * (non-PHPdoc)
-	 * @see DomElementAbstract::addLabel()
+	 * @inheritdoc
 	 */
 	function addLabel($label = null, $position = 'before'){
 		return $this;
@@ -87,6 +79,7 @@ class Label extends \York\HTML\DomElementAbstract{
 	 */
 	public function setFor($for){
 		$this->set('for', $for);
+
 		return $this;
 	}
 
@@ -98,6 +91,7 @@ class Label extends \York\HTML\DomElementAbstract{
 	 */
 	public function setText($text){
 		$this->set('text', $text);
+
 		return $this;
 	}
 
@@ -111,8 +105,7 @@ class Label extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$conf = \York\Helper\Set::merge($this->getDefaultConf(), $this->getData());
@@ -123,6 +116,7 @@ class Label extends \York\HTML\DomElementAbstract{
 			$text,
 			\York\HTML\Core::closeTag('label')
 		);
+
 		return $this;
 	}
 }

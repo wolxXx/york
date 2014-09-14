@@ -1,0 +1,33 @@
+<?php
+namespace Application\Model\Manager\Blueprint;
+
+/**
+ * base for %%modelname%% model manager blueprint
+ *
+ * @author York Framework
+ * @version 1.0
+ * @package Application\Model\Manager\Blueprint
+ */
+class %%modelname%% extends \York\Database\Model\Manager{
+	/**
+	 * name of the referenced table
+	 *
+	 * @var string
+	 */
+	protected $tableName = '%%table%%';
+
+	/**
+	 * name of the referenced blueprint class
+	 *
+	 * @var string
+	 */
+	protected $blueprint = '\Application\Model\%%modelname%%';
+
+	/**
+	 * @param integer $id
+	 * @return \Application\Model\%%modelname%%
+	 */
+	public function getById($id){
+		return parent::getById($id);
+	}
+}

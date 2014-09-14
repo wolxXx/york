@@ -1,5 +1,6 @@
 <?php
 namespace York\HTML\Element;
+
 /**
  * a input element
 *
@@ -17,8 +18,7 @@ class Input extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -37,6 +37,7 @@ class Input extends \York\HTML\DomElementAbstract{
 	 */
 	public function setValue($value){
 		$this->set('value', $value);
+
 		return $this;
 	}
 
@@ -48,6 +49,7 @@ class Input extends \York\HTML\DomElementAbstract{
 	 */
 	public function setType($type){
 		$this->set('type', $type);
+
 		return $this;
 	}
 
@@ -59,6 +61,7 @@ class Input extends \York\HTML\DomElementAbstract{
 	 */
 	public function disableAutocomplete(){
 		$this->set('autocomplete', 'off');
+
 		return $this;
 	}
 
@@ -69,12 +72,12 @@ class Input extends \York\HTML\DomElementAbstract{
 	 */
 	public function enableAutocomplete(){
 		$this->set('autocomplete', null);
+
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$this->displayLabelBefore();

@@ -9,6 +9,29 @@ namespace York\Helper;
  */
 class Set{
 	/**
+	 * returns the
+	 * @param array $array
+	 * @param integer $items
+	 * @param integer $offset
+	 * @return array
+	 */
+	public static function subSet($array, $items = 3, $offset = 0){
+		$result = array();
+		$counter = 1;
+		foreach($array as $key => $value){
+			if($offset > 0){
+				$offset--;
+				continue;
+			}
+			$result[$key] = $value;
+			if(++$counter === $items){
+				break;
+			}
+		}
+
+		return $result;
+	}
+	/**
 	 * merges all given arrays
 	 *
 	 * @param array $array1
@@ -36,7 +59,10 @@ class Set{
 	 * @param integer $slots
 	 * @return array
 	 */
-	public static function array_split($array, $slots){
+	public static function array_split(array $array, $slots){
+		if(true === empty($array)){
+			return array();
+		}
 		return array_chunk($array, ceil(count($array) / $slots));
 	}
 

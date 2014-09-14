@@ -87,7 +87,7 @@ class Parameter{
 			$short .= ':';
 			$long .= ':';
 		}
-		$options = getopt($short, array($long));
+		$options = $this->parseArgs($short, $long);
 
 		if(false === isset($options[$this->long]) && false === isset($options[$this->short])){
 			if(true == $this->isRequired()){
@@ -104,6 +104,16 @@ class Parameter{
 			$this->value = $options[$this->short];
 		}
 
+	}
+
+	/**
+	 * @param $short
+	 * @param $long
+	 *
+	 * @return array
+	 */
+	public function parseArgs($short, $long){
+		return getopt($short, array($long));
 	}
 
 	/**
@@ -154,5 +164,13 @@ class Parameter{
 	 */
 	public function getDefault(){
 		return $this->default;
+	}
+
+	public function getLongOption(){
+		return $this->long;
+	}
+
+	public function getShortOption(){
+		return $this->short;
 	}
 }

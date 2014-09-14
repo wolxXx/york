@@ -8,7 +8,6 @@ namespace York\Request;
  * @author wolxXx
  * @version 3.0
  * @package York\Request
- *
  */
 class File{
 	/**
@@ -78,7 +77,7 @@ class File{
 
 	/**
 	 * obfuscated, hashed file name
-	 * so duplicated filenames are not occuring
+	 * so duplicated filenames are not occurring
 	 *
 	 * @var string
 	 */
@@ -119,7 +118,6 @@ class File{
 			->setErrorNumber($error)
 			->setFileSize($size)
 			->setUploadIndex($uploadIndex)
-			->setIsImage()
 			->setExtension()
 			->setErrorMessage()
 			->setSizeText()
@@ -131,10 +129,11 @@ class File{
 	 * setter for the upload index
 	 *
 	 * @param string $index
-	 * @return \York\Request\File
+	 * @return $this;
 	 */
 	public function setUploadIndex($index){
 		$this->uploadIndex = $index;
+
 		return $this;
 	}
 
@@ -142,10 +141,11 @@ class File{
 	 * setter for the file size
 	 *
 	 * @param integer $size
-	 * @return \York\Request\File
+	 * @return $this;
 	 */
 	public function setFileSize($size){
 		$this->size = $size;
+
 		return $this;
 	}
 
@@ -153,10 +153,11 @@ class File{
 	 * setter for the error number
 	 *
 	 * @param integer $errorNumber
-	 * @return \York\Request\File
+	 * @return $this;
 	 */
 	public function setErrorNumber($errorNumber){
 		$this->errorNumber = $errorNumber;
+
 		return $this;
 	}
 
@@ -164,33 +165,63 @@ class File{
 	 * setter for the name
 	 *
 	 * @param string $name
-	 * @return \York\Request\File
+	 * @return $this;
 	 */
 	public function setName($name){
 		$this->name = $name;
+
 		return $this;
+	}
+
+	/**
+	 * getter for the name
+	 *
+	 * @return string
+	 */
+	public function getName(){
+		return $this->name;
 	}
 
 	/**
 	 * setter for the file type
 	 *
 	 * @param string $type
-	 * @return \York\Request\File
+	 * @return $this
 	 */
 	public function setType($type){
 		$this->type = $type;
+
 		return $this;
+	}
+
+	/**
+	 * getter for the type
+	 *
+	 * @return string
+	 */
+	public function getType(){
+		return $this->type;
 	}
 
 	/**
 	 * setter for the temp name
 	 *
 	 * @param string $tempName
-	 * @return \York\Request\File
+	 * @return $this
 	 */
 	public function setTempName($tempName){
 		$this->tempName = $tempName;
+
 		return $this;
+	}
+
+	/**
+	 * getter for the temp name
+	 *
+	 * @return string
+	 */
+	public function getTempName(){
+		return $this->tempName;
 	}
 
 	/**
@@ -201,6 +232,7 @@ class File{
 	 */
 	public function setNewFileName(){
 		$this->newFileName = md5(time().$this->name.$this->sizeText.$this->size.$this->type).$this->extension;
+
 		return $this;
 	}
 
@@ -218,10 +250,11 @@ class File{
 	 * calls therefore the core helper method
 	 * can be overwritten for special interests
 	 *
-	 * @return \York\Request\File
+	 * @return $this;
 	 */
 	public function setUploadSuccessful(){
 		$this->uploadSuccessful = 0 === $this->errorNumber;
+
 		return $this;
 	}
 
@@ -230,10 +263,12 @@ class File{
 	 * calls therefore the core helper method
 	 * can be overwritten for special interests
 	 *
-	 * @return \York\Request\File
+	 * @param $value
+	 * @return $this
 	 */
-	public function setIsImage(){
-		$this->isImage = \York\Helper\File::isImage($this->tempName);
+	public function setIsImage($value){
+		$this->isImage = true === $value;
+
 		return $this;
 	}
 
@@ -242,10 +277,11 @@ class File{
 	 * calls therefore the core helper method
 	 * can be overwritten for special interests
 	 *
-	 * @return \York\Request\File
+	 * @return $this
 	 */
 	public function setExtension(){
-		$this->extension = Helper::getFileExtension($this->name);
+		$this->extension = \York\Helper\FileSystem::getFileExtension($this->name);
+
 		return $this;
 	}
 
@@ -254,10 +290,11 @@ class File{
 	 * calls therefore the core helper method
 	 * can be overwritten for special interests
 	 *
-	 * @return FileUploadObject
+	 * @return $this
 	 */
 	public function setErrorMessage(){
-		$this->errorMessage = Helper::uploadErrorNumberToString($this->errorNumber);
+		$this->errorMessage = \York\Helper\Net::uploadErrorNumberToString($this->errorNumber);
+
 		return $this;
 	}
 
@@ -266,22 +303,68 @@ class File{
 	 * calls therefore the core helper method
 	 * can be overwritten for special interests
 	 *
-	 * @return FileUploadObject
+	 * @return $this
 	 */
 	public function setSizeText(){
-		$this->sizeText = Helper::fileSize($this->size);
+		$this->sizeText = \York\Helper\FileSystem::fileSize($this->size);
+
 		return $this;
 	}
 
 	/**
+	 * check if the upload was successful
+	 *
+	 * @return boolean
+	 */
+	public function wasUploadSuccessful(){
+		return $this->uploadSuccessful;
+	}
+
+	/**
 	 * moves the file to a target
+	 *
 	 * @param string $target
 	 * @return boolean
 	 */
 	public function move($target){
-		if(false === is_dir(dirname(Helper::getDocRoot().$target))){
-			mkdir(dirname(Helper::getDocRoot().$target), 0777, true);
+		if(false === is_dir(dirname($target))){
+			mkdir(dirname($target), 0777, true);
 		}
+
 		return rename($this->tempName, $target);
+	}
+
+	/**
+	 * check if this is an image
+	 *
+	 * @return boolean
+	 */
+	public function isImage(){
+		return true === \York\Helper\FileSystem::isImage($this->getNewFileName()) || true === \York\Helper\FileSystem::isImage($this->getTempName());
+	}
+
+	/**
+	 * check if this is an archive
+	 * @return boolean
+	 */
+	public function isArchive(){
+		return $this->isSupportedType(array(
+			'application/x-7z-compressed',
+			'application/x-rar',
+			'application/rar',
+			'application/x-tar',
+			'application/gzip',
+			'application/zip'
+		));
+	}
+
+	/**
+	 * check if this type is supported
+	 *
+	 * @param array $supported
+	 * @return boolean
+	 */
+	public function isSupportedType(array $supported){
+		return true === in_array($this->type, $supported);
 	}
 }

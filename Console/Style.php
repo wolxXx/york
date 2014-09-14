@@ -1,6 +1,5 @@
 <?php
 namespace York\Console;
-
 /**
  * styles for console
  *

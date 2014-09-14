@@ -14,6 +14,7 @@ class Standard implements WriterInterface{
 	 */
 	public function write($text){
 		echo $text;
+		return $this;
 	}
 
 	/**

@@ -35,8 +35,7 @@ class QueryString implements \York\Database\QueryBuilder\QueryStringInterface{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see QueryStringInterface::getQueryString()
+	 * @inheritdoc
 	 */
 	public function getQueryString($cleared = false){
 		if(true === $cleared){

@@ -8,6 +8,7 @@ namespace York\Request\Api;
  * @package York\Request\Api
  */
 class Code implements CodeInterface{
+	const SUCCESS = 0;
 	const OK = 200;
 	const ERROR = 500;
 
@@ -15,8 +16,8 @@ class Code implements CodeInterface{
 	 * retrieves the explaining text for the code
 	 *
 	 * @param $code
+	 * @throws \York\Exception\General
 	 * @return string
-	 * @throws \York\Exception\UndefinedApiStatus
 	 */
 	public static function getStatusTextForCode($code){
 		switch ($code){
@@ -29,8 +30,13 @@ class Code implements CodeInterface{
 			}break;
 
 			default:{
-				throw new \York\Exception\UndefinedApiStatus(sprintf('%s is not defined! please define own codes!', $code));
+				$reflection = new \ReflectionClass(get_called_class());
+				if(true === in_array($code, $reflection->getConstants())){
+					$flip = array_flip($reflection->getConstants());
+					return $flip[$code];
+				}
 
+				throw new \York\Exception\General(sprintf('ApiCode "%s" not found', $code));
 			}
 		}
 	}

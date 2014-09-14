@@ -1,6 +1,5 @@
 <?php
 namespace York\Console;
-
 /**
  * system call abstraction
  *
@@ -43,7 +42,7 @@ class SystemCall {
 	 * @param string $command
 	 * @param string[] $arguments
 	 */
-	public function __construct($command, $arguments = array()){
+	public function __construct($command = null, $arguments = array()){
 		$this->command = $command;
 		$this->arguments = $arguments;
 	}
@@ -62,12 +61,55 @@ class SystemCall {
 	/**
 	 * run the command
 	 *
-	 * @return SystemCall
+	 * @throws \York\Exception\SystemCall
+	 * @return $this
 	 */
 	public function run(){
-		exec(sprintf('%s %s', $this->command, implode(' ', $this->arguments)), $resultOutput, $result);
+		if(null === $this->command){
+			throw new \York\Exception\SystemCall('command not set!');
+		}
+
+		\Application\Configuration\Dependency::getLogger()->log($this->getCommand(), \York\Logger\Manager::LEVEL_CONSOLE_RUN);
+
+		exec($this->getCommand(true), $resultOutput, $result);
 		$this->result = $resultOutput;
 		$this->hasRun = true;
+
+		return $this;
+	}
+
+	/**
+	 * set the command
+	 *
+	 * @param string $command
+	 * @return $this
+	 */
+	public function setCommand($command){
+		$this->command = $command;
+
+		return $this;
+	}
+
+	/**
+	 * set the arguments
+	 *
+	 * @param array $arguments
+	 * @return $this
+	 */
+	public function setArguments(array $arguments){
+		$this->arguments = $arguments;
+
+		return $this;
+	}
+
+	/**
+	 * add argument
+	 *
+	 * @param string $argument
+	 * @return $this
+	 */
+	public function addArgument($argument){
+		$this->arguments[] = $argument;
 
 		return $this;
 	}
@@ -84,5 +126,24 @@ class SystemCall {
 		}
 
 		return $this->result;
+	}
+
+	/**
+	 * retrieve the command
+	 * set $withArguments to true to have the complete command with arguments
+	 * @param bool $withArguments
+	 * @throws \York\Exception\SystemCall
+	 * @return string
+	 */
+	public function getCommand($withArguments = true){
+		if(null === $this->command){
+			throw new \York\Exception\SystemCall('command not set!');
+		}
+
+		if(false === $withArguments){
+			return $this->command;
+		}
+
+		return sprintf('%s %s', $this->command, implode(' ', $this->arguments));
 	}
 }

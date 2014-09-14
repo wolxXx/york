@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Redirect extends York{}
+class Redirect extends \York\Exception\General{}

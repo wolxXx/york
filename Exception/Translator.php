@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Translator extends York{}
+class Translator extends \York\Exception\General{}

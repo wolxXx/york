@@ -15,7 +15,8 @@
 	 * @return \Application\Model\%%model%%
 	 */
 	public function set%%uname%%($value){
-		$this->%%name%% = $value;
+		$this->set('%%name%%', $value);
+
 		return $this;
 	}
 

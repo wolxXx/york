@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class ModelNotSaved extends York{}
+class ModelNotSaved extends \York\Exception\General{}

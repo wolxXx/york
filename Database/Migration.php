@@ -1,11 +1,5 @@
 <?php
 namespace York\Database;
-use York\Database\Accessor\Factory;
-use York\Database\QueryBuilder\QueryString;
-use York\Dependency\Manager as Dependency;
-use York\Exception\York;
-use York\Helper\Application;
-use York\Helper\Date;
 
 /**
  * pattern for a migration
@@ -14,7 +8,6 @@ use York\Helper\Date;
  * @author wolxXx
  * @package York\Database
  * @version 3.0
- *
  */
 abstract class Migration{
 	/**
@@ -38,7 +31,7 @@ abstract class Migration{
 	 */
 	public function __construct($revision){
 		$this->setRevision($revision);
-		$this->connection = Dependency::get('databaseManager')->getConnection();
+		$this->connection = \York\Dependency\Manager::getDatabaseManager()->getConnection();
 	}
 
 	/**
@@ -77,9 +70,9 @@ abstract class Migration{
 	 * @return Migration
 	 */
 	protected final function insertMigrationToDB(){
-		Factory::getSaveObject('migrations')
+		\York\Database\Accessor\Factory::getSaveObject('migrations')
 			->set('number', $this->getRevision())
-			->set('created', Date::getDate())
+			->set('created', \York\Helper\Date::getDate())
 			->save();
 		return $this;
 	}
@@ -96,13 +89,11 @@ abstract class Migration{
 	 * @return QueryResult
 	 */
 	protected function query($query){
-		$database = Dependency::get('databaseManager');
-
 		$result = null;
 		try{
-			$result = $database->query(new QueryString($query));
-		}catch(York $x){
-			Application::debug($x, $result);
+			$result = \York\Dependency\Manager::getDatabaseManager()->query(new \York\Database\QueryBuilder\QueryString($query));
+		}catch(\York\Exception\General $x){
+			\York\Helper\Application::debug($x, $result);
 		}
 		return $result;
 	}

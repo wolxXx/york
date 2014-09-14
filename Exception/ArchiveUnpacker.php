@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class ArchiveUnpacker extends York{}
+class ArchiveUnpacker extends \York\Exception\General{}

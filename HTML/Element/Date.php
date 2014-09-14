@@ -45,21 +45,21 @@ class Date extends \York\HTML\DomElementAbstract{
 	 * adds all needed css and js files
 	 */
 	protected function loadAdditionalScripts(){
-		\York\View\Manager::getInstance()->addJavascriptFile('/Library/York//HTML/Element/js/Locale.de-DE.DatePicker.js');
-		\York\View\Manager::getInstance()->addJavascriptFile('/Library/York//HTML/Element/js/date.js');
-		\York\View\Manager::getInstance()->addJavascriptFile('/Library/York//HTML/Element/js/Picker.js');
-		\York\View\Manager::getInstance()->addJavascriptFile('/Library/York//HTML/Element/js/Picker.Attach.js');
-		\York\View\Manager::getInstance()->addJavascriptFile('/Library/York//HTML/Element/js/Picker.Date.js');
-		\York\View\Manager::getInstance()->addCssFile('/Library/York//HTML/Element/js/datepicker_bootstrap/datepicker_bootstrap.css');
+		\York\Dependency\Manager::getViewManager()
+			->addJavascriptFile('/Library/York//HTML/Element/js/Locale.de-DE.DatePicker.js')
+			->addJavascriptFile('/Library/York//HTML/Element/js/date.js')
+			->addJavascriptFile('/Library/York//HTML/Element/js/Picker.js')
+			->addJavascriptFile('/Library/York//HTML/Element/js/Picker.Attach.js')
+			->addJavascriptFile('/Library/York//HTML/Element/js/Picker.Date.js')
+			->addCssFile('/Library/York//HTML/Element/js/datepicker_bootstrap/datepicker_bootstrap.css');
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$this->displayLabelBefore();
-		$format = $this->getSavely('format', '%Y-%m-%d %H:%M');
+		$format = $this->getSafely('format', '%Y-%m-%d %H:%M');
 		$this->removeData('format');
 
 		$conf = $this->getConf();
@@ -81,9 +81,11 @@ class Date extends \York\HTML\DomElementAbstract{
 					});
 				})
 			</script>
+
 		<?php
 		$this->loadAdditionalScripts();
 		$this->displayLabelAfter();
+
 		return $this;
 	}
 }

@@ -46,7 +46,7 @@ class MultiDelete{
 	 * setter for the table name
 	 *
 	 * @param string $table
-	 * @return \York\Database\Accessor\MultiDelete
+	 * @return $this
 	 */
 	public function setTable($table){
 		$this->table = $table;

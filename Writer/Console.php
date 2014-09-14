@@ -14,6 +14,6 @@ class Console extends Standard{
 	 * @inheritdoc
 	 */
 	public function write($text){
-		return $this->write($text.EOL);
+		return parent::write($text.PHP_EOL);
 	}
 }

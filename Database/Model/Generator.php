@@ -1,20 +1,16 @@
 <?php
 namespace York\Database\Model;
-use York\Database\Information;
-use York\Dependency\Manager as Dependency;
-use York\Helper\String;
-use York\Template\Parser;
 
 /**
  * generator for database blueprints
  *
  * @author wolxXx
- * @version 3.0
+ * @version 3.1
  * @package York\Database\Model
  */
 class Generator {
 	/**
-	 * @var \York\Database\Manager $databaseManager
+	 * @var \York\Database\Manager
 	 */
 	protected $databaseManager;
 
@@ -26,11 +22,23 @@ class Generator {
 	protected $table;
 
 	/**
+	 * @var string
+	 */
+	protected $model;
+
+	/**
+	 * @var string
+	 */
+	protected $pathPrefix;
+
+	/**
 	 * setup
 	 */
 	public function __construct($table){
 		$this->table = $table;
-		$this->databaseManager = Dependency::get('databaseManager');
+		$this->databaseManager = \York\Dependency\Manager::get('databaseManager');
+		$this->model = ucfirst(\York\Helper\String::underscoresToPascalCase($this->table));
+		$this->setPathPrefix();
 	}
 
 	/**
@@ -70,6 +78,7 @@ class Generator {
 		return $this
 			->generateBlueprint()
 			->generateModel()
+			->generateManagerBlueprint()
 			->generateManager();
 	}
 
@@ -78,11 +87,15 @@ class Generator {
 	 * overwrites the eventually found file if wanted
 	 *
 	 * @param boolean $overwrite
+	 * @param null $targetFull
 	 * @return $this
 	 * todo refactor!
 	 */
 	public function generateBlueprint($overwrite = true){
-		$target = $this->getPathForBlueprint($this->table);
+		$target = $this->getPathForBlueprint();
+		$targetPath = $this->getPathForBlueprint(false);
+
+		new \York\FileSystem\Directory($targetPath, true);
 
 		if(true === file_exists($target)){
 			if(false === $overwrite){
@@ -92,45 +105,47 @@ class Generator {
 		}
 
 		$schema = $this->databaseManager->getConnection()->getSchema();
-		$columns = Information::getColumnsForTable($schema, $this->table);
+		$columns = \York\Database\Information::getColumnsForTable($schema, $this->table);
 		$fileText = '';
 		$flatMembers = array();
 		$referencedMembers = array();
 		$classMemberVisibility = 'protected';
-		$memberText = Parser::parseFile(__DIR__.'/Generator/member', array());
-		$referencedMemberText = Parser::parseFile(__DIR__.'/Generator/referencedMember', array());
-		$getterSetterText = Parser::parseFile(__DIR__.'/Generator/getterSetter', array());
-		$fileTextTemplate = Parser::parseFile(__DIR__.'/Generator/skeleton_blueprint', array());
+		$memberText = \York\Template\Parser::parseFile(__DIR__.'/Generator/member', array());
+		$referencedMemberText = \York\Template\Parser::parseFile(__DIR__.'/Generator/referencedMember', array());
+		$getterSetterText = \York\Template\Parser::parseFile(__DIR__.'/Generator/getterSetter', array());
+		$fileTextTemplate = \York\Template\Parser::parseFile(__DIR__.'/Generator/skeleton_blueprint', array());
+		$getManagerText = \York\Template\Parser::parseFile(__DIR__.'/Generator/getManager', array());
+		$factoryText = \York\Template\Parser::parseFile(__DIR__.'/Generator/factory', array());
 
 		foreach($columns as $current){
 			$name = $current->COLUMN_NAME;
-			$type = Information::getTypeOfColumn($schema, $this->table, $name)->DATA_TYPE;
+			$type = \York\Database\Information::getTypeOfColumn($schema, $this->table, $name)->DATA_TYPE;
 			$type = $this->matchDatabaseTypeToPHP($type);
 
-			$fileText .= Parser::parseText($memberText, array(
+			$fileText .= \York\Template\Parser::parseText($memberText, array(
 				'visibility' => $classMemberVisibility,
 				'type' => $type,
 				'name' => $name
 			));
 
-			$fileText .= Parser::parseText($getterSetterText, array(
+			$fileText .= \York\Template\Parser::parseText($getterSetterText, array(
 				'name' => $name,
 				'uname' => ucfirst($name),
 				'type' => $type,
-				'model' => ucfirst(String::underscoresToPascalCase($this->table))
+				'model' => $this->model
 			));
 
 
 			$flatMembers[] = $name;
 
-			if(false === String::startsWith($name, 'id_')){
+			if(false === \York\Helper\String::startsWith($name, 'id_')){
 				continue;
 			}
 
-			$class = String::underscoresToPascalCase(substr($name, 3));
+			$class = \York\Helper\String::underscoresToPascalCase(substr($name, 3));
 			$model = '\Application\Model\\'.$class;
 
-			$fileText .= Parser::parseText($referencedMemberText, array(
+			$fileText .= \York\Template\Parser::parseText($referencedMemberText, array(
 				'class' => $model,
 				'name' => $class,
 				'identified' => $name
@@ -151,9 +166,17 @@ class Generator {
 	*/', implode(', ', $referencedMembers)).PHP_EOL."\t";
 		$fileText .= sprintf('public $referencedMembers = array(%s);', implode(', ', $referencedMembers)).PHP_EOL.PHP_EOL;
 
-		file_put_contents($target, Parser::parseText($fileTextTemplate, array(
+		$fileText .= \York\Template\Parser::parseText($getManagerText, array(
+			'model' => \York\Helper\String::underscoresToPascalCase($this->table)
+		));
+
+		$fileText .= \York\Template\Parser::parseText($factoryText, array(
+			'model' => \York\Helper\String::underscoresToPascalCase($this->table)
+		));
+
+		file_put_contents($target, \York\Template\Parser::parseText($fileTextTemplate, array(
 			'tablename' => $this->table,
-			'modelname' => String::underscoresToPascalCase($this->table),
+			'modelname' => \York\Helper\String::underscoresToPascalCase($this->table),
 			'classmembers' => $fileText
 		)));
 
@@ -168,8 +191,10 @@ class Generator {
 	 * @return $this
 	 */
 	public function generateModel($overwrite = false){
-		$model = String::underscoresToPascalCase($this->table);
-		$target = \York\Helper\Application::getApplicationRoot().'Model/'.$model.'.php';
+		$target = $this->getPathForModel();
+		$targetPath = $this->getPathForModel(false);
+		new \York\FileSystem\Directory($targetPath, true);
+
 		if(true === file_exists($target)){
 			if(false === $overwrite){
 				return $this;
@@ -177,8 +202,33 @@ class Generator {
 			unlink($target);
 		}
 
-		file_put_contents($target, Parser::parseFile(__DIR__.'/Generator/skeleton_model', array(
-			'modelname' => $model
+		file_put_contents($target, \York\Template\Parser::parseFile(__DIR__.'/Generator/skeleton_model', array(
+			'modelname' => $this->model
+		)));
+
+		return $this;
+	}
+
+	/**
+	 * @param boolean $overwrite
+	 * @return $this
+	 */
+	public function generateManagerBlueprint($overwrite = true){
+		$target = $this->getPathForManagerBlueprint();
+		$targetPath = $this->getPathForManagerBlueprint(false);
+
+		new \York\FileSystem\Directory($targetPath, true);
+
+		if(true === file_exists($target)){
+			if(false === $overwrite){
+				return $this;
+			}
+			unlink($target);
+		}
+
+		file_put_contents($target, \York\Template\Parser::parseFile(__DIR__.'/Generator/skeleton_manager_blueprint', array(
+			'modelname' => $this->model,
+			'table' => $this->table
 		)));
 
 		return $this;
@@ -192,8 +242,10 @@ class Generator {
 	 * @return $this
 	 */
 	public function generateManager($overwrite = false){
-		$model = String::underscoresToPascalCase($this->table);
-		$target = \York\Helper\Application::getApplicationRoot().'Model/Manager/'.$model.'.php';
+		$target = $this->getPathForManager();
+		$targetPath = $this->getPathForManager(false);
+		new \York\FileSystem\Directory(\York\Helper\FileSystem::getDirectory($targetPath), true);
+
 		if(true === file_exists($target)){
 			if(false === $overwrite){
 				return $this;
@@ -201,52 +253,101 @@ class Generator {
 			unlink($target);
 		}
 
-		file_put_contents($target, Parser::parseFile(__DIR__.'/Generator/skeleton_manager', array(
-			'modelname' => $model,
+		file_put_contents($target, \York\Template\Parser::parseFile(__DIR__.'/Generator/skeleton_manager', array(
+			'modelname' => $this->model,
 			'table' => $this->table
 		)));
 
 		return $this;
 	}
 
-	protected function getPath($class, $infix = null){
+	/**
+	 * @return string
+	 */
+	public function getTable(){
+		return $this->table;
+	}
+
+	/**
+	 * @param string $prefix
+	 * @return $this
+	 */
+	public function setPathPrefix($prefix = null){
+		if(null === $prefix){
+			$prefix = \York\Helper\Application::getApplicationRoot();
+		}
+
+		$this->pathPrefix = $prefix;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getPathPrefix(){
+		return $this->pathPrefix;
+	}
+
+	/**
+	 * @param $class
+	 * @param null | string $infix
+	 * @param bool $full
+	 * @return string
+	 */
+	protected function getPath($infix = null, $full = true){
 		if(null === $infix){
 			$infix = '';
 		}else{
 			$infix .= '/';
 		}
 
-		return \York\Helper\Application::getApplicationRoot().'Model/'.$infix.$class.'.php';
+		$postfix = '';
+		if(true === $full){
+			$postfix = $this->model.'.php';
+		}
+
+		return $this->getPathPrefix().'Model/'.$infix.$postfix;
 	}
 
 	/**
 	 * get the path for the model for the given table
 	 *
 	 * @param $table
+	 * @param bool $full
 	 * @return string
 	 */
-	public function getPathForModel($table){
-		return $this->getPath(String::underscoresToPascalCase($table));
+	public function getPathForModel($full = true){
+		return $this->getPath(null, $full);
 	}
 
 	/**
 	 * get the path for the manager for the given table
 	 *
-	 * @param $table
+	 * @param bool $full
 	 * @return string
 	 */
-	public function getPathForManager($table){
-		return $this->getPath(String::underscoresToPascalCase($table), 'Manager');
+	public function getPathForManager($full = true){
+		return $this->getPath('Manager', $full);
+	}
+
+	/**
+	 * @param bool $full
+	 * @return string
+	 */
+	public function getPathForManagerBlueprint($full = true){
+		return $this->getPath('Manager/Blueprint', $full);
 	}
 
 	/**
 	 * get the path for the blueprint for the given table
 	 *
 	 * @param $table
+	 * @param bool $full
 	 * @return string
 	 */
-	public function getPathForBlueprint($table){
-		return $this->getPath(String::underscoresToPascalCase($table), 'Blueprint');
+	public function getPathForBlueprint($full = true){
+		return $this->getPath('Blueprint', $full);
 	}
 
 	/**
@@ -257,7 +358,7 @@ class Generator {
 	public function generateAll(){
 		$tableSave = $this->table;
 
-		foreach(Information::getAllTables($this->databaseManager->getConnection()->getSchema()) as $table){
+		foreach(\York\Database\Information::getAllTables($this->databaseManager->getConnection()->getSchema()) as $table){
 			$this->table = $table->TABLE_NAME;
 			$this->generate();
 		}

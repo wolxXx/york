@@ -1,12 +1,10 @@
 <?php
 namespace York\Validator;
-use York\Exception\Validator;
-
 /**
  * validator for checking that the given data is numeric
  *
  * @author wolxXx
- * @version 3.0
+ * @version 3.1
  * @package York\Validator
  */
 class IsNumeric implements ValidatorInterface{
@@ -15,7 +13,7 @@ class IsNumeric implements ValidatorInterface{
 	 */
 	public function isValid($data){
 		if(false === is_numeric($data)){
-			throw new Validator('given data is not numeric');
+			throw new \York\Exception\Validator('given data is not numeric');
 		}
 
 		return true;

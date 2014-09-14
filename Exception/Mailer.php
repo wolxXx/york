@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Mailer extends York{}
+class Mailer extends \York\Exception\General{}

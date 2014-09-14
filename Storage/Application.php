@@ -1,8 +1,5 @@
 <?php
 namespace York\Storage;
-use York\Exception\KeyNotFound;
-use York\Helper\Set;
-
 /**
  * a simple key value data storage
  *
@@ -22,10 +19,11 @@ class Application extends StorageAbstract implements StorageInterface{
 	 *
 	 * @param string $key
 	 * @param mixed $value
-	 * @return \York\Storage\Application
+	 * @return $this
 	 */
 	public function set($key, $value){
 		$this->data[$key] = $value;
+
 		return $this;
 	}
 
@@ -33,13 +31,14 @@ class Application extends StorageAbstract implements StorageInterface{
 	 * getter for a single key value pair
 	 *
 	 * @param string $key
-	 * @throws KeyNotFound
+	 * @throws \York\Exception\KeyNotFound
 	 * @return mixed
 	 */
 	public function get($key){
 		if(false === array_key_exists($key, $this->data)){
-			throw new KeyNotFound('key "'.$key.'" not found in data');
+			throw new \York\Exception\KeyNotFound('key "'.$key.'" not found in data');
 		}
+
 		return $this->data[$key];
 	}
 
@@ -62,8 +61,9 @@ class Application extends StorageAbstract implements StorageInterface{
 	public function hasKey($key){
 		try{
 			$this->get($key);
+
 			return true;
-		}catch(KeyNotFound $x){
+		}catch(\York\Exception\KeyNotFound $x){
 			return false;
 		}
 	}
@@ -86,6 +86,7 @@ class Application extends StorageAbstract implements StorageInterface{
 	 */
 	public function setData($data){
 		$this->data = $data;
+
 		return $this;
 	}
 
@@ -95,16 +96,19 @@ class Application extends StorageAbstract implements StorageInterface{
 	 *
 	 * @param array $data
 	 * @param boolean $overwrite
-	 * @return \York\KeyValueStore
+	 * @return $this
 	 */
 	public function addData($data, $overwrite = true){
 		$array1 = $data;
 		$array2 = $this->data;
+
 		if(true === $overwrite){
 			$array1 = $this->data;
 			$array2 = $data;
 		}
-		$this->data = Set::merge($array1, $array2);
+
+		$this->data = \York\Helper\Set::merge($array1, $array2);
+
 		return $this;
 	}
 
@@ -124,7 +128,7 @@ class Application extends StorageAbstract implements StorageInterface{
 	public function getSafely($key, $default = null){
 		try{
 			return $this->get($key);
-		}catch (KeyNotFound $exception){
+		}catch (\York\Exception\KeyNotFound $exception){
 			return $default;
 		}
 	}
@@ -133,29 +137,42 @@ class Application extends StorageAbstract implements StorageInterface{
 	 * removes a key value pair
 	 *
 	 * @param string $key
-	 * @return \York\KeyValueStore
+	 * @return $this
 	 */
 	public function removeData($key){
 		unset($this->data[$key]);
+
 		return $this;
 	}
 
 	/**
 	 * clears the whole store
 	 *
-	 * @return \York\KeyValueStore
+	 * @return $this
 	 */
 	public function clear(){
 		$this->data = array();
+
 		return $this;
 	}
 
 	/**
 	 * alias for clear
 	 *
-	 * @return \York\KeyValueStore
+	 * @return $this
 	 */
 	public function clearData(){
 		return $this->clear();
+	}
+
+	/**
+	 * removes the data for the key
+	 *
+	 * @param string $key
+	 * @return StorageInterface
+	 */
+	public function removeKey($key)
+	{
+		// TODO: Implement removeKey() method.
 	}
 }

@@ -1,8 +1,5 @@
 <?php
 namespace York;
-use York\Dependency\Manager as Dependency;
-use York\Exception\York;
-use York\Request\Manager as Request;
 
 /**
  * the main controller which provides main functionality
@@ -36,6 +33,12 @@ abstract class Controller{
 	 * @var \York\View\Manager
 	 */
 	protected $viewManager;
+
+	/**
+	 * @deprecated use viewManager
+	 *
+	 */
+	protected $load;
 
 	/**
 	 * @var \York\Auth\ManagerInterface
@@ -78,7 +81,7 @@ abstract class Controller{
 	/**
 	 * information holder of the request
 	 *
-	 * @var Request
+	 * @var \York\Request\Manager
 	 */
 	protected $request;
 
@@ -86,6 +89,7 @@ abstract class Controller{
 	 * an instance of the model
 	 *
 	 * @var \York\Database\Model
+	 * @deprecated
 	 */
 	protected $model;
 
@@ -123,18 +127,15 @@ abstract class Controller{
 	 * initialises the controller
 	 */
 	private final function init(){
-		$this->dependencyManager = Dependency::getInstance();
-		$this->dependencyManager->get('viewManager');
-		$this->viewManager = Dependency::get('viewManager');
-		$this->authManager = Dependency::getClassNameForDependency('authManager');
-		$this->model = new \York\Database\Model();
-		$this->stack = Dependency::get('applicationConfiguration');
-		$this->request = new Request();
+		$this->dependencyManager = \York\Dependency\Manager::getInstance();
+		$this->viewManager = \York\Dependency\Manager::get('viewManager');
+		$this->authManager = \York\Dependency\Manager::getClassNameForDependency('authManager');
+		$this->request = new \York\Request\Manager();
 		$this->initAccessChecker();
-		$this->version = $this->stack->get('version');
+		$this->version = \York\Dependency\Manager::get('applicationConfiguration')->getSafely('version', 'main');
 		try{
-			$this->viewManager->setLayout($this->stack->get('version'));
-		}catch(York $exception){
+			$this->viewManager->setLayout(\York\Dependency\Manager::get('applicationConfiguration')->getSafely('version', 'main'));
+		}catch(\York\Exception\General $exception){
 			$this->viewManager->setLayout();
 		}
 		$this->viewManager->set('isAjax', $this->request->isAjax());
@@ -151,7 +152,7 @@ abstract class Controller{
 	 *
 	 * @param string | \York\Redirect $url
 	 * @param string $method
-	 * @return \York\Controller
+	 * @return $this
 	 */
 	protected function registerRedirect($url, $method = 'redirect'){
 		if(true === $url instanceof \York\Redirect){
@@ -169,6 +170,15 @@ abstract class Controller{
 	 */
 	public function getRegisteredRedirect(){
 		return $this->registeredRedirect;
+	}
+
+	/***
+	 * @return $this
+	 */
+	public function removeRegisteredRedirect(){
+		$this->registeredRedirect = null;
+
+		return $this;
 	}
 
 	/**
@@ -230,6 +240,7 @@ abstract class Controller{
 	 *
 	 * @param string $index
 	 * @return array
+	 * @deprecated use $this->request->dataObject->getFileUploadObjectsByIndex instead!
 	 */
 	public function getFileUploadObjectsByIndex($index){
 		$return = array();
@@ -244,7 +255,7 @@ abstract class Controller{
 	/**
 	 * getter for the current request object
 	 *
-	 * @return Request
+	 * @return \York\Request\Manager
 	 */
 	public function getRequest(){
 		return $this->request;
@@ -381,16 +392,21 @@ abstract class Controller{
 	}
 
 	/**
-	 * is always be runned before any operation was made
+	 * is always be ran before any operation was made
 	 * useful for authorisation cases, measurement
 	 */
-	function beforeRun(){}
+	public function beforeRun(){}
 
 	/**
-	 * is always runned after the run function finished and before view rendering
+	 * is always ran after the run function finished and before view rendering
 	 * useful for measurements
 	 */
-	function afterRun(){}
+	public function afterRun(){}
+
+	/**
+	 * is called to initialize the needed loggers
+	 */
+	public function initLogger(){}
 
 	/**
 	 * sets all needed models
@@ -416,16 +432,13 @@ abstract class Controller{
 	 * this method should be implemented by all extending classes if own routing is needed
 	 * usefull for routing etc
 	 *
-	 * @param array $args
+	 * @throws Exception\Apocalypse
+	 * @internal param array $args
 	 */
 	public final function run(){
 		if(false === method_exists($this, $this->action.'Action')){
 			throw new \York\Exception\Apocalypse($this->action.'Action is not callable in '.$this->__toString());
 		}
-		try{
-			call_user_func_array(array($this, $this->action.'Action'), func_get_args());
-		}catch(\York\Exception\Redirect $exception){
-			die($exception->getMessage());
-		}
+		call_user_func_array(array($this, $this->action.'Action'), func_get_args());
 	}
 }

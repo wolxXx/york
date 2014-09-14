@@ -11,7 +11,7 @@ class Manager{
 	/**
 	 * the one and only instance
 	 *
-	 * @var York\View\Submenu\Manager
+	 * @var \York\View\Submenu\Manager
 	 */
 	protected static $instance = null;
 
@@ -75,7 +75,7 @@ class Manager{
 		 * @var \York\View\Submenu\Item $current
 		 */
 		foreach($this->items as $current){
-			$div->addChild(\York\HTML\Element\Plaintext::Factory(array('text' => $current->getOuptut())));
+			$div->addChild(\York\HTML\Element\Plaintext::Factory(array('text' => $current->getOutput())));
 		}
 		$div->display();
 		return $this;

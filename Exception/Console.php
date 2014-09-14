@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Console extends York{}
+class Console extends \York\Exception\General{}

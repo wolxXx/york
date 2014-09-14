@@ -1,12 +1,10 @@
 <?php
 namespace York\Validator;
-use York\Exception\Validator;
-
 /**
  * validator for checking that the given data has a minimum length
  *
  * @author wolxXx
- * @version 3.0
+ * @version 3.1
  * @package York\Validator
  */
 class HasMinimumLength implements ValidatorInterface{
@@ -29,7 +27,7 @@ class HasMinimumLength implements ValidatorInterface{
 	 */
 	public function isValid($data){
 		if(strlen($data) < $this->minimumLength){
-			throw new Validator('given string has not the minimum length');
+			throw new \York\Exception\Validator('given string has not the minimum length');
 		}
 
 		return true;

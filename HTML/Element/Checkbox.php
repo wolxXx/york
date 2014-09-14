@@ -17,8 +17,7 @@ class Checkbox extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -37,6 +36,7 @@ class Checkbox extends \York\HTML\DomElementAbstract{
 	 */
 	public function setIsChecked($isChecked = true){
 		$this->set('checked', true === $isChecked? 'checked' : null);
+
 		return $this;
 	}
 
@@ -58,12 +58,12 @@ class Checkbox extends \York\HTML\DomElementAbstract{
 	 */
 	public function setValue($value){
 		$this->set('value', $value);
+
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$this->displayLabelBefore();

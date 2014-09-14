@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Autoload extends York{}
+class Autoload extends \York\Exception\General{}

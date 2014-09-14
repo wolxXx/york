@@ -1,7 +1,5 @@
 <?php
 namespace York\Validator;
-use York\Exception\Validator;
-
 /**
  * validator for checking that the given data has valid email syntax
  *
@@ -15,7 +13,7 @@ class IsEmail implements ValidatorInterface{
 	 */
 	public function isValid($data){
 		if(false === filter_var($data, FILTER_VALIDATE_EMAIL)){
-			throw new Validator('given data has no valid email syntax!');
+			throw new \York\Exception\Validator('given data has no valid email syntax!');
 		}
 
 		return true;

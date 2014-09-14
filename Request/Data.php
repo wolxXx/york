@@ -72,6 +72,7 @@ class Data{
 		$this->scanGetData();
 		$this->scanPostData();
 		$this->scanFiles();
+
 		return $this;
 	}
 
@@ -84,6 +85,7 @@ class Data{
 	 */
 	public function set($key, $value){
 		$this->data[$key] = $value;
+
 		return $this;
 	}
 
@@ -97,6 +99,7 @@ class Data{
 		foreach($array as $key => $value){
 			$this->set($key, $value);
 		}
+
 		return $this;
 	}
 
@@ -109,6 +112,7 @@ class Data{
 		foreach($this->rawPOST as $key => $value){
 			$this->data[$key] = $value;
 		}
+
 		return $this;
 	}
 
@@ -121,6 +125,7 @@ class Data{
 		foreach($this->rawGET as $key => $value){
 			$this->data[$key] = $value;
 		}
+
 		return $this;
 	}
 
@@ -145,6 +150,7 @@ class Data{
 				}
 			}
 		}
+
 		return $this;
 	}
 
@@ -155,6 +161,23 @@ class Data{
 	 */
 	public function getFiles(){
 		return $this->fileObjects;
+	}
+
+	/**
+	 * gets all FileUploadObjects with index = $index
+	 *
+	 * @param string $index
+	 * @return \York\Request\File[]
+	 */
+	public function getFileUploadObjectsByIndex($index){
+		$return = array();
+		foreach($this->fileObjects as $current){
+			if($index === $current->uploadIndex){
+				$return[] = $current;
+			}
+		}
+
+		return $return;
 	}
 
 	/**
@@ -198,6 +221,7 @@ class Data{
 		}catch (\York\Exception\KeyNotExistsInDataObject $x){
 
 		}
+
 		try{
 			return $this->getFromGet($key);
 		}catch (\York\Exception\KeyNotExistsInDataObject $x){
@@ -218,6 +242,23 @@ class Data{
 	 * @param string $key
 	 * @param mixed $default
 	 * @return mixed | null
+	 */
+	public function getSafely($key, $default = null){
+		try{
+			return $this->get($key);
+		}catch (\York\Exception\KeyNotExistsInDataObject $x){
+			return $default;
+		}
+	}
+
+	/**
+	 * tries to receive the value for the key
+	 * returns null if nothing was found
+	 *
+	 * @param string $key
+	 * @param mixed $default
+	 * @return mixed | null
+	 * @deprecated use getSafely instead!
 	 */
 	public function getSavely($key, $default = null){
 		try{
@@ -253,6 +294,7 @@ class Data{
 		if(true === isset($this->rawGET[$key])){
 			return $this->rawGET[$key];
 		}
+
 		throw new \York\Exception\KeyNotExistsInDataObject($key.' not found in DataObject in GET-Section!');
 	}
 
@@ -288,6 +330,7 @@ class Data{
 		unset($this->rawGET[$key]);
 		unset($this->rawPOST[$key]);
 		unset($this->data[$key]);
+
 		return $this;
 	}
 }

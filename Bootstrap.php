@@ -1,12 +1,5 @@
 <?php
 namespace York;
-use Application\Configuration\Host;
-use York\Dependency\Manager as Dependency;
-use York\Helper\Application;
-use York\Logger\Database;
-use York\Logger\File;
-use York\Logger\Manager;
-use York\Router;
 
 /**
  * basic basement for mvc base
@@ -28,9 +21,9 @@ abstract class Bootstrap{
 	public $request;
 
 	/**
-	 * contains the splitted url blocks of the $request
+	 * contains the split url blocks of the $request
 	 *
-	 * @var array
+	 * @var string[]
 	 */
 	public $path;
 
@@ -47,13 +40,6 @@ abstract class Bootstrap{
 	 * @var \York\Database\Model
 	 */
 	public $model;
-
-	/**
-	 * instance of Stack
-	 *
-	 * @var \York\Stack
-	 */
-	public $stack;
 
 	/**
 	 * instantiated object of a controller
@@ -81,14 +67,14 @@ abstract class Bootstrap{
 	 * get the config
 	 */
 	protected final function config(){
-		$config = new Host();
+		$config = new \Application\Configuration\Host();
 		$config->configureApplication();
 		$config->configureHost();
 		$config->checkConfig();
 	}
 
 	/**
-	 * initing everything usefull
+	 * init everything useful
 	 */
 	private final function init(){
 		if(false === isset($_SERVER['argv'])){
@@ -110,14 +96,15 @@ abstract class Bootstrap{
 		}
 
 		$this->router = new Router();
-		Application::grabModeAndVersion();
-		Application::grabHostName();
 
-		$this->stack = Dependency::get('applicationConfiguration');
+		\York\Helper\Application::grabModeAndVersion();
+		\York\Helper\Application::grabHostName();
+
+		$this->stack = \York\Dependency\Manager::get('applicationConfiguration');
 		$this->config();
 
 		$this->model = new \York\Database\Model();
-		$this->viewManager = Dependency::get('viewManager');
+		$this->viewManager = \York\Dependency\Manager::get('viewManager');
 	}
 
 	/**
@@ -198,20 +185,18 @@ abstract class Bootstrap{
 	 * calls controller's run action
 	 * calls controller's after run action
 	 */
-	public final function run(){
+	public function run(){
 		$this->analyzeRequest();
 		$controller = $this->getController();
+		\York\Dependency\Manager::get('applicationConfiguration')->set('controller', \York\Helper\String::getClassNameFromNamespace($controller));
 		$this->controller = new $controller();
-		$this->stack->set('controller', $this->controller->__toString());
-		call_user_func_array(array($this->controller, "setModels"), $this->path);
+		call_user_func_array(array($this->controller, "initLogger"), $this->path);
 		call_user_func_array(array($this->controller, "setActionAndView"), $this->path);
 		$this->checkRegisteredRedirect();
 		call_user_func_array(array($this->controller, "setAccessRules"), $this->path);
 		call_user_func_array(array($this->controller, "checkAccess"), $this->path);
+		$this->checkRegisteredRedirect();
 		call_user_func_array(array($this->controller, "beforeRun"), $this->path);
-		if(true === $this->controller->getRequest()->isPost()){
-			$this->controller->postlog();
-		}
 		$this->checkRegisteredRedirect();
 		call_user_func_array(array($this->controller, "run"), $this->path);
 		$this->checkRegisteredRedirect();
@@ -259,12 +244,16 @@ abstract class Bootstrap{
 	 */
 	public function getController(){
 		$controllerName = ucfirst($this->path[0]);
-		if(false === file_exists('Application/Controller/'.$controllerName.'.php')){
+		if(false === \York\Autoload\Manager::isLoadable('\Application\Controller\\'.$controllerName)){
 			$controllerName = 'Cms';
 		}
 
 		$controllerName = sprintf('\Application\Controller\%s', $controllerName);
 
 		return $controllerName;
+	}
+
+	public function databaseError(\York\Exception\Database $exception){
+		die('a database error occured. sorry for that!');
 	}
 }

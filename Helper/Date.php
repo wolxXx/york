@@ -33,7 +33,7 @@ class Date{
 	 * @return boolean
 	 */
 	public static function isDateInPast($date){
-		return self::dateToTimestamp($date) < time();
+		return $date < self::getDateTime();
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Date{
 	 *
 	 * formats a date to d.m.Y H:i
 	 *
-	 * @param string $date
+	 * @param string | \DateTime $date
 	 * @return string
 	 */
 	public static function formatDate($date){
@@ -79,6 +79,10 @@ class Date{
 		return date($format, $time);
 	}
 
+	/**
+	 * @param null $time
+	 * @return \DateTime
+	 */
 	public static function getDateTime($time = null){
 		return new \DateTime(self::getDate(null, $time));
 	}

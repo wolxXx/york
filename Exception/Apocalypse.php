@@ -8,4 +8,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Apocalypse extends York{}
+class Apocalypse extends \York\Exception\General{}

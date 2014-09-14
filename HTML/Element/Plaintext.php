@@ -27,6 +27,7 @@ class Plaintext extends \York\HTML\DomElementAbstract{
 		if(true === $this->hasKey('text')){
 			$text = $this->get(('text')).' '.$text;
 		}
+
 		return $this->set('text', $text);
 	}
 
@@ -41,8 +42,7 @@ class Plaintext extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		\York\HTML\Core::out($this->get('text'));

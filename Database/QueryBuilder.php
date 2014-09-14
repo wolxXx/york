@@ -15,7 +15,7 @@ abstract class QueryBuilder{
 	/**
 	 * connection to the database
 	 *
-	 * @var \mysqli
+	 * @var \York\Database\Connection
 	 */
 	protected $connection;
 
@@ -49,7 +49,7 @@ abstract class QueryBuilder{
 	 * checks if the set conditions fulfill the needed minimal expectations
 	 *
 	 * @throws \York\Exception\QueryGenerator
-	 * @throws \York\Exception\York
+	 * @throws \York\Exception\General
 	 */
 	abstract protected function checkConditions();
 
@@ -58,7 +58,7 @@ abstract class QueryBuilder{
 	 *
 	 * @return string
 	 * @throws @throws \York\Exception\QueryGenerator
-	 * @throws \York\Exception\York
+	 * @throws \York\Exception\General
 	*/
 	abstract public function generateQuery();
 
@@ -84,9 +84,12 @@ abstract class QueryBuilder{
 	/**
 	 * getter for the connection
 	 *
-	 * @return \mysqli
+	 * @return \York\Database\Connection
 	 */
 	public function getConnection(){
+		if(null === $this->connection){
+			$this->connection = new Connection();
+		}
 		return $this->connection;
 	}
 
@@ -159,21 +162,19 @@ abstract class QueryBuilder{
 	 * @return string
 	 */
 	protected function generateLimit(){
-		$limit = '';
 		if(null === $this->conditions['limit']){
 			if('one' === $this->conditions['method']){
-				$limit = 'LIMIT 1';
+				return 'LIMIT 1';
 			}
-		}else{
-			$limit = 'LIMIT ';
-			if(false === is_array($this->conditions['limit'])){
-				$limit .= $this->conditions['limit'];
-			}else{
-				$limit .= $this->conditions['limit'][0];
-				if(true === isset($this->conditions['limit'][1])){
-					$limit .= sprintf(', %s', $this->conditions['limit'][1]);
-				}
-			}
+			return '';
+		}
+		$limit = 'LIMIT ';
+		if(false === is_array($this->conditions['limit'])){
+			return $limit.$this->conditions['limit'];
+		}
+		$limit .= $this->conditions['limit'][0];
+		if(true === isset($this->conditions['limit'][1])){
+			$limit .= sprintf(', %s', $this->conditions['limit'][1]);
 		}
 		return $limit;
 	}
@@ -217,11 +218,11 @@ abstract class QueryBuilder{
 	 * @return string
 	 */
 	protected function generateGroup(){
-		$group = '';
-		if(null !== $this->conditions['group']){
-			$group = sprintf('GROUP BY %s', $this->conditions['group']);
+		if(null === $this->conditions['group']){
+			return '';
 		}
-		return $group;
+
+		return $group = sprintf('GROUP BY %s', $this->conditions['group']);
 	}
 
 	/**
@@ -230,11 +231,10 @@ abstract class QueryBuilder{
 	 * @return string
 	 */
 	protected function generateDistinct(){
-		$distinct = '';
 		if(false !== $this->conditions['distinct']){
-			$distinct = 'DISTINCT';
+			return 'DISTINCT';
 		}
-		return $distinct;
+		return '';
 	}
 
 	/**
@@ -253,6 +253,7 @@ abstract class QueryBuilder{
 		){
 			throw new \York\Exception\QueryGenerator('no from selected');
 		}
+
 		$from = $this->conditions['from'];
 		if(true === is_array($this->conditions['from'])){
 			if(true === empty($this->conditions['from'])){
@@ -276,10 +277,9 @@ abstract class QueryBuilder{
 		if('' !== $where){
 			$and = ' AND ';
 		}
-		if(true === is_bool($right)){
-			$right = true === $right? '1' : '0';
-		}
+		$right = $this->getStringForType($right);
 		$where .= sprintf('%s%s = \'%s\'', $and, $left, $right);
+
 		return trim($where);
 	}
 
@@ -301,6 +301,7 @@ abstract class QueryBuilder{
 			if(true !== $blank){
 				$where .= ' OR ';
 			}
+
 			$where .= "$key = '$value'";
 			$blank = false;
 		}
@@ -371,7 +372,7 @@ abstract class QueryBuilder{
 			if('' !== $where){
 				$and = ' AND';
 			}
-			$where .= sprintf("%s $name > '$value'", $and);
+			$where .= sprintf("%s %s > '%s'", $and, $name, $this->getStringForType($value));
 		}
 		return trim($where);
 	}
@@ -564,7 +565,7 @@ abstract class QueryBuilder{
 	 *
 	 * @throws \York\Exception\QueryGenerator
 	 * @return string
-	 * @todo provice nested conditions
+	 * @todo provice nested conditions !!!! REALLYY!!!!
 	 */
 	protected function generateWhere(){
 		if(false === isset($this->conditions['where']) || null === $this->conditions['where'] || empty($this->conditions['where'])){
@@ -582,5 +583,25 @@ abstract class QueryBuilder{
 			$where = $this->{'generateWhere'.$this->mapSignsToString($left)}($where, $right);
 		}
 		return trim($where);
+	}
+
+	/**
+	 * @param mixed $something
+	 * @return string
+	 */
+	protected function getStringForType($something){
+		if(true === is_bool($something)){
+			return true === $something? '1' : '0';
+		}
+
+		if(true === is_array($something)){
+			return implode(',', $something);
+		}
+
+		if(true === is_a($something, '\DateTime')){
+			return $something->format('Y-m-d H:i:s');
+		}
+
+		return $something;
 	}
 }

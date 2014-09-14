@@ -1,13 +1,30 @@
 <?php
 namespace York\Validator;
-use York\Exception\Validator;
-
+/**
+ * check if data is like expected
+ *
+ * @package York\Validator
+ * @version 3.1
+ * @author wolxXx
+ */
 class IsValue implements ValidatorInterface{
-
+	/**
+	 * @var mixed
+	 */
 	protected $compare;
 
-	public function __construct($compare){
+	/**
+	 * @var boolean
+	 */
+	protected $strict;
+
+	/**
+	 * @param mixed $compare
+	 * @param boolean $strict
+	 */
+	public function __construct($compare, $strict = true){
 		$this->compare = $compare;
+		$this->strict = true === $strict;
 	}
 
 	/**
@@ -16,8 +33,16 @@ class IsValue implements ValidatorInterface{
 	 * @throws \York\Exception\Validator
 	 */
 	public function isValid($data){
-		if($data !== $this->compare){
-			throw new Validator('given data does not match the compare data');
+		if(true === $this->strict){
+			if($data !== $this->compare){
+				throw new \York\Exception\Validator('given data does not match the compare data');
+			}
+
+			return true;
+		}
+
+		if($data != $this->compare){
+			throw new \York\Exception\Validator('given data does not match the compare data');
 		}
 
 		return true;

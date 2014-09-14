@@ -10,8 +10,7 @@ namespace York\Database\QueryBuilder;
  */
 class Select extends \York\Database\QueryBuilder{
 	/**
-	 * (non-PHPdoc)
-	 * @see QueryBuilder::checkConditions()
+	 * @inheritdoc
 	 */
 	protected function checkConditions(){
 		if(true === empty($this->conditions)){

@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class Logger extends York{}
+class Logger extends \York\Exception\General{}

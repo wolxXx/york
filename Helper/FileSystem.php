@@ -9,6 +9,38 @@ namespace York\Helper;
  */
 class FileSystem{
 	/**
+	 * create a temp directory
+	 *
+	 * @param string $prefix
+	 * @return string
+	 */
+	public static function getTemporaryDirectory($prefix = 'tmp/'){
+		$tmpDir = $prefix.sha1(rand(0,10000).time().rand(0,1000)).DIRECTORY_SEPARATOR;
+		mkdir($tmpDir, 0777, true);
+
+		return $tmpDir;
+	}
+
+	/**
+	 * copy a file
+	 *
+	 * @param string $source
+	 * @param string $target
+	 */
+	public static function copy($source, $target){
+		copy($source, $target);
+	}
+
+	/**
+	 * move a file
+	 * @param string $source
+	 * @param string $target
+	 */
+	public static function move($source, $target){
+		rename($source, $target);
+	}
+
+	/**
 	 * grabs the last chars from a file name
 	 *
 	 * @param string $fileName
@@ -28,7 +60,13 @@ class FileSystem{
 	 * @return boolean
 	 */
 	public static function isImage($filename){
-		return false !== strstr(self::getFileType($filename), 'image/');
+		$allowedFileExtensions = array(
+			'png',
+			'gif',
+			'jpeg',
+			'jpg'
+		);
+		return false !== strstr(self::getFileType($filename), 'image/') || true === in_array(self::getFileExtension($filename, false), $allowedFileExtensions);
 	}
 
 	/**
@@ -38,6 +76,22 @@ class FileSystem{
 	 */
 	public static function getFileName($path){
 		return basename(realpath($path));
+	}
+
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	public static function getDirectory($path){
+		return realpath($path);
+	}
+
+	/**
+	 * @param string $path
+	 * @return string
+	 */
+	public static function getPath($path){
+		return self::getDirectory($path);
 	}
 
 	/**
@@ -55,6 +109,14 @@ class FileSystem{
 	}
 
 	/**
+	 * @param string $filename
+	 * @return string
+	 */
+	public static function getFileNameWithoutExtension($filename){
+		return str_replace(self::getFileExtension($filename), '', self::getFileName($filename));
+	}
+
+	/**
 	 * scans a directory for files
 	 *
 	 * @param string $path
@@ -65,7 +127,8 @@ class FileSystem{
 	 */
 	public static function scanDirectory($path, $recursive = false, $exclude = array(), $filesOnly = true){
 		if(false === is_dir($path)){
-			\York\Logger\Manager::getInstance()->log(sprintf('cannot scan %s as it is not a readable directory', $path), \York\Logger\Manager::TYPE_ALL, \York\Logger\Manager::LEVEL_DEBUG);
+			$message = sprintf('cannot scan %s as it is not a readable directory', $path);
+			\Application\Configuration\Dependency::getLogger()->log($message, \York\Logger\Manager::LEVEL_DEBUG);
 			return array();
 		}
 		$excludeDefault = array(
@@ -141,4 +204,4 @@ class FileSystem{
 		}
 		return $size;
 	}
-} 
+}

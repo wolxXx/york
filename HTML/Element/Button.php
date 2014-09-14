@@ -17,8 +17,7 @@ class Button extends \York\HTML\DomElementAbstract{
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::getDefaultConf()
+	 * @inheritdoc
 	 */
 	public static function getDefaultConf(){
 		return array(
@@ -34,12 +33,12 @@ class Button extends \York\HTML\DomElementAbstract{
 	 */
 	public function setText($text){
 		$this->set('text', $text);
+
 		return $this;
 	}
 
 	/**
-	 * (non-PHPdoc)
-	 * @see DomElementInterface::display()
+	 * @inheritdoc
 	 */
 	public function display(){
 		$conf = $this->getConf();
@@ -51,6 +50,7 @@ class Button extends \York\HTML\DomElementAbstract{
 			$text,
 			\York\HTML\Core::closeTag('button')
 		);
+
 		return $this;
 	}
 }

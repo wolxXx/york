@@ -7,4 +7,4 @@ namespace York\Exception;
  * @version 3.0
  * @package York\Exception
  */
-class HTTMLGenerator extends \York\Exception\York{}
+class HTTMLGenerator extends \York\Exception\General{}

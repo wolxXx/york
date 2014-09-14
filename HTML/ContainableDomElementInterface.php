@@ -8,6 +8,7 @@ namespace York\HTML;
  * @package \York\HTML;
  */
 interface ContainableDomElementInterface extends \York\HTML\DomElementInterface{
+
 	/**
 	 * adds a child to the element
 	 *

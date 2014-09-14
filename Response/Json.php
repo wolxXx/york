@@ -37,18 +37,15 @@ class Json{
 	protected $message;
 
 	/**
-	 * constructor
-	 * sets default values:
-	 * 	error = false
-	 * 	status = ok
-	 * 	message = apiStatusText for ok
-	 * 	data = empty array
+	 * @return $this
+	 * @throws \York\Exception\UndefinedApiStatus
 	 */
-	public function __construct(){
-		$this
+	public function init(){
+		$apiCode = \York\Dependency\Manager::get('apiCode');
+		return $this
 			->setError(false)
-			->setMessage(\York\Request\Api\Code::getStatusTextForCode(\York\Request\Api\Code::OK))
-			->setStatus(\York\Request\Api\Code::OK)
+			->setMessage(\York\Request\Api\Code::getStatusTextForCode($apiCode::OK))
+			->setStatus($apiCode::OK)
 			->clearData()
 		;
 	}
@@ -56,19 +53,22 @@ class Json{
 	/**
 	 * factory
 	 *
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public static function Factory(){
-		return new self();
+		$instance = new self();
+
+		return $instance->init();
 	}
 
 	/**
 	 * echoes the the generated json
 	 *
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function outputJSON(){
 		echo $this->toJSON();
+
 		return $this;
 	}
 
@@ -87,6 +87,7 @@ class Json{
 		) as $foo){
 			$json->$foo = $this->$foo;
 		}
+
 		return json_encode($json);
 	}
 
@@ -94,20 +95,22 @@ class Json{
 	 * sets the whole data array
 	 *
 	 * @param array $data
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function setData($data = array()){
 		$this->data = $data;
+
 		return $this;
 	}
 
 	/**
 	 * clears all data
 	 *
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function clearData(){
 		$this->setData();
+
 		return $this;
 	}
 
@@ -116,10 +119,11 @@ class Json{
 	 *
 	 * @param string $key
 	 * @param mixed $value
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function addData($key, $value){
 		$this->data[$key] = $value;
+
 		return $this;
 	}
 
@@ -127,10 +131,11 @@ class Json{
 	 * setter for the error status
 	 *
 	 * @param boolean $value
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function setError($value){
 		$this->error = true === $value? "true" : "false";
+
 		return $this;
 	}
 
@@ -139,11 +144,13 @@ class Json{
 	 * automatically sets the message with the status code string
 	 *
 	 * @param integer $status
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function setStatusAndBelongingMessage($status){
 		$this->setStatus($status);
-		$this->setMessage(ApiStatus::getStatusTextForCode($status));
+		$apiCode = \York\Dependency\Manager::get('apiCode');
+		$this->setMessage($apiCode::getStatusTextForCode($status));
+
 		return $this;
 	}
 
@@ -152,10 +159,11 @@ class Json{
 	 * sets the status and its message
 	 *
 	 * @param integer $status
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function setStatusAndBelongingMessageForError($status){
 		$this->setError(true);
+
 		return $this->setStatusAndBelongingMessage($status);
 	}
 
@@ -163,10 +171,11 @@ class Json{
 	 * setter for the status code
 	 *
 	 * @param integer $value
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function setStatus($value){
-		$this->status = intval($value)."";
+		$this->status = intval($value).'';
+
 		return $this;
 	}
 
@@ -174,23 +183,26 @@ class Json{
 	 * setter for the message field
 	 *
 	 * @param string $value
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function setMessage($value){
 		$this->message = $value;
+
 		return $this;
 	}
 
 	/**
 	 * clears the message
 	 *
-	 * @return \York\Response\Json
+	 * @return $this
 	 */
 	public function clearMessage(){
+
 		return $this->setMessage('');
 	}
 
 	/**
+	 *
 	 * getter for the error flag
 	 *
 	 * @return boolean
