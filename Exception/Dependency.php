@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for dependency issues
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class Dependency extends \York\Exception\General{}
+class Dependency extends \York\Exception\General
+{
+}

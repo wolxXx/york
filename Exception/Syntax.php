@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for syntax issues
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class Syntax extends \York\Exception\General{}
+class Syntax extends \York\Exception\General
+{
+}

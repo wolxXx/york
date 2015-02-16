@@ -18,6 +18,10 @@ shared = true;
 class = '\York\Auth\Manager';
 shared = true;
 
+[bootstrap]
+class = '\Application\Configuration\Bootstrap';
+shared = true;
+
 [databaseConfiguration]
 class = '\York\Storage\Simple';
 shared = true;
@@ -41,6 +45,10 @@ shared = true;
 [mailer]
 class = '\York\Mailer';
 
+[modelCache]
+class = '\York\Database\Cache';
+shared = true;
+
 [requestData]
 class = \York\Request\Data;
 shared = true;
@@ -55,6 +63,10 @@ shared = true;
 
 [splashManager]
 class = \York\View\Splash\Manager;
+shared = true;
+
+[translator]
+class = \York\Helper\Translator;
 shared = true;
 
 [viewManager]

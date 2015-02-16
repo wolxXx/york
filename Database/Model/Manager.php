@@ -1,333 +1,416 @@
 <?php
 namespace York\Database\Model;
-use York\Database\Model;
-use York\Exception\Autoload;
 
 /**
  * model manager
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Database\Model
+ * @version $version$
+ * @author wolxXx
  */
-abstract class Manager implements ManagerInterface{
-	/**
-	 * name of the referring table in the database
-	 *
-	 * @var string
-	 */
-	protected $tableName;
+abstract class Manager implements ManagerInterface
+{
+    /**
+     * name of the referring table in the database
+     *
+     * @var string
+     */
+    protected $tableName;
 
-	/**
-	 * name of the blueprint class
-	 *
-	 * @var string
-	 */
-	protected $blueprint;
+    /**
+     * name of the blueprint class
+     *
+     * @var string
+     */
+    protected $blueprint;
 
-	/**
-	 * set up
-	 */
-	public final function __construct(){
-		$this->model = new Model();
-	}
+    /**
+     * set up
+     */
+    public final function __construct()
+    {
+        $this->model = new \York\Database\Model();
+    }
 
-	/**
-	 * creates a new instance
-	 *
-	 * @param $class
-	 * @throws Autoload
-	 * @return \York\Database\Blueprint\ItemInterface
-	 */
-	protected static function getClassInstance($class){
-		if(false === \York\Autoload\Manager::isLoadable($class)){
-			throw new Autoload(sprintf('cannot load %s as blueprint in %s', $class, __CLASS__));
-		}
-
-
-
-		return new $class();
-	}
-
-	/**
-	 * match the declared variable type
-	 * grab a new instance of the blueprint if needed
-	 *
-	 * @param \ReflectionProperty $property
-	 * @param array $data
-	 * @param bool $preventReferencing
-	 * @return mixed
-	 */
-	protected function matchDeclaredVar(\ReflectionProperty $property, array $data, $preventReferencing = false){
-		$name = $property->getName();
-
-		$comment = str_replace('*', '', $property->getDocComment());
-		$comment = str_replace('/', '', $comment);
-		$comment = trim($comment);
-
-		$type = null;
-		$identifiedBy = null;
-
-		foreach(explode(PHP_EOL,$comment) as $part){
-			$part = trim($part);
-			if(false !== strstr($part, '@var')){
-				$type =explode(' ', str_replace('@var', '', $part));
-				$type = $type[1];
-				continue;
-			}
-			if(false !== strstr($part, '@identifiedBy')){
-				$identifiedBy = explode(' ', str_replace('@identifiedBy', '', $part));
-				$identifiedBy = $identifiedBy[1];
-				continue;
-			}
-		}
-
-		if(true === array_key_exists($name, $data)){
-			$value = $data[$name];
-
-			if('string' === $type){
-				return $value;
-			}
-
-			if('integer' === $type){
-				return (int) $value;
-			}
-
-			if('\DateTime' === $type){
-				if(null === $value || '0000-00-00 00:00:00' === $value){
-					return null;
-				}
-				return new \DateTime($value);
-			}
-
-			if('boolean' === $type){
-				return '1' === $value? true : false;
-			}
-		}
-
-		if(true === $preventReferencing || false === isset($identifiedBy) || null === $identifiedBy || false === isset($data[$identifiedBy])){
-			return null;
-		}
-
-		$blueprintSave = $this->blueprint;
-		$this->blueprint = $type;
+    /**
+     * creates a new instance
+     *
+     * @param string $class
+     *
+     * @return \York\Database\Blueprint\ItemInterface
+     *
+     * @throws \York\Exception\Autoload
+     */
+    protected static function getClassInstance($class)
+    {
+        if (false === \York\Autoload\Manager::isLoadable($class)) {
+            throw new \York\Exception\Autoload(sprintf('cannot load %s as blueprint in %s', $class, __CLASS__));
+        }
 
 
-		$tableNameSave = $this->tableName;
-		$this->tableName = str_replace('id_', '', $identifiedBy);
+        return new $class();
+    }
+
+    /**
+     * match the declared variable type
+     * grab a new instance of the blueprint if needed
+     *
+     * @param \ReflectionProperty   $property
+     * @param array                 $data
+     * @param boolean               $preventReferencing
+     *
+     * @return mixed
+     */
+    protected function matchDeclaredVar(\ReflectionProperty $property, array $data, $preventReferencing = false)
+    {
+        $name = $property->getName();
+
+        $comment = str_replace('*', '', $property->getDocComment());
+        $comment = str_replace('/', '', $comment);
+        $comment = trim($comment);
+
+        $type = null;
+        $identifiedBy = null;
+
+        foreach (explode(PHP_EOL, $comment) as $part) {
+            $part = trim($part);
+
+            if (false !== strstr($part, '@var')) {
+                $type = explode(' ', str_replace('@var', '', $part));
+                $type = $type[1];
+
+                continue;
+            }
+
+            if (false !== strstr($part, '@identifiedBy')) {
+                $identifiedBy = explode(' ', str_replace('@identifiedBy', '', $part));
+                $identifiedBy = $identifiedBy[1];
+
+                continue;
+            }
+        }
+
+        if (true === array_key_exists($name, $data)) {
+            $value = $data[$name];
+
+            if ('string' === $type) {
+                return $value;
+            }
+
+            if ('integer' === $type) {
+                return (int)$value;
+            }
+
+            if ('\DateTime' === $type) {
+                if (null === $value || '0000-00-00 00:00:00' === $value) {
+                    return null;
+                }
+
+                return new \DateTime($value);
+            }
+
+            if ('boolean' === $type) {
+                return '1' === $value ? true : false;
+            }
+        }
+
+        if (true === $preventReferencing || false === isset($identifiedBy) || null === $identifiedBy || false === isset($data[$identifiedBy])) {
+            return null;
+        }
+
+        $blueprintSave = $this->blueprint;
+        $this->blueprint = $type;
 
 
-		$instance = $this->getById($data[$identifiedBy], true);
-
-		$this->tableName = $tableNameSave;
-		$this->blueprint = $blueprintSave;
-
-		return $instance;
-	}
-
-	/**
-	 * find one by its id
-	 *
-	 * @param integer $id
-	 * @param bool $preventLoadReferences
-	 * @return null | \York\Database\Model\Item
-	 */
-	public function getById($id, $preventLoadReferences = false){
-		$result = $this->model->findOne($this->tableName, $id);
-		if(null === $result){
-			return null;
-		}
-
-		return $this->createByResult($result);
-	}
-
-	/**
-	 * @param string $field
-	 * @param mixed  $value
-	 * @return null | \York\Database\Blueprint\ItemInterface
-	 */
-	public function getBy($field, $value){
-		$results = $this->findBy($field, $value);
-		if(true === empty($results)){
-			return null;
-		}
-
-		return $results[0];
-	}
-
-	/**
-	 * @param string $field
-	 * @param mixed $value
-	 * @return \York\Database\Blueprint\ItemInterface[]
-	 */
-	public function findBy($field, $value){
-		return $this->find(new \York\Database\QueryBuilder\Select(
-			array(
-				'from' => array(
-					$this->getTableName()
-				),
-				'where' => array(
-					$field => $value
-				)
-			)
-		));
-	}
-
-	/**
-	 * create a model by the fetch result from the database
-	 *
-	 * @param \York\Database\FetchResult $result
-	 * @param bool $preventReferencing
-	 * @return null|\York\Database\Blueprint\ItemInterface
-	 */
-	protected function createByResult($result, $preventReferencing = false){
-		if(null === $result){
-			return null;
-		}
-
-		$resultData = $result->getData();
-
-		/**
-		 * @var \York\Database\Model\Item $instance
-		 */
-		$instance = null;
-		try{
-			$instance = $this->getClassInstance($this->blueprint);
-		}catch(Autoload $exception){
-			return null;
-		}
-
-		$reflection = new \ReflectionClass($instance);
-
-		foreach($reflection->getProperties() as $property){
-			if(true === in_array($property->getName(), array('flatMembers', 'referencedMembers'))){
-				continue;
-			}
-			$name = $property->getName();
-			$instance->set($name, $this->matchDeclaredVar($property, $resultData, $preventReferencing));
-		}
+        $tableNameSave = $this->tableName;
+        $this->tableName = str_replace('id_', '', $identifiedBy);
 
 
-		foreach($instance->referencedMembers as $referenced){
-			#$instance->setReferenced($referenced, $this->matchDeclaredVar($reflection->getProperty($referenced), $resultData));
-		}
+        $instance = $this->getById($data[$identifiedBy], true);
 
-		$instance->validate();
-		$instance->setIsModified(false);
+        $this->tableName = $tableNameSave;
+        $this->blueprint = $blueprintSave;
 
-		return $instance;
-	}
+        return $instance;
+    }
 
-	/**
-	 * @param \York\Database\QueryBuilder $query
-	 * @return \York\Database\Blueprint\ItemInterface | null
-	 */
-	public function findOne(\York\Database\QueryBuilder $query){
-		$result = $this->find($query);
+    /**
+     * @inheritdoc
+     */
+    public function getById($id)
+    {
+        $cached = \York\Dependency\Manager::getModelCache()->get($this->blueprint, $id);
 
-		if(true === empty($result)){
-			return null;
-		}
+        if (null !== $cached) {
+            return $cached;
+        }
 
-		$result = reset($result);
+        $result = $this->model->findOne($this->tableName, $id);
 
-		return $result;
-	}
+        if (null === $result) {
+            return null;
+        }
 
-	/**
-	 * @param \York\Database\QueryBuilder\QueryString $queryString
-	 * @return \York\Database\Blueprint\ItemInterface[]
-	 */
-	public function findByQueryString(\York\Database\QueryBuilder\QueryString $queryString){
-		$model = new Model();
-		$results = $model->findAllByQueryString($queryString);
-		$return = array();
+        $created = $this->createByResult($result);
+        \York\Dependency\Manager::getModelCache()->set($created);
 
-		foreach($results as $current){
-			$currentBlueprint = $this->createByResult($current, true);
+        return $created;
+    }
 
-			if(null === $currentBlueprint){
-				continue;
-			}
+    /**
+     * @param integer[] $ids
+     *
+     * @return \York\Database\Blueprint\ItemInterface[]
+     */
+    public function findByIds(array $ids)
+    {
+        $results = $this->find(new \York\Database\QueryBuilder\Select(array(
+            'from' => array(
+                $this->getTableName()
+            ),
+            'where' => array(
+                'IN' => array(
+                    'id' => $ids
+                )
+            )
+        )));
 
-			$return[] = $currentBlueprint;
-		}
+        \York\Dependency\Manager::getModelCache()->addMultiple($results);
 
-		return $return;
-	}
+        return $results;
+    }
 
-	/**
-	 * find all by the the query builder data
-	 *
-	 * @param \York\Database\QueryBuilder $query
-	 * @param boolean $preventReferencing
-	 * @return \York\Database\Blueprint\ItemInterface[]
-	 */
-	public function find(\York\Database\QueryBuilder $query, $preventReferencing = false){
-		$model = new Model();
-		$results = $model->findAllByQueryString($query->getQueryString());
-		$return = array();
+    /**
+     * @param string    $field
+     * @param mixed     $value
+     *
+     * @return null | \York\Database\Blueprint\ItemInterface
+     */
+    public function getBy($field, $value)
+    {
+        $results = $this->findBy($field, $value);
 
-		foreach($results as $current){
-			$currentBlueprint = $this->createByResult($current, $preventReferencing);
+        if (true === empty($results)) {
+            return null;
+        }
 
-			if(null === $currentBlueprint){
-				continue;
-			}
+        return $results[0];
+    }
 
-			$return[] = $currentBlueprint;
-		}
+    /**
+     * @param string    $field
+     * @param mixed     $value
+     *
+     * @return \York\Database\Blueprint\ItemInterface[]
+     */
+    public function findBy($field, $value)
+    {
+        return $this->find(new \York\Database\QueryBuilder\Select(
+            array(
+                'from' => array(
+                    $this->getTableName()
+                ),
+                'where' => array(
+                    $field => $value
+                )
+            )
+        ));
+    }
 
-		return $return;
-	}
+    /**
+     * create a model by the fetch result from the database
+     *
+     * @param \York\Database\FetchResult    $result
+     * @param boolean                       $preventReferencing
+     *
+     * @return null|\York\Database\Blueprint\ItemInterface
+     */
+    protected function createByResult($result, $preventReferencing = false)
+    {
+        if (null === $result) {
+            return null;
+        }
 
-	/**
-	 * finds all items
-	 * handle with care!
-	 *
-	 * @return \York\Database\Blueprint\ItemInterface[]
-	 */
-	public function findAll(){
-		return $this->find(new \York\Database\QueryBuilder\Select(array(
-			'from' => array(
-				$this->getTableName()
-			)
-		)));
-	}
+        $resultData = $result->getData();
 
-	/**
-	 * checks if the requested table has a clumn named is_active, if so, select omly the items with is_active = true, otherwise select all items
-	 *
-	 * @return \York\Database\Blueprint\ItemInterface[]
-	 */
-	public function findAllActives(){
-		if(false === \York\Database\Information::columnExists(\Application\Configuration\Dependency::getDatabaseConfiguration()->get('db_host'), $this->getTableName(), 'is_active')){
-			return $this->findAll();
-		}
+        /**
+         * @var \York\Database\Model\Item $instance
+         */
+        $instance = null;
 
-		return $this->find(new \York\Database\QueryBuilder\Select(array(
-			'from' => array(
-				$this->getTableName()
-			),
-			'where' => array(
-				'is_active' => true
-			)
-		)), true);
-	}
+        try {
+            $instance = $this->getClassInstance($this->blueprint);
+        } catch (\York\Exception\Autoload $exception) {
+            return null;
+        }
 
-	/**
-	 * @return string
-	 */
-	public function getTableName(){
-		return $this->tableName;
-	}
+        $reflection = new \ReflectionClass($instance);
 
-	/**
-	 * @param string $tableName
-	 * @return \York\Database\Model\Manager
-	 */
-	public function setTableName($tableName){
-		$this->tableName = $tableName;
-		return $this;
-	}
+        foreach ($reflection->getProperties() as $property) {
+            if (true === in_array($property->getName(), array('flatMembers', 'referencedMembers'))) {
+                continue;
+            }
+
+            $name = $property->getName();
+            $instance->set($name, $this->matchDeclaredVar($property, $resultData, $preventReferencing));
+        }
+
+
+        //@todo check if needed xD
+        #foreach ($instance->referencedMembers as $referenced) {
+            #$instance->setReferenced($referenced, $this->matchDeclaredVar($reflection->getProperty($referenced), $resultData));
+        #}
+
+        $instance->validate();
+        $instance->setIsModified(false);
+
+        return $instance;
+    }
+
+    /**
+     * @param \York\Database\QueryBuilder $query
+     *
+     * @return \York\Database\Blueprint\ItemInterface | null
+     */
+    public function findOne(\York\Database\QueryBuilder $query)
+    {
+        $result = $this->find($query);
+
+        if (true === empty($result)) {
+            return null;
+        }
+
+        $result = reset($result);
+
+        return $result;
+    }
+
+    /**
+     * @param \York\Database\QueryBuilder\QueryString $queryString
+     *
+     * @return \York\Database\Blueprint\ItemInterface[]
+     */
+    public function findByQueryString(\York\Database\QueryBuilder\QueryString $queryString)
+    {
+        $model = new \York\Database\Model();
+        $results = $model->findAllByQueryString($queryString);
+        $return = array();
+
+        foreach ($results as $current) {
+            $currentBlueprint = $this->createByResult($current, true);
+
+            if (null === $currentBlueprint) {
+                continue;
+            }
+
+            $return[] = $currentBlueprint;
+        }
+
+        return $return;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function find(\York\Database\QueryBuilder $query, $preventReferencing = false)
+    {
+        $model = new \York\Database\Model();
+        $results = $model->findAllByQueryString($query->getQueryString());
+        $return = array();
+
+        foreach ($results as $current) {
+            $currentBlueprint = $this->createByResult($current, $preventReferencing);
+
+            if (null === $currentBlueprint) {
+                continue;
+            }
+
+            $return[] = $currentBlueprint;
+        }
+
+        \York\Dependency\Manager::getModelCache()->addMultiple($return);
+
+        return $return;
+    }
+
+    /**
+     * finds all items
+     * handle with care!
+     *
+     * @return \York\Database\Blueprint\ItemInterface[]
+     */
+    public function findAll()
+    {
+        $result = $this->find(new \York\Database\QueryBuilder\Select(array(
+            'from' => array(
+                $this->getTableName()
+            ),
+            'order' => 'id DESC'
+        )));
+
+        \York\Dependency\Manager::getModelCache()->addMultiple($result);
+
+        return $result;
+    }
+
+    /**
+     * checks if the requested table has a clumn named is_active, if so, select omly the items with is_active = true, otherwise select all items
+     *
+     * @return \York\Database\Blueprint\ItemInterface[]
+     */
+    public function findAllActives()
+    {
+        $host = \Application\Configuration\Dependency::getDatabaseConfiguration()->get('db_host');
+        $table = $this->getTableName();
+        $column = 'is_active';
+        $exists = \York\Database\Information::columnExists($host, $table, $column);
+
+        if (false === $exists) {
+            return $this->findAll();
+        }
+
+        return $this->find(new \York\Database\QueryBuilder\Select(array(
+            'from' => array(
+                $this->getTableName()
+            ),
+            'where' => array(
+                'is_active' => true
+            )
+        )), true);
+    }
+
+    /**
+     * clear all data
+     *
+     * @return boolean
+     */
+    public function clearAll()
+    {
+        return \Application\Configuration\Dependency::getDatabaseManager()
+            ->query(
+                new \York\Database\QueryBuilder\QueryString(
+                    sprintf('delete from %s', $this->getTableName()))
+            )
+            ->queryWasSuccessful();
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableName()
+    {
+        return $this->tableName;
+    }
+
+    /**
+     * @param string $tableName
+     *
+     * @return $this
+     */
+    public function setTableName($tableName)
+    {
+        $this->tableName = $tableName;
+
+        return $this;
+    }
 }

@@ -2,7 +2,7 @@
 
 clear;
 
-echo "YORK: running unit tests, generating documentation";
+echo "yOrk: running unit tests, generating documentation";
 echo "";
 echo "";
 
@@ -30,7 +30,5 @@ else
 fi
 
 
-
-php phpunit.phar --configuration $here/phpunit.xml --coverage-html $COVERAGEDIR $TESTPATH;
-#phpunit --configuration $here/phpunit.xml --coverage-html $COVERAGEDIR $TESTPATH;
-#phpunit --colors --bootstrap TestBootstrap.php  --coverage-html $COVERAGEDIR $TESTPATH;
+php phpunit.phar --configuration $here/phpunit.xml --coverage-html $COVERAGEDIR --coverage-clover $COVERAGEDIR/coverage.clover $TESTPATH;
+#php phpunit.phar --configuration $here/phpunit.xml --coverage-html $COVERAGEDIR --coverage-xml $COVERAGEDIR --coverage-php $COVERAGEDIR/coverage.php --coverage-clover $COVERAGEDIR/coverage.clover $here;

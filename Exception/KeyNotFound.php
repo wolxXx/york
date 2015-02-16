@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for not found views
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class KeyNotFound extends \York\Exception\General{}
+class KeyNotFound extends \York\Exception\General
+{
+}

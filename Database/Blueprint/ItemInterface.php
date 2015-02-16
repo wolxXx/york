@@ -1,20 +1,26 @@
 <?php
 namespace York\Database\Blueprint;
+
 /**
  * Interface BlueprintInterface
+ *
+ * @package \York\Database\Blueprint
+ * @version $version$
+ * @author wolxXx
  */
-interface ItemInterface{
-	/**
-	 * init your references
-	 *
-	 * @return ItemInterface
-	 */
-	public function initReferencing();
+interface ItemInterface
+{
+    /**
+     * init your references
+     *
+     * @return $this
+     */
+    public function initReferencing();
 
-	/**
-	 * validate yourself
-	 *
-	 * @return ItemInterface
-	 */
-	public function validate();
+    /**
+     * validate yourself
+     *
+     * @return $this
+     */
+    public function validate();
 }

@@ -1,259 +1,364 @@
 <?php
 namespace York;
+
 /**
  * interface for the mailer
  *
+ * @package \York
+ * @version $version$
  * @author wolxXx
- * @version 3.0
- * @package York
  */
-interface MailerInterface{
-	/**
-	 * adds a receiver
-	 *
-	 * @param string $receiver
-	 * @return \York\MailerInterface
-	 */
-	public function addReceiver($receiver);
+interface MailerInterface
+{
+    /**
+     * adds a receiver
+     *
+     * @param string $receiver
+     *
+     * @return $this
+     */
+    public function addReceiver($receiver);
 
-	/**
-	 * adds multiple receivers
-	 *
-	 * @param string[] $receivers
-	 * @return \York\MailerInterface
-	 */
-	public function addReceivers(array $receivers);
+    /**
+     * adds multiple receivers
+     *
+     * @param string[] $receivers
+     *
+     * @return $this
+     */
+    public function addReceivers(array $receivers);
 
-	/**
-	 * clears all receivers
-	 *
-	 * @return \York\MailerInterface
-	 */
-	public function clearReceivers();
+    /**
+     * clears all receivers
+     *
+     * @return $this
+     */
+    public function clearReceivers();
 
-	/**
-	 * retrieves all set receivers
-	 *
-	 * @return string[]
-	 */
-	public function getReceivers();
+    /**
+     * retrieves all set receivers
+     *
+     * @return string[]
+     */
+    public function getReceivers();
 
-	/**
-	 * checks if the given receiver was set before
-	 *
-	 * @param string $receiver
-	 * @return boolean
-	 */
-	public function hasReceiver($receiver);
+    /**
+     * overwrite the receivers
+     *
+     * @param string[] $receivers
+     *
+     * @return $this
+     */
+    public function setReceivers(array $receivers);
 
-	/**
-	 * removes a receiver
-	 *
-	 * @param string $receiver
-	 * @return \York\MailerInterface
-	 */
-	public function removeReceiver($receiver);
+    /**
+     * overwrite the receiver
+     *
+     * @param string $receiver
+     *
+     * @return $this
+     */
+    public function setReceiver($receiver);
 
-	/**
-	 * adds a carbon copy receiver
-	 *
-	 * @param string $receiver
-	 * @return \York\MailerInterface
-	 */
-	public function addCarbonCopyReceiver($receiver);
+    /**
+     * checks if the given receiver was set before
+     *
+     * @param string $receiver
+     *
+     * @return boolean
+     */
+    public function hasReceiver($receiver);
 
-	/**
-	 * adds multiple carbon copy receivers
-	 *
-	 * @param string[] $receivers
-	 * @return \York\MailerInterface
-	 */
-	public function addCarbonCopyReceivers(array $receivers);
+    /**
+     * removes a receiver
+     *
+     * @param string $receiver
+     *
+     * @return $this
+     */
+    public function removeReceiver($receiver);
 
-	/**
-	 * clears all carbon copy receivers
-	 *
-	 * @return \York\MailerInterface
-	 */
-	public function clearCarbonCopyReceivers();
+    /**
+     * adds a carbon copy receiver
+     *
+     * @param string $receiver
+     *
+     * @return $this
+     */
+    public function addCarbonCopyReceiver($receiver);
 
-	/**
-	 * retrieves all set carbon copy receivers
-	 *
-	 * @return string[]
-	 */
-	public function getCarbonCopyReceivers();
+    /**
+     * adds multiple carbon copy receivers
+     *
+     * @param string[] $receivers
+     *
+     * @return $this
+     */
+    public function addCarbonCopyReceivers(array $receivers);
 
-	/**
-	 * checks if the given carbon copy receiver was set before
-	 *
-	 * @param string $receiver
-	 * @return boolean
-	 */
-	public function hasCarbonCopyReceiver($receiver);
+    /**
+     * clears all carbon copy receivers
+     *
+     * @return $this
+     */
+    public function clearCarbonCopyReceivers();
 
-	/**
-	 * removes a carbon copy receiver
-	 *
-	 * @param string $receiver
-	 * @return \York\MailerInterface
-	 */
-	public function removeCarbonCopyReceiver($receiver);
+    /**
+     * retrieves all set carbon copy receivers
+     *
+     * @return string[]
+     */
+    public function getCarbonCopyReceivers();
 
-	/**
-	 * adds a blind carbon copy receiver
-	 *
-	 * @param string $receiver
-	 * @return \York\MailerInterface
-	 */
-	public function addBlindCarbonCopyReceiver($receiver);
+    /**
+     * overwrite the carbon copy receivers
+     *
+     * @param string[] $receivers
+     *
+     * @return $this
+     */
+    public function setCarbonCopyReceivers(array $receivers);
 
-	/**
-	 * adds multiple blind carbon copy receivers
-	 *
-	 * @param string[] $receivers
-	 * @return \York\MailerInterface
-	 */
-	public function addBlindCarbonCopyReceivers(array $receivers);
+    /**
+     * overwrite the carbon copy receivers
+     *
+     * @param string $receiver
+     *
+     * @return $this
+     */
+    public function setCarbonCopyReceiver($receiver);
 
-	/**
-	 * clears all blind carbon copy receivers
-	 *
-	 * @return \York\MailerInterface
-	 */
-	public function clearBlindCarbonCopyReceivers();
+    /**
+     * checks if the given carbon copy receiver was set before
+     *
+     * @param string $receiver
+     *
+     * @return boolean
+     */
+    public function hasCarbonCopyReceiver($receiver);
 
-	/**
-	 * retrieves all set blind carbon copy receivers
-	 *
-	 * @return string[]
-	 */
-	public function getBlindCarbonCopyReceivers();
+    /**
+     * removes a carbon copy receiver
+     *
+     * @param string $receiver
+     *
+     * @return $this
+     */
+    public function removeCarbonCopyReceiver($receiver);
 
-	/**
-	 * checks if the given blind carbon copy receiver was set before
-	 *
-	 * @param string $receiver
-	 * @return boolean
-	 */
-	public function hasBlindCarbonCopyReceiver($receiver);
+    /**
+     * adds a blind carbon copy receiver
+     *
+     * @param string $receiver
+     *
+     * @return $this
+     */
+    public function addBlindCarbonCopyReceiver($receiver);
 
-	/**
-	 * removes a blind carbon copy receiver
-	 *
-	 * @param string $receiver
-	 * @return \York\MailerInterface
-	 */
-	public function removeBlindCarbonCopyReceiver($receiver);
+    /**
+     * adds multiple blind carbon copy receivers
+     *
+     * @param string[] $receivers
+     *
+     * @return $this
+     */
+    public function addBlindCarbonCopyReceivers(array $receivers);
 
-	/**
-	 * adds a file to the files
-	 *
-	 * @param \York\FileSystem\File $file
-	 * @return \York\MailerInterface
-	 */
-	public function addFile(\York\FileSystem\File $file);
+    /**
+     * clears all blind carbon copy receivers
+     *
+     * @return $this
+     */
+    public function clearBlindCarbonCopyReceivers();
 
-	/**
-	 * adds multiple files
-	 *
-	 * @param \York\FileSystem\File[] $files
-	 * @return \York\MailerInterface
-	 */
-	public function addFiles(array $files);
+    /**
+     * retrieves all set blind carbon copy receivers
+     *
+     * @return string[]
+     */
+    public function getBlindCarbonCopyReceivers();
 
-	/**
-	 * checks if the given file was already added
-	 *
-	 * @param \York\FileSystem\File $file
-	 * @return boolean
-	 */
-	public function hasFile(\York\FileSystem\File $file);
+    /**
+     * overwrite the blind carbon copy receivers
+     *
+     * @param string[] $receivers
+     *
+     * @return $this
+     */
+    public function setBlindCarbonCopyReceivers(array $receivers);
 
-	/**
-	 * removes the given file from the list of files
-	 *
-	 * @param \York\FileSystem\File $file
-	 * @return \York\MailerInterface
-	 */
-	public function removeFile(\York\FileSystem\File $file);
+    /**
+     * overwrite the blind carbon copy receivers
+     *
+     * @param string $receiver
+     *
+     * @return $this
+     */
+    public function setBlindCarbonCopyReceiver($receiver);
 
-	/**
-	 * getter for all files
-	 *
-	 * @return \York\FileSystem\File[]
-	 */
-	public function getFiles();
+    /**
+     * checks if the given blind carbon copy receiver was set before
+     *
+     * @param string $receiver
+     *
+     * @return boolean
+     */
+    public function hasBlindCarbonCopyReceiver($receiver);
 
-	/**
-	 * clears all set files
-	 *
-	 * @return \York\MailerInterface
-	 */
-	public function clearFiles();
+    /**
+     * removes a blind carbon copy receiver
+     *
+     * @param string $receiver
+     *
+     * @return $this
+     */
+    public function removeBlindCarbonCopyReceiver($receiver);
 
-	/**
-	 * getter for the subject
-	 *
-	 * @return string
-	 */
-	public function getSubject();
+    /**
+     * adds a file to the files
+     *
+     * @param \York\FileSystem\File $file
+     *
+     * @return $this
+     */
+    public function addFile(\York\FileSystem\File $file);
 
-	/**
-	 * setter for the subject
-	 *
-	 * @param $subject
-	 * @return \York\MailerInterface
-	 */
-	public function setSubject($subject);
+    /**
+     * adds multiple files
+     *
+     * @param \York\FileSystem\File[] $files
+     *
+     * @return $this
+     */
+    public function addFiles(array $files);
 
-	/**
-	 * getter for the text
-	 *
-	 * @return string
-	 */
-	public function getText();
+    /**
+     * checks if the given file was already added
+     *
+     * @param \York\FileSystem\File $file
+     *
+     * @return boolean
+     */
+    public function hasFile(\York\FileSystem\File $file);
 
-	/**
-	 * setter for the text
-	 *
-	 * @param $text
-	 * @return \York\MailerInterface
-	 */
-	public function setText($text);
+    /**
+     * removes the given file from the list of files
+     *
+     * @param \York\FileSystem\File $file
+     *
+     * @return $this
+     */
+    public function removeFile(\York\FileSystem\File $file);
 
-	/**
-	 * getter for the sender
-	 *
-	 * @return string
-	 */
-	public function getSender();
+    /**
+     * getter for all files
+     *
+     * @return \York\FileSystem\File[]
+     */
+    public function getFiles();
 
-	/**
-	 * @param string $sender
-	 * @return \York\MailerInterface
-	 */
-	public function setSender($sender);
+    /**
+     * overwrites files
+     *
+     * @param \York\FileSystem\File[] $files
+     *
+     * @return $this
+     */
+    public function setFiles(array $files);
 
-	/**
-	 * getter for the encoding
-	 *
-	 * @return string
-	 */
-	public function getEncoding();
+    /**
+     * overwrites files
+     *
+     * @param \York\FileSystem\File $file
+     *
+     * @return $this
+     */
+    public function setFile($file);
 
-	/**
-	 * setter for the encoding
-	 *
-	 * @param $encoding
-	 * @return \York\MailerInterface
-	 */
-	public function setEncoding($encoding);
+    /**
+     * clears all set files
+     *
+     * @return $this
+     */
+    public function clearFiles();
 
-	/**
-	 * sends the mail
-	 *
-	 * @return \York\MailerInterface
-	 */
-	public function send($force = false);
+    /**
+     * getter for the subject
+     *
+     * @return string
+     */
+    public function getSubject();
+
+    /**
+     * setter for the subject
+     *
+     * @param $subject
+     *
+     * @return $this
+     */
+    public function setSubject($subject);
+
+    /**
+     * getter for the text
+     *
+     * @return string
+     */
+    public function getText();
+
+    /**
+     * setter for the text
+     *
+     * @param string $text
+     *
+     * @return $this
+     */
+    public function setText($text);
+
+    /**
+     * add text
+     *
+     * @param string $text
+     *
+     * @return $this
+     */
+    public function addText($text);
+
+    /**
+     * getter for the sender
+     *
+     * @return string
+     */
+    public function getSender();
+
+    /**
+     * @param string $sender
+     *
+     * @return $this
+     */
+    public function setSender($sender);
+
+    /**
+     * getter for the encoding
+     *
+     * @return string
+     */
+    public function getEncoding();
+
+    /**
+     * setter for the encoding
+     *
+     * @param $encoding
+     *
+     * @return $this
+     */
+    public function setEncoding($encoding);
+
+    /**
+     * sends the mail
+     *
+     * @param boolean $force
+     *
+     * @return $this
+     */
+    public function send($force = false);
 }

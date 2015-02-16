@@ -1,21 +1,24 @@
 <?php
 namespace York\Validator;
+
 /**
  * validator for checking that the current request contains post data
  *
+ * @package \York\Validator
+ * @version $version$
  * @author wolxXx
- * @version 3.1
- * @package York\Validator
  */
-class IsPost implements ValidatorInterface{
-	/**
-	 * @inheritdoc
-	 */
-	public function isValid($data){
-		if(false === \York\Dependency\Manager::getRequestManager()->isPost()){
-			throw new \York\Exception\Validator('not a post request');
-		}
+class IsPost implements \York\Validator\ValidatorInterface
+{
+    /**
+     * @inheritdoc
+     */
+    public function isValid($data)
+    {
+        if (false === \York\Dependency\Manager::getRequestManager()->isPost()) {
+            throw new \York\Exception\Validator('not a post request');
+        }
 
-		return true;
-	}
+        return true;
+    }
 }

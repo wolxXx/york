@@ -1,8 +1,9 @@
-	/**
-	 * getter for the manager
-	 *
-	 * @return \Application\Model\Manager\%%model%%
-	 */
-	public function getManager(){
-		return new \Application\Model\Manager\%%model%%();
-	}
+    /**
+     * getter for the manager
+     *
+     * @return \Application\Model\Manager\%%model%%
+     */
+    public function getManager()
+    {
+        return new \Application\Model\Manager\%%model%%();
+    }

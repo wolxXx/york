@@ -7,11 +7,6 @@ class RarUnpackerTest extends \PHPUnit_Framework_TestCase{
 		parent::setUp();
 	}
 
-	public function testFailingConfiguration(){
-		$this->setExpectedException('\Exception');
-		new \York\FileSystem\ArchiveUnpacker\Tar('foobar');
-	}
-
 	public function testRunFailsTargetNotExists(){
 		$this->setExpectedException('\York\Exception\FileSystem');
 

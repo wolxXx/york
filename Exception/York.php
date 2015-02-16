@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * framework exception
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class York extends \Exception{}
+class York extends \Exception
+{
+}

@@ -1,110 +1,122 @@
 <?php
 namespace York\Database\QueryBuilder;
+
 /**
  * query builder for deleting items in the database
  *
- * @author wolxXx
- * @version 3.0
  * @package \York\Database\QueryBuilder
+ * @version $version$
+ * @author wolxXx
  */
-class MultiDelete extends \York\Database\QueryBuilder{
-	/**
-	 * the name of the table
-	 *
-	 * @var string
-	 */
-	protected $table;
+class MultiDelete extends \York\Database\QueryBuilder
+{
+    /**
+     * the name of the table
+     *
+     * @var string
+     */
+    protected $table;
 
-	/**
-	 * an instance of the DatabaseManager
-	 *
-	 * @var \York\Database\Manager
-	 */
-	protected $databaseManager;
+    /**
+     * an instance of the DatabaseManager
+     *
+     * @var \York\Database\Manager
+     */
+    protected $databaseManager;
 
-	/**
-	 * the conditions array
-	 *
-	 * @var array
-	 */
-	protected $conditions;
+    /**
+     * the conditions array
+     *
+     * @var array
+     */
+    protected $conditions;
 
-	/**
-	 * constructor
-	 *
-	 * @param string $table
-	 * @param array $conditions
-	 */
-	public function __construct($table = null, $conditions = null, $databaseManager = null){
-		$this
-			->setTable($table)
-			->setConditions($conditions)
-			->setDatabaseManager($databaseManager);
+    /**
+     * constructor
+     *
+     * @param string    $table
+     * @param array     $conditions
+     */
+    public function __construct($table = null, $conditions = null, $databaseManager = null)
+    {
+        $this
+            ->setTable($table)
+            ->setConditions($conditions)
+            ->setDatabaseManager($databaseManager);
 
-	}
+    }
 
-	/**
-	 * @param null $databaseManager
-	 * @return \York\Database\QueryBuilder\MultiDelete
-	 */
-	public function setDatabaseManager($databaseManager = null){
-		if(null === $databaseManager){
-			$databaseManager = \York\Dependency\Manager::get('databaseManager');
-		}
-		$this->databaseManager = $databaseManager;
-		return $this;
-	}
+    /**
+     * @param \York\Database\Manager | null $databaseManager
+     *
+     * @return \York\Database\QueryBuilder\MultiDelete
+     */
+    public function setDatabaseManager($databaseManager = null)
+    {
+        if (null === $databaseManager) {
+            $databaseManager = \York\Dependency\Manager::getDatabaseManager();
+        }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see QueryBuilder::checkConditions()
-	 */
-	public function checkConditions(){
-		if(null === $this->conditions){
-			throw new \York\Exception\QueryGenerator('please specify conditions');
-		}
+        $this->databaseManager = $databaseManager;
 
-		if(true === empty($this->conditions)){
-			throw new \York\Exception\QueryGenerator('please specify conditions');
-		}
-	}
+        return $this;
+    }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see QueryBuilder::generateQuery()
-	 */
-	public function generateQuery(){
-		$this->checkConditions();
-		$where = $this->generateWhere();
-		$query = sprintf("DELETE FROM `%s` WHERE %s;", $this->table, $where);
-		return $query;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function checkConditions()
+    {
+        if (null === $this->conditions) {
+            throw new \York\Exception\QueryGenerator('please specify conditions');
+        }
 
-	/**
-	 * (non-PHPdoc)
-	 * @see QueryBuilder::getQueryString()
-	 */
-	public function getQueryString(){
-		return new QueryString($this->generateQuery());
-	}
+        if (true === empty($this->conditions)) {
+            throw new \York\Exception\QueryGenerator('please specify conditions');
+        }
+    }
 
-	/**
-	 * setter for the table name
-	 *
-	 * @param string $table
-	 * @return \York\Database\QueryBuilder\MultiDelete
-	 */
-	public function setTable($table){
-		$this->table = $table;
-		return $this;
-	}
+    /**
+     * @inheritdoc
+     */
+    public function generateQuery()
+    {
+        $this->checkConditions();
+        $where = $this->generateWhere();
+        $query = sprintf("DELETE FROM `%s` WHERE %s;", $this->table, $where);
 
-	/**
-	 * (non-PHPdoc)
-	 * @see QueryBuilder::setConditions()
-	 */
-	public function setConditions($conditions){
-		$this->conditions = array('where' => $conditions);
-		return $this;
-	}
+        return $query;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getQueryString()
+    {
+        return new \York\Database\QueryBuilder\QueryString($this->generateQuery());
+    }
+
+    /**
+     * setter for the table name
+     *
+     * @param string $table
+     *
+     * @return $this
+     */
+    public function setTable($table)
+    {
+        $this->table = $table;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setConditions($conditions)
+    {
+        $this->conditions = array('where' => $conditions);
+
+        return $this;
+    }
 }

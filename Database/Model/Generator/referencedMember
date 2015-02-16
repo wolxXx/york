@@ -1,23 +1,27 @@
-	/**
-	 * @var %%class%% $%%name%%
-	 * @identifiedBy %%identified%%
-	*/
-	public $%%name%%;
+     /**
+      * @var %%class%% $%%name%%
+      *
+      * @identifiedBy %%identified%%
+     */
+     public $%%name%%;
 
-	/**
-	 * @deprecated
-	 * @not usable!!!
-	 */
-	private function set%%name%%($%%name%%){
-		throw new \York\Exception\Database('setting model items is not supported yet!');
-	}
+     /**
+      * @deprecated
+      * @not usable for now!!!
+      */
+     private function set%%name%%($%%name%%)
+     {
+          throw new \York\Exception\Database('setting model items is not supported yet!');
+     }
 
-	/**
-	 * getter for the %%name%%
-	 * @return \Application\Model\%%name%%
-	*/
-	public function get%%name%%(){
-		return $this->getReferenced('%%name%%', $this->%%identified%%);
-	}
+     /**
+      * getter for the %%name%%
+      *
+      * @return \Application\Model\%%name%%
+     */
+     public function get%%name%%()
+     {
+          return $this->getReferenced('%%name%%', $this->%%identified%%);
+     }
 
 

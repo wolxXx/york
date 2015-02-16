@@ -9,7 +9,8 @@ class FileSystemDirectoryTest extends \PHPUnit_Framework_TestCase{
 
 	public function testDefault(){
 		$directory = new \York\FileSystem\Directory(__DIR__);
-		$this->assertSame(__DIR__, $directory->getFullPath());
+		$this->assertSame(__DIR__.'/', $directory->getFullPath());
+
 		$this->assertSame('FileSystem', $directory.'');
 		$this->assertSame('FileSystem', $directory->getName());
 	}

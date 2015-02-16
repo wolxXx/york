@@ -76,15 +76,6 @@ class HTMLTest extends \PHPUnit_Framework_TestCase{
 		$this->assertSame('foo bar ', $input->get('class'));
 	}
 
-	public function testTime(){
-		$this->markTestSkipped('Element not ready yet...');
-
-
-		$element = \York\HTML\Element\Time::Factory();
-		$markup = $element->getMarkup();
-		$this->assertSame('foobar', $markup);
-	}
-
 	public function testText(){
 		$input = \York\HTML\Element\Text::Factory()
 			->setText('foobar. lol.');
@@ -360,7 +351,7 @@ class HTMLTest extends \PHPUnit_Framework_TestCase{
 		$this->expectOutputRegex('/value="bar!"/');
 		$this->expectOutputRegex('/name="'.$radio->getName().'"/');
 		$radio->addChild(\York\HTML\Element\RadioOption::Factory()->setValue('foo!'));
-		$radio->addChild(\York\HTML\Element\RadioOption::Factory()->setValue('bar!'));
+		$radio->addChild(\York\HTML\Element\RadioOption::Factory()->setValue('bar!')->set('checked', true));
 		$this->assertSame(2, sizeof($radio->getChildren()));
 		$radio->display();
 	}
@@ -540,5 +531,12 @@ class HTMLTest extends \PHPUnit_Framework_TestCase{
 		$this->expectOutputRegex('/>foo!'.PHP_EOL.'</');
 		$this->expectOutputRegex('/<\/span>/');
 		\York\HTML\Element\Span::Factory()->setNameAndId('ahoibrause')->setText('foo!')->display();
+	}
+
+	public function testRenderLink(){
+		$this->expectOutputRegex('/\</');
+		$this->expectOutputRegex('/href="\/foo\/bar"/');
+		$this->expectOutputRegex('/target="_blank"/');
+		\York\HTML\Element\Link::Factory()->setLabel(\York\HTML\Element\Label::Factory())->addLabel()->setHref('/foo/bar')->setTarget('_blank')->setNameAndId('ahoibrause')->setText('foo!')->display();
 	}
 }

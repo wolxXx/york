@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * Exception for saying sorry, this is not implemented yet.
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class NotImplemented extends \York\Exception\General{}
+class NotImplemented extends \York\Exception\General
+{
+}

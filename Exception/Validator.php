@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for validation fails
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class Validator extends \York\Exception\General{}
+class Validator extends \York\Exception\General
+{
+}

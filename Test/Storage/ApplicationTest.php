@@ -8,8 +8,61 @@ class StorageApplicationTest extends \PHPUnit_Framework_TestCase{
 	 */
 	protected $storage;
 	public function setup(){
-		parent::setup();
 		$this->storage = new \York\Storage\Application();
+	}
+
+	public function testSetData(){
+		$data = array(
+			'foo' => 'bar',
+			'bar' => 'foo'
+		);
+		$this->storage->setData($data);
+		$this->assertSame('foo', $this->storage->get('bar'));
+		$this->assertSame('bar', $this->storage->get('foo'));
+	}
+
+	public function testAddData(){
+		$data = array(
+			'foo' => 'bar',
+			'bar' => 'foo'
+		);
+		$this->storage->addData($data);
+		$this->assertSame('bar', $this->storage->get('foo'));
+		$this->storage->set('foo', 'lolrofl');
+		$this->storage->addData($data, false);
+		$this->assertSame('lolrofl', $this->storage->get('foo'));
+	}
+
+	public function testRemoveData(){
+		$this->assertNull($this->storage->getSafely('foo'));
+		$this->storage->set('foo', 'bar');
+		$this->assertSame('bar', $this->storage->get('foo'));
+		$this->storage->remove('foo');
+		$this->assertNull($this->storage->getSafely('foo'));
+	}
+
+	public function testRemoveKey(){
+		$this->assertNull($this->storage->getSafely('foo'));
+		$this->storage->set('foo', 'bar');
+		$this->assertSame('bar', $this->storage->get('foo'));
+		$this->storage->removeKey('foo');
+		$this->assertNull($this->storage->getSafely('foo'));
+	}
+
+	public function testClear(){
+		$this->assertNull($this->storage->getSafely('foo'));
+		$this->storage->set('foo', 'bar');
+		$this->assertSame('bar', $this->storage->get('foo'));
+		$this->storage->clear();
+		$this->assertNull($this->storage->getSafely('foo'));
+	}
+
+	public function testClearData(){
+		$this->assertNull($this->storage->getSafely('foo'));
+		$this->storage->set('foo', 'bar');
+		$this->assertSame('bar', $this->storage->get('foo'));
+		$this->storage->clearData();
+		$this->assertNull($this->storage->getSafely('foo'));
 	}
 
 	public function testSetGet(){

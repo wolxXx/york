@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for having errors in the translator
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class Translator extends \York\Exception\General{}
+class Translator extends \York\Exception\General
+{
+}

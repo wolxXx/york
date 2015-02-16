@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * dedicated console exception
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class Console extends \York\Exception\General{}
+class Console extends \York\Exception\General
+{
+}

@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for undefined api status
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class UndefinedApiStatus extends \York\Exception\General{}
+class UndefinedApiStatus extends \York\Exception\General
+{
+}

@@ -1,33 +1,37 @@
 <?php
 namespace York\Database\QueryBuilder;
+
 /**
  * the core model accepts only a query string
  * that was made by query builders
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Database\QueryBuilder
+ * @version $version$
+ * @author wolxXx
  */
-interface QueryStringInterface{
-	/**
-	 * getter for the query string
-	 *
-	 * @return string
-	 * @param boolean $cleared
-	 */
-	public function getQueryString($cleared = false);
+interface QueryStringInterface
+{
+    /**
+     *constructor
+     *
+     * @param string $queryString
+     */
+    public function __construct($queryString = null);
 
-	/**
-	 *constructor
-	 *
-	 * @param string $queryString
-	 */
-	public function __construct($queryString = null);
+    /**
+     * getter for the query string
+     *
+     * @param boolean $cleared
+     *
+     * @return string
+     */
+    public function getQueryString($cleared = false);
 
-	/**
-	 * setter for the query string
-	 *
-	 * @param string
-	 */
-	public function setQueryString($string);
+
+    /**
+     * setter for the query string
+     *
+     * @param string
+     */
+    public function setQueryString($string);
 }

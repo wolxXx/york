@@ -1,270 +1,300 @@
 <?php
 namespace York\Database;
+
 /**
  * connection to a mysqli database
  * see it as an improved mysql wrapper class
  *
- * @author wolxXx
- * @version 3.1
  * @package York\Database
+ * @version $version$
+ * @author wolxXx
  */
-class Connection{
-	/**
-	 * host name
-	 *
-	 * @var string
-	 */
-	protected $host;
+class Connection
+{
+    /**
+     * host name
+     *
+     * @var string
+     */
+    protected $host;
 
-	/**
-	 * database schema
-	 *
-	 * @var string
-	 */
-	protected $schema;
+    /**
+     * database schema
+     *
+     * @var string
+     */
+    protected $schema;
 
-	/**
-	 * user name
-	 *
-	 * @var string
-	 */
-	protected $user;
+    /**
+     * user name
+     *
+     * @var string
+     */
+    protected $user;
 
-	/**
-	 * password
-	 *
-	 * @var string
-	 */
-	protected $password;
+    /**
+     * password
+     *
+     * @var string
+     */
+    protected $password;
 
-	/**
-	 * the last occurred error
-	 *
-	 * @var string
-	 */
-	protected $error;
+    /**
+     * the last occurred error
+     *
+     * @var string
+     */
+    protected $error;
 
-	/**
-	 * real database connection
-	 *
-	 * @var \mysqli
-	 */
-	protected $connection;
+    /**
+     * real database connection
+     *
+     * @var \mysqli
+     */
+    protected $connection;
 
-	/**
-	 * the last executed query
-	 *
-	 * @var string
-	 */
-	protected $lastQuery;
+    /**
+     * the last executed query
+     *
+     * @var string
+     */
+    protected $lastQuery;
 
-	/**
-	 * set credentials
-	 * you can set them later via setters!
-	 *
-	 * @param string | null $host
-	 * @param string | null $schema
-	 * @param string | null $user
-	 * @param string | null $password
-	 */
-	public function __construct($host = null, $schema = null, $user = null, $password = null){
-		$this
-			->setHost($host)
-			->setSchema($schema)
-			->setUser($user)
-			->setPassword($password);
-	}
+    /**
+     * set credentials
+     * you can set them later via setters!
+     *
+     * @param string | null $host
+     * @param string | null $schema
+     * @param string | null $user
+     * @param string | null $password
+     */
+    public function __construct($host = null, $schema = null, $user = null, $password = null)
+    {
+        $this
+            ->setHost($host)
+            ->setSchema($schema)
+            ->setUser($user)
+            ->setPassword($password);
+    }
 
-	/**
-	 * on destruction close the database connection
-	 */
-	public function __destruct(){
-		$this->disconnect();
-	}
+    /**
+     * on destruction close the database connection
+     */
+    public function __destruct()
+    {
+        $this->disconnect();
+    }
 
-	/**
-	 * create a database connection
-	 *
-	 * @throws \York\Exception\Database
-	 * @return $this
-	 */
-	public function connect(){
-		$this->connection = new \mysqli($this->host, $this->user, $this->password);
-		$this->connection->select_db($this->schema);
+    /**
+     * create a database connection
+     *
+     * @throws \York\Exception\Database
+     *
+     * @return $this
+     */
+    public function connect()
+    {
+        $this->connection = new \mysqli($this->host, $this->user, $this->password);
+        $this->connection->select_db($this->schema);
 
-		if(null !== $this->connection->connect_error){
-			throw new \York\Exception\Database(sprintf('db-error: %s', $this->connection->connect_error));
-		}
+        if (null !== $this->connection->connect_error) {
+            throw new \York\Exception\Database(sprintf('db-error: %s', $this->connection->connect_error));
+        }
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * disconnect from database
-	 *
-	 * @return $this
-	 */
-	public function disconnect(){
-		if(
-			null !== $this->connection &&
-			null !== $this->connection->info &&
-			0 !== $this->connection->connect_errno
-		){
-			$this->connection->close();
-		}
-		return $this;
-	}
+    /**
+     * disconnect from database
+     *
+     * @return $this
+     */
+    public function disconnect()
+    {
+        if (null !== $this->connection && null !== $this->connection->info && 0 !== $this->connection->connect_errno) {
+            $this->connection->close();
+        }
 
-	/**
-	 * returns the last occurred error
-	 *
-	 * @return string
-	 */
-	public function getError(){
-		return $this->connection->error;
-	}
+        return $this;
+    }
 
-	/**
-	 * returns the last occurred error number
-	 *
-	 * @return integer
-	 */
-	public function getErrno(){
-		return $this->getErrorNumber();
-	}
+    /**
+     * returns the last occurred error
+     *
+     * @return string
+     */
+    public function getError()
+    {
+        return $this->connection->error;
+    }
 
-	/**
-	 * @return integer
-	 */
-	public function getErrorNumber(){
-		return $this->connection->errno;
-	}
+    /**
+     * returns the last occurred error number
+     *
+     * @return integer
+     */
+    public function getErrno()
+    {
+        return $this->getErrorNumber();
+    }
 
-	/**
-	 * returns the amount of affected rows in the last query
-	 *
-	 * @return integer
-	 */
-	public function getAffectedRows(){
-		return $this->connection->affected_rows;
-	}
+    /**
+     * @return integer
+     */
+    public function getErrorNumber()
+    {
+        return $this->connection->errno;
+    }
 
-	/**
-	 * fires a query
-	 * saves the query as the last query
-	 *
-	 * @param string $query
-	 * @return \mysqli_result
-	 */
-	public function query($query){
-		$this->lastQuery = $query;
-		\York\Dependency\Manager::getLogger()->log($query, \York\Logger\Manager::LEVEL_DATABASE_DEBUG);
+    /**
+     * returns the amount of affected rows in the last query
+     *
+     * @return integer
+     */
+    public function getAffectedRows()
+    {
+        return $this->connection->affected_rows;
+    }
 
-		return $this->connection->query($query);
-	}
+    /**
+     * fires a query
+     * saves the query as the last query
+     *
+     * @param string $query
+     *
+     * @return \mysqli_result
+     */
+    public function query($query)
+    {
+        $this->lastQuery = $query;
+        \York\Dependency\Manager::getLogger()->log($query, \York\Logger\Level::DATABASE_DEBUG);
 
-	/**
-	 * escapes a string for inserting data
-	 *
-	 * @param string $string
-	 * @return string
-	 */
-	public function escape($string){
-		if(false === is_string($string)){
-			return $string;
-		}
+        return $this->connection->query($query);
+    }
 
-		return $this->connection->real_escape_string($string);
-	}
+    /**
+     * escapes a string for inserting data
+     *
+     * @param string $string
+     *
+     * @return string
+     */
+    public function escape($string)
+    {
+        if (false === is_string($string)) {
+            return $string;
+        }
 
-	/**
-	 * returns the last inserted id
-	 *
-	 * @return integer | null
-	 */
-	public function getLastInsertId(){
-		return $this->connection->insert_id;
-	}
+        if (null === $this->connection) {
+            $this->connect();
+        }
 
-	/**
-	 * clears a table
-	 *
-	 * @param string $tableName
-	 * @return \York\Database\QueryResult
-	 */
-	public function clearTable($tableName){
-		$query = sprintf('truncate %s', $tableName);
-		$result = $this->query($query);
-		return new QueryResult($result, $query, $this->connection->error);
-	}
+        return $this->connection->real_escape_string($string);
+    }
 
-	/**
-	 * provides the last executed query
-	 *
-	 * @return string
-	 */
-	public function getLastQuery(){
-		return $this->lastQuery;
-	}
+    /**
+     * returns the last inserted id
+     *
+     * @return integer | null
+     */
+    public function getLastInsertId()
+    {
+        return $this->connection->insert_id;
+    }
 
-	/**
-	 * sets the host name
-	 * returns this object in sense of fluent interfaces
-	 *
-	 * @param string $host
-	 * @return $this
-	 */
-	public function setHost($host){
-		$this->host = $host;
+    /**
+     * clears a table
+     *
+     * @param string $tableName
+     *
+     * @return \York\Database\QueryResult
+     */
+    public function clearTable($tableName)
+    {
+        $query = sprintf('truncate %s', $tableName);
+        $result = $this->query($query);
 
-		return $this;
-	}
+        return new QueryResult($result, $query, $this->connection->error);
+    }
 
-	/**
-	 * sets the database name
-	 * returns this object in sense of fluent interfaces
-	 *
-	 * @param string $schema
-	 * @return $this
-	 */
-	public function setSchema($schema){
-		$this->schema = $schema;
+    /**
+     * provides the last executed query
+     *
+     * @return string
+     */
+    public function getLastQuery()
+    {
+        return $this->lastQuery;
+    }
 
-		return $this;
-	}
+    /**
+     * sets the host name
+     * returns this object in sense of fluent interfaces
+     *
+     * @param string $host
+     *
+     * @return $this
+     */
+    public function setHost($host)
+    {
+        $this->host = $host;
 
-	/**
-	 * getter for the database name
-	 *
-	 * @return string
-	 */
-	public function getSchema(){
-		return $this->schema;
-	}
+        return $this;
+    }
 
-	/**
-	 * sets the user name
-	 * returns this object in sense of fluent interfaces
-	 *
-	 * @param string $user
-	 * @return $this
-	 */
-	public function setUser($user){
-		$this->user = $user;
+    /**
+     * sets the database name
+     * returns this object in sense of fluent interfaces
+     *
+     * @param string $schema
+     *
+     * @return $this
+     */
+    public function setSchema($schema)
+    {
+        $this->schema = $schema;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * sets the password
-	 * returns this object in sense of fluent interfaces
-	 *
-	 * @param string $password
-	 * @return $this
-	 */
-	public function setPassword($password){
-		$this->password = $password;
+    /**
+     * getter for the database name
+     *
+     * @return string
+     */
+    public function getSchema()
+    {
+        return $this->schema;
+    }
 
-		return $this;
-	}
+    /**
+     * sets the user name
+     * returns this object in sense of fluent interfaces
+     *
+     * @param string $user
+     *
+     * @return $this
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * sets the password
+     * returns this object in sense of fluent interfaces
+     *
+     * @param string $password
+     *
+     * @return $this
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
 }

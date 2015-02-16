@@ -1,21 +1,21 @@
 {
-	"name": "wolxxx/york",
-	"description": "york framework",
-	"minimum-stability": "dev",
-	"license": "proprietary",
-	"authors": [
-		{
-			"name": "wolxXx",
-			"email": "devops@wolxXx.de"
-		}
-	],
-
-	"config": {
-		"bin-dir": "bin",
-		"vendor-dir": "vendor"
-	},
-
-	"require": {
-		"squizlabs/php_codesniffer": "1.4.5"
-	}
+  "name": "wolxxx/york",
+  "description": "york framework",
+  "minimum-stability": "dev",
+  "version": "$version$",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "wolxXx",
+      "email": "devops@wolxXx.de"
+    }
+  ],
+  "config": {
+    "bin-dir": "bin",
+    "vendor-dir": "vendor"
+  },
+  "require": {
+    "squizlabs/php_codesniffer": "1.4.5",
+    "pbergman/whiptail": "@stable"
+  }
 }

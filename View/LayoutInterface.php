@@ -1,8 +1,29 @@
 <?php
 namespace York\View;
 
-interface LayoutInterface {
-	public function render();
-	public function getContent();
-	public function get($key);
+/**
+ * Interface LayoutInterface
+ *
+ * @package \York\View
+ * @version $version$
+ * @author wolxXx
+ */
+interface LayoutInterface
+{
+    /**
+     * @return $this
+     */
+    public function render();
+
+    /**
+     * @return string
+     */
+    public function getContent();
+
+    /**
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function get($key);
 }

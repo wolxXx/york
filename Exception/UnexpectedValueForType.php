@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for unexpected values
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class UnexpectedValueForType extends \York\Exception\General{}
+class UnexpectedValueForType extends \York\Exception\General
+{
+}

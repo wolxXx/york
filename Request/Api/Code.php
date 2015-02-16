@@ -3,41 +3,50 @@ namespace York\Request\Api;
 /**
  * default api codes
  *
+ * @package \York\Request\Api
+ * @version $version$
  * @author wolxXx
- * @version 3.0
- * @package York\Request\Api
  */
-class Code implements CodeInterface{
-	const SUCCESS = 0;
-	const OK = 200;
-	const ERROR = 500;
+class Code implements CodeInterface
+{
+    /**
+     * @var integer
+     */
+    const SUCCESS = 0;
 
-	/***
-	 * retrieves the explaining text for the code
-	 *
-	 * @param $code
-	 * @throws \York\Exception\General
-	 * @return string
-	 */
-	public static function getStatusTextForCode($code){
-		switch ($code){
-			case self::OK:{
-				return 'OK';
-			}break;
+    /**
+     * @var integer
+     */
+    const OK = 200;
 
-			case self::ERROR:{
-				return 'ERROR';
-			}break;
+    /**
+     * @var integer
+     */
+    const ERROR = 500;
 
-			default:{
-				$reflection = new \ReflectionClass(get_called_class());
-				if(true === in_array($code, $reflection->getConstants())){
-					$flip = array_flip($reflection->getConstants());
-					return $flip[$code];
-				}
+    /***
+     * @inheritdoc
+     */
+    public static function getStatusTextForCode($code)
+    {
+        switch ($code) {
+            case self::OK:
+                return 'OK';
 
-				throw new \York\Exception\General(sprintf('ApiCode "%s" not found', $code));
-			}
-		}
-	}
+            case self::ERROR:
+                return 'ERROR';
+
+            default: {
+                $reflection = new \ReflectionClass(get_called_class());
+
+                if (true === in_array($code, $reflection->getConstants())) {
+                    $flip = array_flip($reflection->getConstants());
+
+                    return $flip[$code];
+                }
+
+                throw new \York\Exception\General(sprintf('ApiCode "%s" not found', $code));
+            }
+        }
+    }
 }

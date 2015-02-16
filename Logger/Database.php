@@ -1,51 +1,72 @@
 <?php
 namespace York\Logger;
-use York\Database\Accessor\Factory;
-use York\Helper\Date;
+
 /**
  * database logger
  *
+ * @package \York\Logger
+ * @version $version$
  * @author wolxXx
- * @version 3.0
- * @package York\Logger
  */
-class Database extends LoggerAbstract{
-	/**
-	 * name of the table where the logs should be put to
-	 *
-	 * @var string
-	 */
-	protected $table;
+class Database extends LoggerAbstract
+{
+    /**
+     * name of the table where the logs should be put to
+     *
+     * @var string
+     */
+    protected $table;
 
-	/**
-	 * new instance of the database logger
-	 *
-	 * @param string $table
-	 * @param string $level
-	 */
-	public function __construct($table, $level = Manager::LEVEL_ALL){
-		$this->setTable($table);
-	}
+    /**
+     * @return $this
+     */
+    public static function Factory()
+    {
+        return new self();
+    }
 
-	/**
-	 * setter for the table name
-	 *
-	 * @param string $table
-	 * @return \York\Logger\Database
-	 */
-	public function setTable($table){
-		$this->table = $table;
-		return $this;
-	}
+    /**
+     * setter for the table name
+     *
+     * @param string $table
+     *
+     * @return $this
+     */
+    public function setTable($table)
+    {
+        $this->table = $table;
 
-	/**
-	 * @inheritdoc
-	 */
-	public function log($message){
-		Factory::getSaveObject($this->table)
-			->set('created', Date::getDate())
-			->set('message', $message)
-			->save();
-		return $this;
-	}
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTable()
+    {
+        return $this->table;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function logAction($message)
+    {
+        \York\Database\Accessor\Factory::getSaveObject($this->table)
+            ->set('created', \York\Helper\Date::getDate())
+            ->set('message', $message)
+            ->save();
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @todo implement me!
+     */
+    public function validate()
+    {
+        return $this;
+    }
 }

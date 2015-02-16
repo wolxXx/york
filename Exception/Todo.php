@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for not implemented functionality
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class Todo extends \York\Exception\NotImplemented{}
+class Todo extends \York\Exception\NotImplemented
+{
+}

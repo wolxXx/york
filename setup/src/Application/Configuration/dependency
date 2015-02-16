@@ -1,0 +1,3 @@
+[aDependency]
+class = '\Application\Foo\Bar';
+shared = true;

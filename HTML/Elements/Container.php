@@ -1,4 +1,0 @@
-<?
-
-class Container extends Div{
-}

@@ -3,81 +3,96 @@ namespace York\Storage;
 /**
  * interface for storage
  *
+ * @package \York\Storage
+ * @version $version$
  * @author wolxXx
- * @version 3.2
- * @package York\Storage
  */
-interface StorageInterface{
-	/**
-	 * getter for data
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function get($key);
+interface StorageInterface
+{
+    /**
+     * getter for data
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function get($key);
 
-	/**
-	 * getter for all data
-	 *
-	 * @return array
-	 */
-	public function getAll();
+    /**
+     * getter for all data
+     *
+     * @return array
+     */
+    public function getAll();
 
-	/**
-	 * setter for data
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return StorageInterface
-	 */
-	public function set($key, $value);
+    /**
+     * setter for data
+     *
+     * @param string    $key
+     * @param mixed     $value
+     *
+     * @return $this
+     */
+    public function set($key, $value);
 
-	/**
-	 * checker if the data exists for the given key
-	 *
-	 * @param $key
-	 * @return boolean
-	 */
-	public function hasDataForKey($key);
+    /**
+     * @param array $array
+     *
+     * @return $this
+     */
+    public function setFromArray($array);
 
-	/**
-	 * get safely data from the storage
-	 * if no data exists for the key, the given default value is returned
-	 *
-	 * @param string $key
-	 * @param mixed $default
-	 * @return mixed
-	 */
-	public function getSafely($key, $default = null);
+    /**
+     * checker if the data exists for the given key
+     *
+     * @param string $key
+     *
+     * @return boolean
+     */
+    public function hasDataForKey($key);
 
-	/**
-	 * remove the set data for the key
-	 *
-	 * @param string $key
-	 * @return StorageInterface
-	 */
-	public function remove($key);
+    /**
+     * get safely data from the storage
+     * if no data exists for the key, the given default value is returned
+     *
+     * @param string    $key
+     * @param mixed     $default
+     *
+     * @return mixed
+     */
+    public function getSafely($key, $default = null);
 
-	/**
-	 * removes the data for the key
-	 *
-	 * @param string $key
-	 * @return StorageInterface
-	 */
-	public function removeKey($key);
+    /**
+     * remove the set data for the key
+     *
+     * @param string $key
+     *
+     * @return $this
+     */
+    public function remove($key);
 
-	/**
-	 * removes the data if set
-	 *
-	 * @param mixed $data
-	 * @return StorageInterface
-	 */
-	public function removeData($data);
+    /**
+     * removes the data for the key
+     *
+     * @param string $key
+     *
+     * @return $this
+     */
+    public function removeKey($key);
 
-	/**
-	 * clears all set data
-	 *
-	 * @return StorageInterface
-	 */
-	public function clear();
+    /**
+     * removes the data if set
+     *
+     * @param array $data
+     *
+     * @return $this
+     */
+    public function removeData($data);
+
+    /**
+     * clears all set data
+     *
+     * @return $this
+     */
+    public function clear();
 }

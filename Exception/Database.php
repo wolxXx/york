@@ -1,19 +1,22 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for database errors
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class Database extends \York\Exception\General{
-	public function __construct($message){
-		/**
-		 * @var \York\Logger\Manager $logger
-		 */
-		$logger = \York\Dependency\Manager::get('logger');
-		$logger->log('database error: '.$message, $logger::LEVEL_DATABASE_ERROR);
-		parent::__construct($message);
-	}
+class Database extends \York\Exception\General
+{
+    /**
+     * @inheritdoc
+     */
+    public function __construct($message)
+    {
+        \York\Dependency\Manager::getLogger()->log('database error: ' . $message, \York\Logger\Level::DATABASE_ERROR);
+
+        parent::__construct($message);
+    }
 }

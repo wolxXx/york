@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * dedicated system call exception
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class SystemCall extends \York\Exception\General{}
+class SystemCall extends \York\Exception\General
+{
+}

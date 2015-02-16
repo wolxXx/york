@@ -7,555 +7,354 @@ namespace York\View;
  * handles partials
  * holds JavaScript, JavaScriptFiles, CSS and CSSFiles
  *
+ * @package \York\View
+ * @version $version$
  * @author wolxXx
- * @version 3.0
- * @package York\View
  */
+class Manager
+{
+    /**
+     * params and variables to the views
+     *
+     * @var array
+     */
+    private $params = array();
 
-class Manager{
-	/**
-	 * params and variables to the views
-	 *
-	 * @var array
-	 */
-	private $params = array();
+    /**
+     * the name of the layout
+     *
+     * @var string
+     */
+    private $layout = 'main';
 
-	/**
-	 * the name of the layout
-	 *
-	 * @var string
-	 */
-	private $layout = 'main';
+    /**
+     * the default layout
+     *
+     * @var string
+     */
+    private $defaultLayout = 'Main';
 
-	/**
-	 * the default layout
-	 *
-	 * @var string
-	 */
-	private $defaultLayout = 'main';
+    /**
+     * the path to the layouts
+     *
+     * @var string
+     */
+    protected $layoutPath = '';
 
-	/**
-	 * additional javascripts for the view
-	 * useful for pushing javascripts to the html's head-section
-	 * makes cleaner html output
-	 *
-	 * @var string[]
-	 */
-	private $javascriptFiles = array();
+    /**
+     * the path to the views
+     *
+     * @var string
+     */
+    protected $viewPath = '';
 
-	/**
-	 * additional css for the view
-	 * useful for pushing css to the html's head-section
-	 * makes cleaner html output
-	 *
-	 * @var string[]
-	*/
-	private $cssFiles = array();
+    /**
+     * @var ItemAbstract | null
+     */
+    protected $viewInstance = null;
 
-	/**
-	 * just text that is filled with javascript code
-	 *
-	 * @var string
-	*/
-	private $javascript = '';
+    /**
+     * @var \York\Helper\Translator
+     */
+    public $translator;
 
-	/**
-	 * just text that is filled with css code
-	 *
-	 * @var string
-	 */
-	private $css = '';
+    /**
+     * constructor is private because of singleton access
+     */
+    public final function __construct()
+    {
+        $this->params = array();
+        $this
+            ->setLayoutPath(\York\Dependency\Manager::getApplicationConfiguration()->getSafely('layoutPath', \York\Helper\Application::getApplicationRoot() . 'View' . DIRECTORY_SEPARATOR . 'Layout'))
+            ->setLayout($this->layout)
+            ->setViewPath(\York\Dependency\Manager::getApplicationConfiguration()->getSafely('viewPath', \York\Helper\Application::getApplicationRoot() . 'View' . DIRECTORY_SEPARATOR))
+        ;
 
-	/**
-	 * the path to the layouts
-	 *
-	 * @var string
-	 */
-	protected $layoutPath = '';
+        $this->translator = \York\Dependency\Manager::getTranslator();
+    }
 
-	/**
-	 * the path to the views
-	 *
-	 * @var string
-	 */
-	protected $viewPath = '';
+    /**
+     * @param \York\View\ItemInterface $instance
+     *
+     * @return $this
+     */
+    public final function setViewInstance($instance)
+    {
+        $this->viewInstance = $instance;
 
-	/**
-	 * constructor is private because of singleton access
-	 */
-	public final function __construct(){
-		$this->params = array();
-		$this->setLayoutPath(\York\Dependency\Manager::get('applicationConfiguration')->getSafely('layoutPath', \York\Helper\Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR.'Layout'));
-		$this->setLayout($this->layout);
-		$this->setViewPath(\York\Dependency\Manager::get('applicationConfiguration')->getSafely('viewPath', \York\Helper\Application::getApplicationRoot().'View'.DIRECTORY_SEPARATOR));
-	}
+        return $this;
+    }
 
-	/**
-	 * setter for the view path
-	 *
-	 * @param string $path
-	 * @return \York\View\Manager
-	 */
-	public function setViewPath($path){
-		$this->viewPath = \York\Helper\String::addTailingSlashIfNeeded($path);
+    /**
+     * @return \York\View\ItemInterface
+     */
+    public final function getViewInstance()
+    {
+        return $this->viewInstance;
+    }
 
-		return $this;
-	}
+    /**
+     * setter for the view path
+     *
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setViewPath($path)
+    {
+        $this->viewPath = \York\Helper\String::addTailingSlashIfNeeded($path);
 
-	/**
-	 * getter for the view path
-	 *
-	 * @return string
-	 */
-	public function getViewPath(){
-		return $this->viewPath;
-	}
+        return $this;
+    }
 
-	/**
-	 * setter for the layout path
-	 *
-	 * @param string $path
-	 * @return \York\View\Manager
-	 */
-	public function setLayoutPath($path){
-		$this->layoutPath = \York\Helper\String::addTailingSlashIfNeeded($path);
+    /**
+     * getter for the view path
+     *
+     * @return string
+     */
+    public function getViewPath()
+    {
+        return $this->viewPath;
+    }
 
-		return $this;
-	}
+    /**
+     * setter for the layout path
+     *
+     * @param string $path
+     *
+     * @return $this
+     */
+    public function setLayoutPath($path)
+    {
+        $this->layoutPath = \York\Helper\String::addTailingSlashIfNeeded($path);
 
-	/**
-	 * getter for the layout path
-	 * @return string
-	 */
-	public function getLayoutPath(){
-		return $this->layoutPath;
-	}
+        return $this;
+    }
 
-	/**
-	 * sets a variable
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return \York\View\Manager
-	 */
-	public function set($key, $value){
-		$this->params[$key] = $value;
+    /**
+     * getter for the layout path
+     *
+     * @return string
+     */
+    public function getLayoutPath()
+    {
+        return $this->layoutPath;
+    }
 
-		return $this;
-	}
+    /**
+     * sets a variable
+     *
+     * @param string    $key
+     * @param mixed     $value
+     *
+     * @return $this
+     */
+    public function set($key, $value)
+    {
+        $this->params[$key] = $value;
 
-	/**
-	 * gets a variable or null if not defined
-	 *
-	 * @param string $key
-	 * @return mixed|null
-	 */
-	function get($key){
-		if(true === array_key_exists($key, $this->params)){
-			return $this->params[$key];
-		}
+        return $this;
+    }
 
-		return null;
-	}
+    /**
+     * gets a variable or null if not defined
+     *
+     * @param string $key
+     *
+     * @return mixed | null
+     */
+    function get($key)
+    {
+        if (true === array_key_exists($key, $this->params)) {
+            return $this->params[$key];
+        }
 
-	/**
-	 * sets a layout
-	 *
-	 * @param string $name
-	 * @throws \York\Exception\NoView
-	 * @return \York\View\Manager
-	 */
-	function setLayout($name = 'main'){
-		$this->layout = $name;
-		$path = $this->layoutPath.$this->layout.'.php';
-		if(false === file_exists($path)){
-			throw new \York\Exception\NoView(sprintf('layout "%s" not found!', $name));
-		}
+        return null;
+    }
 
-		return $this;
-	}
+    /**
+     * sets a layout
+     *
+     * @param string $name
+     *
+     * @return $this
+     *
+     * @throws \York\Exception\NoView
+     */
+    function setLayout($name = 'main')
+    {
+        $this->layout = $name;
+        $path = $this->layoutPath . $this->layout . '.php';
 
-	/**
-	 * gets the name of the set layout
-	 *
-	 * @return string
-	 */
-	function getLayout(){
-		return $this->layout;
-	}
+        if (false === file_exists($path)) {
+            throw new \York\Exception\NoView(sprintf('layout "%s" not found!', $name));
+        }
 
-	/**
-	 * determinates if a view file with $name exists
-	 *
-	 * @param string $name
-	 * @return boolean
-	 */
-	function viewExists($name){
-		return null !== $this->getView($name);
-	}
+        return $this;
+    }
 
-	/**
-	 * retrieves the path of a file
-	 * if a prefix is set (layout) it checks if there exists a special view
-	 * if not the default view is returned if one exists
-	 * if not null is returned
-	 *
-	 * @param string $file_name
-	 * @return string|null
-	 */
-	function getView($file_name){
-		if($this->layout !== $this->defaultLayout){
-			$prefix = \York\Helper\String::addTailingSlashIfNeeded($this->layout);
-		}else{
-			$prefix = \York\Helper\String::addTailingSlashIfNeeded('Main');
-		}
-		$possibleMatches = array(
-			#views/search/index
-			$this->viewPath.$prefix.strtolower(\York\Dependency\Manager::get('applicationConfiguration')->get('controller')).DIRECTORY_SEPARATOR.$file_name,
+    /**
+     * gets the name of the set layout
+     *
+     * @return string
+     */
+    function getLayout()
+    {
+        return $this->layout;
+    }
 
-			#views/search/index
-			$this->viewPath.'Main/'.strtolower(\York\Dependency\Manager::get('applicationConfiguration')->get('controller')).DIRECTORY_SEPARATOR.$file_name,
+    /**
+     * determinate if a view file with $name exists
+     *
+     * @param string $name
+     *
+     * @return boolean
+     */
+    function viewExists($name)
+    {
+        return null !== $this->getView($name);
+    }
 
-			#'views/mobile/api/foo'
-			$this->viewPath.$prefix.\York\Dependency\Manager::get('applicationConfiguration')->get('controller').DIRECTORY_SEPARATOR.$file_name,
+    /**
+     * retrieves the path of a file
+     * if a prefix is set (layout) it checks if there exists a special view
+     * if not the default view is returned if one exists
+     * if not null is returned
+     *
+     * @param string $fileName
+     *
+     * @return string|null
+     */
+    function getView($fileName)
+    {
+        $prefix = \York\Helper\String::addTailingSlashIfNeeded('Main');
 
-			#'/views/mobile/foo'
-			$this->viewPath.$prefix.$file_name,
+        if ($this->layout !== $this->defaultLayout) {
+            $prefix = \York\Helper\String::addTailingSlashIfNeeded($this->layout);
+        }
 
-			#'/views/api/foo'
-			$this->viewPath.\York\Dependency\Manager::get('applicationConfiguration')->get('controller').DIRECTORY_SEPARATOR.$file_name,
+        $possibleMatches = array(
+            #views/search/index
+            $this->viewPath . $prefix . strtolower(\York\Dependency\Manager::getApplicationConfiguration()->get('controller')) . DIRECTORY_SEPARATOR . $fileName,
 
-			#'/views/foo'
-			$this->viewPath.$file_name,
+            #views/search/index
+            $this->viewPath . 'Main/' . strtolower(\York\Dependency\Manager::getApplicationConfiguration()->get('controller')) . DIRECTORY_SEPARATOR . $fileName,
 
-			#'/views/foo'
-			$this->viewPath.'Main/'.$file_name,
+            #'views/mobile/api/foo'
+            $this->viewPath . $prefix . \York\Dependency\Manager::getApplicationConfiguration()->get('controller') . DIRECTORY_SEPARATOR . $fileName,
 
-			#'/views/foo'
-			$this->viewPath.'Main/'.\York\Dependency\Manager::get('applicationConfiguration')->get('controller').'/'.$file_name
-		);
+            #'/views/mobile/foo'
+            $this->viewPath . $prefix . $fileName,
 
-		foreach($possibleMatches as $current){
-			$current .= '.php';
-			if(true === is_file($current)){
-				return $current;
-			}
-		}
+            #'/views/api/foo'
+            $this->viewPath . \York\Dependency\Manager::getApplicationConfiguration()->get('controller') . DIRECTORY_SEPARATOR . $fileName,
 
-		return null;
-	}
+            #'/views/foo'
+            $this->viewPath . $fileName,
 
-	/**
-	 * runs the view, buffers it, and then calls the layout
-	 *
-	 * @param string $file_name
-	 * @throws \York\Exception\NoView
-	 * @return \York\View\Manager
-	 */
-	function view($file_name = null){
-		$file = $this->getView($file_name);
-		if(null === $file || null === $file_name){
-			throw new \York\Exception\NoView($file_name.' not found....');
-		}
-		extract($this->params);
-		ob_start();
-		require $file;
-		$this->params['content'] = ob_get_clean();
-		extract($this->params);
-		if(true === $this->get('isAjax')){
-			echo $this->params['content'];
-			return $this;
-		}
-		if(false === file_exists($this->layoutPath.$this->layout.'.php')){
-			$this->layout = $this->defaultLayout;
-		}
-		$path = sprintf('%s%s.php', $this->layoutPath, $this->layout);
-		require($path);
-		return $this;
-	}
+            #'/views/foo'
+            $this->viewPath . 'Main/' . $fileName,
 
-	/**
-	 * tries to render a partial view
-	 * if $passtrough is set, data contains the datas
-	 *
-	 * @param string $name
-	 * @param mixed $datas
-	 * @param boolean $passtrough
-	 * @return $this
-	 */
-	function partial($name, $datas = null, $passtrough = false){
-		$file = $this->getView($name);
-		if(null === $file){
-			\York\Dependency\Manager::get('logger')->log(sprintf('partial "%s" not found!', $name), \York\Logger\Manager::LEVEL_DEBUG);
+            #'/views/foo'
+            $this->viewPath . 'Main/' . \York\Dependency\Manager::getApplicationConfiguration()->get('controller') . '/' . $fileName
+        );
 
-			return $this;
-		}
+        foreach ($possibleMatches as $current) {
+            $current .= '.php';
 
-		if(true === is_array($datas) && false === $passtrough){
-			foreach($datas as $key => $value){
-				$$key = $value;
-			}
-		}else{
-			$this->params['data'] = $datas;
-		}
+            if (true === is_file($current)) {
+                return $current;
+            }
+        }
 
-		extract($this->params);
-		require $file;
+        return null;
+    }
 
-		return $this;
-	}
+    /**
+     * runs the view, buffers it, and then calls the layout
+     *
+     * @param string $fileName
+     *
+     * @return \York\View\Manager
+     *
+     * @throws \York\Exception\NoView
+     */
+    function view($fileName = null)
+    {
+        $this->params['content'] = '';
 
-	/**
-	 * puts a name of a js-file into the array
-	 * if $top is set to true, it puts it to the top of the array so it will be displayed first
-	 * be aware that there is no guarantee, that the provided item is really the first because this operation
-	 * can be performed multiple times
-	 * useful for loading dependencies
-	 *
-	 * @param string $name
-	 * @param boolean $top
-	 * @return \York\View\Manager
-	 */
-	public function addJavascriptFile($name, $top = false){
-		$name .= '.js' !== substr($name, strlen($name) - 3, strlen($name))? '.js' : '';
-		if(true === $top){
-			$this->javascriptFiles = array_merge(array($name), $this->javascriptFiles);
-			return $this;
-		}
+        if (null !== $this->getViewInstance()) {
+            $this->params['content'] = $this->getViewInstance()->prepare()->render()->getContent();
+        } else {
+            $file = $this->getView($fileName);
 
-		$this->javascriptFiles[] = $name;
-		return $this;
-	}
+            if (null === $file || null === $fileName) {
+                throw new \York\Exception\NoView($fileName . ' not found....');
+            }
 
-	/**
-	 * adds multiple javascript files to the array
-	 *
-	 * @param array $files
-	 * @return \York\View\Manager
-	 */
-	public function addJavascriptFiles($files = array()){
-		foreach($files as $file){
-			$this->addJavascriptFile($file);
-		}
-		return $this;
-	}
+            extract($this->params);
+            ob_start();
 
-	/**
-	 * returns the array with the file names
-	 *
-	 * @return array
-	 */
-	public function getJavascriptFiles(){
-		return $this->javascriptFiles;
-	}
+            require $file;
 
-	/**
-	 * gets the plain javascript
-	 *
-	 * @return string
-	 */
-	public function getJavascript(){
-		return $this->javascript;
-	}
+            $this->params['content'] = ob_get_clean();
+        }
 
-	/**
-	 * adds text to the javascript text
-	 *
-	 * @param string $text
-	 * @param boolean $top
-	 * @return \York\View\Manager
-	 */
-	public function addJavascript($text, $top = false){
-		if(true === $top){
-			$this->javascript = $text.PHP_EOL.$this->javascript;
-			return $this;
-		}
-		$this->javascript = $this->javascript.PHP_EOL.$text;
-		return $this;
-	}
+        extract($this->params);
 
-	/**
-	 * puts a name of a css-file into the array
-	 * if $top is set to true, it puts it to the top of the array so it will be displayed first
-	 * be aware that there is no guarantee, that the provided item is really the first because this operation
-	 * can be performed multiple times
-	 * useful for loading dependencies
-	 *
-	 * @param string $name
-	 * @param boolean $top
-	 * @return \York\View\Manager
-	 */
-	public function addCssFile($name, $top = false){
-		$name .= '.css' !== substr($name, strlen($name) - 4, strlen($name))? '.css' : '';
-		if(true === $top){
-			$this->cssFiles = array_merge(array($name), $this->cssFiles);
-		}else{
-			$this->cssFiles = array_merge($this->cssFiles, array($name));
-		}
-		$this->cssFiles = array_unique($this->cssFiles);
-		return $this;
-	}
+        if (true === $this->get('isAjax')) {
+            echo $this->params['content'];
 
-	/**
-	 * adds multiple css files to the array
-	 *
-	 * @param array $files
-	 * @return \York\View\Manager
-	 */
-	public function addCssFiles($files = array()){
-		foreach($files as $file){
-			$this->addJavascriptFile($file);
-		}
-		return $this;
-	}
+            return $this;
+        }
 
-	/**
-	 * returns the array with the file names
-	 *
-	 * @return array
-	 */
-	public function getCssFiles(){
-		return $this->cssFiles;
-	}
+        /**
+         * load the layout view file
+         *
+         * @todo implement as class like views...
+         */
+        if (false === file_exists($this->layoutPath . $this->layout . '.php')) {
+            $this->layout = $this->defaultLayout;
+        }
 
-	/**
-	 * returns the css
-	 *
-	 * @return string
-	 */
-	public function getCss(){
-		return $this->css;
-	}
+        $path = sprintf('%s%s.php', $this->layoutPath, $this->layout);
 
-	/**
-	 * adds text to the css text
-	 *
-	 * @param string $text
-	 * @param boolean $top
-	 * @return \York\View\Manager
-	 */
-	public function addCss($text, $top = false){
-		if(true === $top){
-			$this->css = $text.PHP_EOL.$this->css;
-		}else{
-			$this->css = $this->css.PHP_EOL.$text;
-		}
-		return $this;
-	}
+        require($path);
 
-	/**
-	 * returns all set css files as one string
-	 *
-	 * @return string
-	 */
-	public function getMergedCss(){
-		return $this->requireToBuffer($this->getCssFiles()).PHP_EOL.$this->css;
-	}
+        return $this;
+    }
 
-	/**
-	 * returns all set javascript files as one string
-	 *
-	 * @return string
-	 */
-	public function getMergedJavascript(){
-		return $this->requireToBuffer($this->getJavascriptFiles()).PHP_EOL.$this->javascript;
-	}
+    /**
+     * tries to render a partial view
+     * if $passtrough is set, data contains the datas
+     *
+     * @param string    $name
+     * @param mixed     $datas
+     * @param boolean   $passtrough
+     *
+     * @return $this
+     */
+    function partial($name, $datas = null, $passtrough = false)
+    {
+        $file = $this->getView($name);
+        if (null === $file) {
+            \York\Dependency\Manager::getLogger()->log(sprintf('partial "%s" not found!', $name), \York\Logger\Level::DEBUG);
 
-	/**
-	 * requires all set js or css files into output buffer
-	 * so no extra files will be loaded
-	 * maybe saves a few bytes and some additional requests
-	 *
-	 * @param array $files
-	 * @return string
-	 */
-	private function requireToBuffer($files){
-		ob_start();
-		foreach($files as $current){
-			echo file_get_contents(ltrim($current, '/'));
-		}
-		return ob_get_clean();
-	}
+            return $this;
+        }
 
-	/**
-	 * clears the buffer and moves it to /dev/null
-	 *
-	 * @return \York\View\Manager
-	 */
-	public function clearBuffer(){
-		while(ob_get_level() > 1){
-			ob_get_clean();
-		}
-		return $this;
-	}
+        if (true === is_array($datas) && false === $passtrough) {
+            foreach ($datas as $key => $value) {
+                $$key = $value;
+            }
+        } else {
+            $this->params['data'] = $datas;
+        }
 
-	public function clearInstance(){
-		$this->clearBuffer();
-		$this->clearAllCss();
-		$this->clearAllJavascript();
+        extract($this->params);
 
-		return $this;
-	}
+        require $file;
 
-	/**
-	 * clears all set javascript strings
-	 *
-	 * @return \York\View\Manager
-	 */
-	public function clearJavascript(){
-		$this->javascript = '';
-		return $this;
-	}
-
-	/**
-	 * clears all set javascript files
-	 *
-	 * @return \York\View\Manager
-	 */
-	public function clearJavascriptFiles(){
-		$this->javascriptFiles = array();
-		return $this;
-	}
-
-	/**
-	 * clears all set javascript files and  strings
-	 *
-	 * @return \York\View\Manager
-	 */
-	public function clearAllJavascript(){
-		$this->clearJavascript();
-		$this->clearJavascriptFiles();
-		return $this;
-	}
-
-	/**
-	 * clears all set css strings
-	 *
-	 * @return \York\View\Manager
-	 */
-	public function clearCss(){
-		$this->css = '';
-		return $this;
-	}
-
-	/**
-	 * clears all set css files
-	 *
-	 * @return \York\View\Manager
-	 */
-	public function clearCssFiles(){
-		$this->cssFiles = array();
-		return $this;
-	}
-
-	/**
-	 * clears all set javascript files and  strings
-	 *
-	 * @return \York\View\Manager
-	 */
-	public function clearAllCss(){
-		$this->clearCss();
-		$this->clearCssFiles();
-		return $this;
-	}
+        return $this;
+    }
 }

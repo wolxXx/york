@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
+<phpunit backupGlobals="true"
+         backupStaticAttributes="true"
          convertErrorsToExceptions="true"
          convertNoticesToExceptions="true"
          convertWarningsToExceptions="true"
@@ -13,15 +13,6 @@
          syntaxCheck="true"
          strict="false"
          verbose="true">
-
-
-    <!--<testsuites>
-        <testsuite name="MamUnitTestsSuite">
-            <directory suffix="Test.php">../../library</directory>
-        </testsuite>
-    </testsuites>
-    -->
-
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
             <directory suffix=".php">../York</directory>
@@ -29,18 +20,12 @@
             <exclude>
                 <directory>../../ibrary/*/tests</directory>
                 <directory>../../library/vendor</directory>
+                <directory>../../Library/York/Coverage</directory>
+                <directory>Coverage</directory>
             </exclude>
         </whitelist>
     </filter>
-    <!--
-        <groups>
-            <exclude>
-                <group>integration</group>
-            </exclude>
-        </groups>
-    -->
     <php>
         <ini name="zend.enable_gc" value="1" />
     </php>
-
 </phpunit>

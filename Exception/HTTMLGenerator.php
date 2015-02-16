@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for html generator
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class HTTMLGenerator extends \York\Exception\General{}
+class HTTMLGenerator extends \York\Exception\General
+{
+}

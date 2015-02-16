@@ -1,10 +1,13 @@
 <?php
 namespace York\Exception;
+
 /**
  * exception for autoload issues
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Exception
+ * @version $version$
+ * @author wolxXx
  */
-class Autoload extends \York\Exception\General{}
+class Autoload extends \York\Exception\General
+{
+}

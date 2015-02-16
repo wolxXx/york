@@ -1,24 +1,29 @@
 <?php
 namespace York\FileSystem\ArchiveUnpacker;
+
 /**
- * Class Rar
+ * rar archive unpacker
  *
  * @package York\FileSystem\ArchiveUnpacker
+ * @version $version$
  * @author wolxXx
- * @version 3.1
+ *
  */
-class Rar extends Unpacker{
-	/**
-	 * @inheritdoc
-	 */
-	public function unpack(){
-		$result = new \York\Type\Boolean(false);
-		try{
-			$result->set(true);
-		}catch(\Exception $exception){
+class Rar extends Unpacker
+{
+    /**
+     * @inheritdoc
+     */
+    public function unpack()
+    {
+        $result = new \York\Type\Boolean(false);
 
-		}
+        try {
+            $result->set(true);
+        } catch (\Exception $exception) {
 
-		return $result;
-	}
+        }
+
+        return $result;
+    }
 }

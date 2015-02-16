@@ -4,173 +4,194 @@ namespace York\Console;
 /**
  * class for cli application parameter
  *
- * @author wolxXx
- * @version 3.0
  * @package York\Console
+ * @version $version$
+ * @author wolxXx
  */
-class Parameter{
-	/**
-	 * long parameter name like --tableName
-	 *
-	 * @var string
-	 */
-	protected $long;
+class Parameter
+{
+    /**
+     * long parameter name like --tableName
+     *
+     * @var string
+     */
+    protected $long;
 
-	/**
-	 * short parameter name like -t
-	 *
-	 * @var string
-	 */
-	protected $short;
+    /**
+     * short parameter name like -t
+     *
+     * @var string
+     */
+    protected $short;
 
-	/**
-	 * flag for required parameter
-	 *
-	 * @var boolean
-	 */
-	protected $isRequired;
+    /**
+     * flag for required parameter
+     *
+     * @var boolean
+     */
+    protected $isRequired;
 
-	/**
-	 * default value
-	 *
-	 * @var mixed
-	 */
-	protected $default;
+    /**
+     * default value
+     *
+     * @var mixed
+     */
+    protected $default;
 
-	/**
-	 * given value
-	 *
-	 * @var mixed
-	 */
-	protected $value;
+    /**
+     * given value
+     *
+     * @var mixed
+     */
+    protected $value;
 
-	/**
-	 * set up
-	 *
-	 * @param string $long
-	 * @param string $short
-	 * @param boolean $isRequired
-	 * @param mixed $default
-	 */
-	public function __construct($long, $short = '', $isRequired = true, $default = null){
-		$this->long = $long;
-		$this->short = $short;
-		$this->setIsRequired($isRequired);
-		$this->setDefault($default);
-		$this->init();
-	}
+    /**
+     * set up
+     *
+     * @param string    $long
+     * @param string    $short
+     * @param boolean   $isRequired
+     * @param mixed     $default
+     */
+    public function __construct($long, $short = '', $isRequired = true, $default = null)
+    {
+        $this->long = $long;
+        $this->short = $short;
+        $this->setIsRequired($isRequired);
+        $this->setDefault($default);
+        $this->init();
+    }
 
-	/**
-	 * factory function
-	 *
-	 * @param string $long
-	 * @param string $short
-	 * @param boolean $isRequired
-	 * @param mixed $default
-	 * @return Parameter
-	 */
-	public static function Factory($long, $short = '', $isRequired = true, $default = null){
-		return new self($long, $short, $isRequired, $default);
-	}
+    /**
+     * factory function
+     *
+     * @param string $long
+     * @param string $short
+     * @param boolean $isRequired
+     * @param mixed $default
+     * @return \York\Console\Parameter
+     */
+    public static function Factory($long, $short = '', $isRequired = true, $default = null)
+    {
+        return new self($long, $short, $isRequired, $default);
+    }
 
-	/**
-	 * initialize tout
-	 *
-	 * @throws \York\Exception\Console
-	 */
-	public function init(){
-		$this->value = $this->default;
+    /**
+     * initialize tout
+     *
+     * @throws \York\Exception\Console
+     */
+    public function init()
+    {
+        $this->value = $this->default;
 
-		$short = $this->short.':';
-		$long = $this->long.':';
-		if(false === $this->isRequired()){
-			$short .= ':';
-			$long .= ':';
-		}
-		$options = $this->parseArgs($short, $long);
+        $short = $this->short . ':';
+        $long = $this->long . ':';
 
-		if(false === isset($options[$this->long]) && false === isset($options[$this->short])){
-			if(true == $this->isRequired()){
-				throw new \York\Exception\Console(sprintf('required parameter "%s" not set!', $this->long));
-			}
-			return;
-		}
+        if (false === $this->isRequired()) {
+            $short .= ':';
+            $long .= ':';
+        }
 
-		if(true == isset($options[$this->long])){
-			$this->value = $options[$this->long];
-		}
+        $options = $this->parseArgs($short, $long);
 
-		if(true == isset($options[$this->short])){
-			$this->value = $options[$this->short];
-		}
+        if (false === isset($options[$this->long]) && false === isset($options[$this->short])) {
+            if (true == $this->isRequired()) {
+                throw new \York\Exception\Console(sprintf('required parameter "%s" not set!', $this->long));
+            }
 
-	}
+            return;
+        }
 
-	/**
-	 * @param $short
-	 * @param $long
-	 *
-	 * @return array
-	 */
-	public function parseArgs($short, $long){
-		return getopt($short, array($long));
-	}
+        if (true == isset($options[$this->long])) {
+            $this->value = $options[$this->long];
+        }
 
-	/**
-	 * getter for the calculated value
-	 * @return mixed
-	 */
-	public function getValue(){
-		return $this->value;
-	}
+        if (true == isset($options[$this->short])) {
+            $this->value = $options[$this->short];
+        }
 
-	/**
-	 * setter for the required flag
-	 *
-	 * @param boolean $isRequired
-	 * @return Parameter
-	 */
-	protected function setIsRequired($isRequired = false){
-		$this->isRequired = true === $isRequired;
+    }
 
-		return $this;
-	}
+    /**
+     * @param $short
+     * @param $long
+     *
+     * @return string[]
+     */
+    public function parseArgs($short, $long)
+    {
+        return getopt($short, array($long));
+    }
 
-	/**
-	 * getter for the required flag
-	 *
-	 * @return boolean
-	 */
-	public function isRequired(){
-		return true === $this->isRequired;
-	}
+    /**
+     * getter for the calculated value
+     * @return mixed
+     */
+    public function getValue()
+    {
+        return $this->value;
+    }
 
-	/**
-	 * setter for the default value
-	 *
-	 * @param mixed $default
-	 * @return Parameter
-	 */
-	protected function setDefault($default = null){
-		$this->default = $default;
+    /**
+     * setter for the required flag
+     *
+     * @param boolean $isRequired
+     * @return $this
+     */
+    protected function setIsRequired($isRequired = false)
+    {
+        $this->isRequired = true === $isRequired;
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * getter for the default value
-	 *
-	 * @return mixed
-	 */
-	public function getDefault(){
-		return $this->default;
-	}
+    /**
+     * getter for the required flag
+     *
+     * @return boolean
+     */
+    public function isRequired()
+    {
+        return true === $this->isRequired;
+    }
 
-	public function getLongOption(){
-		return $this->long;
-	}
+    /**
+     * setter for the default value
+     *
+     * @param mixed $default
+     * @return $this
+     */
+    protected function setDefault($default = null)
+    {
+        $this->default = $default;
 
-	public function getShortOption(){
-		return $this->short;
-	}
+        return $this;
+    }
+
+    /**
+     * getter for the default value
+     *
+     * @return mixed
+     */
+    public function getDefault()
+    {
+        return $this->default;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLongOption()
+    {
+        return $this->long;
+    }
+
+    /**
+     * @return string
+     */
+    public function getShortOption()
+    {
+        return $this->short;
+    }
 }

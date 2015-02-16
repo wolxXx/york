@@ -1,6 +1,6 @@
 
-	/**
-	* @var %%type%% $%%name%%
-	*/
-	%%visibility%% $%%name%%;
+    /**
+    * @var %%type%% $%%name%%
+    */
+    %%visibility%% $%%name%%;
 

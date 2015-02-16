@@ -1,46 +1,51 @@
 <?php
 namespace York\View\Splash;
+
 /**
  * a splash item
  *
+ * @package \York\View\Splash
+ * @version $version$
  * @author wolxXx
- * @version 3.0
- * @package York\View\Splash
  */
-class Item implements \York\View\Splash\ItemInterface{
-	/**
-	 * the displayed text
-	 *
-	 * @var string
-	 */
-	protected $text;
+class Item implements \York\View\Splash\ItemInterface
+{
+    /**
+     * the displayed text
+     *
+     * @var string
+     */
+    protected $text;
 
-	/**
-	 * create a new splash instance
-	 *
-	 * @param string $text
-	 */
-	public function __construct($text = ''){
-		$this->setText($text);
-	}
+    /**
+     * create a new splash instance
+     *
+     * @param string $text
+     */
+    public function __construct($text = '')
+    {
+        $this->setText($text);
+    }
 
-	/**
-	 * setter for the text
-	 *
-	 * @param $text
-	 * @return ItemInterface
-	 */
-	public function setText($text){
-		$this->text = $text;
-		return $this;
-	}
+    /**
+     * setter for the text
+     *
+     * @param string $text
+     *
+     * @return $this
+     */
+    public function setText($text)
+    {
+        $this->text = $text;
 
-	/**
-	 * getter for the text
-	 *
-	 * @return string
-	 */
-	public function getText(){
-		return $this->text;
-	}
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
 }

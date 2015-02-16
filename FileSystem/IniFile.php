@@ -1,39 +1,45 @@
 <?php
 namespace York\FileSystem;
+
 /**
- * special class for ini files
+ * special class for ini-configuration-files
  *
- * @author wolxXx
- * @version 3.1
  * @package York\FileSystem
+ * @version $version$
+ * @author wolxXx
  */
-class IniFile extends File{
-	/**
-	 * @var array
-	 */
-	protected $content;
+class IniFile extends File
+{
+    /**
+     * @var array
+     */
+    protected $content;
 
-	/**
-	 * @var boolean
-	 */
-	protected $parsed = false;
+    /**
+     * @var boolean
+     */
+    protected $parsed = false;
 
-	/**
-	 * @return array
-	 */
-	public function parse(){
-		$this->content = parse_ini_file($this->getFullName(), true, 2);
-		$this->parsed = true;
+    /**
+     * @return array
+     */
+    public function parse()
+    {
+        $this->content = parse_ini_file($this->getFullName(), true, 2);
+        $this->parsed = true;
 
-		return $this;
-	}
+        return $this;
+    }
 
+    /**
+     * @return array
+     */
+    public function getContent()
+    {
+        if (false === $this->parsed) {
+            $this->parse();
+        }
 
-	public function getContent(){
-		if(false === $this->parsed){
-			$this->parse();
-		}
-
-		return $this->content;
-	}
+        return $this->content;
+    }
 }

@@ -1,247 +1,301 @@
 <?php
 namespace York\Database\Model;
-use York\Database\Accessor\Factory;
-use York\Exception\ModelNotSaved;
-use York\Storage\Simple;
 
-abstract class Item{
-	/**
-	 * name of the representing table
-	 *
-	 * @var string
-	 */
-	protected $table;
+/**
+ * abstract class for model
+ *
+ * @package York\Database\Model
+ * @version $version$
+ * @author wolxXx
+ */
+abstract class Item
+{
+    /**
+     * name of the representing table
+     *
+     * @var string
+     */
+    protected $table;
 
-	/**
-	 * dirty-flag
-	 *
-	 * @var boolean
-	 */
-	protected $isModified;
+    /**
+     * dirty-flag
+     *
+     * @var boolean
+     */
+    protected $isModified;
 
-	/**
-	 * the data
-	 *
-	 * @var Simple
-	 */
-	protected $data;
+    /**
+     * the data
+     *
+     * @var \York\Storage\Simple
+     */
+    protected $data;
 
-	/**
-	 * list of class members that have direct correspondence to the database
-	 *
-	 * @var string[]
-	 */
-	protected $flatMembers;
+    /**
+     * list of class members that have direct correspondence to the database
+     *
+     * @var string[]
+     */
+    protected $flatMembers;
 
-	/**
-	 * @param string $table
-	 * @param integer $id
-	 */
-	public function __construct($table, $id = null){
-		$this->data = new Simple();
-		$this->table = $table;
-		$this->id = $id;
-		if(null === $id && true === in_array('created', $this->flatMembers)){
-			$this->setCreated(\York\Helper\Date::getDateTime());
-		}
-		$this->isModified = false;
-	}
+    /**
+     * @param string $table
+     * @param integer $id
+     */
+    public function __construct($table, $id = null)
+    {
+        $this->data = new \York\Storage\Simple();
+        $this->table = $table;
+        $this->id = $id;
+        if (null === $id && true === in_array('created', $this->flatMembers)) {
+            $this->setCreated(\York\Helper\Date::getDateTime());
+        }
 
-	/**
-	 * @return string
-	 */
-	public function __toString(){
-		return get_called_class();
-	}
+        $this->isModified = false;
+    }
 
-	/**
-	 * @return $this
-	 */
-	public function validate(){
-		return $this;
-	}
+    /**
+     * @return string
+     */
+    public function __toString()
+    {
+        return get_called_class();
+    }
 
-	/**
-	 * @return \York\Database\Model\Manager
-	 */
-	abstract function getManager();
+    /**
+     * @return $this
+     */
+    public function validate()
+    {
+        return $this;
+    }
 
-	/**
-	 * @param array $data
-	 * @return \York\Database\Blueprint\ItemInterface
-	 */
-	public function setFromArray(array $data){
-		foreach($data as $key => $value){
-			$this->set($key, $value);
-		}
-		return $this;
-	}
+    /**
+     * @return \York\Database\Model\Manager
+     */
+    abstract function getManager();
 
-	/**
-	 * @param string $key
-	 * @param mixed $value
-	 * @return $this
-	 */
-	public function setReferenced($key, $value){
-		if(false === in_array($key, $this->referencedMembers) || false === $value instanceof Item){
-			return $this;
-		}
+    /**
+     * @param array $data
+     * @return $this
+     */
+    public function setFromArray(array $data)
+    {
+        foreach ($data as $key => $value) {
+            $this->set($key, $value);
+        }
 
-		$this->$key = $value;
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * @param string    $key
+     * @param mixed     $value
+     * @return $this
+     */
+    public function setReferenced($key, $value)
+    {
+        if (false === in_array($key, $this->referencedMembers) || false === $value instanceof Item) {
+            return $this;
+        }
 
-	/***
-	 * @param string $model
-	 * @param integer $id
-	 * @return Item
-	 */
-	public function getReferenced($model, $id){
-		if(null === $this->$model){
-			$this->$model = \York\Dependency\Manager::get(lcfirst($model).'Manager')->getById($id);
-		}
+        $this->$key = $value;
 
-		return $this->$model;
-	}
+        return $this;
+    }
 
-	/**
-	 * setter for data
-	 * sets the dirty-flag if data is modified
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return \York\Database\Model\Item
-	 */
-	public function set($key, $value){
-		if(true === in_array($key, array('data', 'table', 'flatMembers', 'referencedMembers')) || true === $value instanceof Item){
-			return $this;
-		}
+    /***
+     * @param string    $model
+     * @param integer   $id
+     *
+     * @throws \York\Exception\Database
+     *
+     * @return \York\Database\Model\Item
+     */
+    public function getReferenced($model, $id)
+    {
+        if (null === $this->$model) {
+            if (true === \York\Dependency\Manager::isConfigured(lcfirst($model) . 'Manager')) {
+                $this->$model = \York\Dependency\Manager::get(lcfirst($model) . 'Manager')->getById($id);
+            } else if (true === \York\Dependency\Manager::isConfigured('model.manager.' . strtolower($model))) {
+                $this->$model = \York\Dependency\Manager::get('model.manager.' . strtolower($model))->getById($id);
+            } else {
+                throw new \York\Exception\Database('unable to get dependency for ' . $model);
+            }
+        }
 
-		if($value === $this->$key){
-			return $this;
-		}
+        return $this->$model;
+    }
 
-		if(true === in_array($key, $this->flatMembers)){
-			$this->data->set($key, $value);
-		}
+    /**
+     * setter for data
+     * sets the dirty-flag if data is modified
+     *
+     * @param string    $key
+     * @param mixed     $value
+     *
+     * @return $this
+     */
+    public function set($key, $value)
+    {
+        if (true === in_array($key, array('data', 'table', 'flatMembers', 'referencedMembers')) || true === $value instanceof Item) {
+            return $this;
+        }
 
-		$this->$key = $value;
-		$this->isModified = true;
+        if ($value === $this->$key) {
+            return $this;
+        }
 
-		return $this;
-	}
+        if (true === in_array($key, $this->flatMembers)) {
+            $this->data->set($key, $value);
+        }
 
-	/**
-	 * magic method overwriting for having dedicated data storage
-	 *
-	 * @param string $key
-	 * @param mixed $value
-	 * @return \York\Database\Model\Item
-	 */
-	public function __set($key, $value){
-		return $this->set($key, $value);
-	}
+        $this->$key = $value;
+        $this->isModified = true;
 
-	/**
-	 * getter for data
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function get($key){
-		return $this->data->getSafely($key, null);
-	}
+        return $this;
+    }
 
-	/**
-	 * overwrite the class getter with magic method for having dedicated data storage
-	 *
-	 * @param string $key
-	 * @return mixed
-	 */
-	public function __get($key){
-		return $this->get($key);
-	}
+    /**
+     * magic method overwriting for having dedicated data storage
+     *
+     * @param string    $key
+     * @param mixed     $value
+     *
+     * @return $this
+     */
+    public function __set($key, $value)
+    {
+        return $this->set($key, $value);
+    }
 
-	/**
-	 * getter for the table name
-	 *
-	 * @return string
-	 */
-	public function getTable(){
-		return $this->table;
-	}
+    /**
+     * getter for data
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function get($key)
+    {
+        return $this->data->getSafely($key, null);
+    }
 
-	/**
-	 * getter for the id
-	 *
-	 * @return integer
-	 */
-	public function getId(){
-		return $this->id;
-	}
+    /**
+     * overwrite the class getter with magic method for having dedicated data storage
+     *
+     * @param string $key
+     *
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->get($key);
+    }
 
-	/**
-	 * checker for the dirty-flag
-	 *
-	 * @return boolean
-	 */
-	public function isModified(){
-		return true === $this->isModified;
-	}
+    /**
+     * getter for the table name
+     *
+     * @return string
+     */
+    public function getTable()
+    {
+        return $this->table;
+    }
 
-	/**
-	 * setter for modified flag
-	 * disabled saving! handle with care!
-	 *
-	 * @param boolean $modified
-	 * @return $this
-	 */
-	public function setIsModified($modified){
-		$this->isModified = true === $modified;
+    /**
+     * getter for the id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
-		return $this;
-	}
+    /**
+     * @param integer $id
+     *
+     * @return $this
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
 
-	/**
-	 * delete the set in the database
-	 *
-	 * @throws ModelNotSaved
-	 * @return boolean
-	 */
-	public function delete(){
-		if(null === $this->getId()){
-			throw new ModelNotSaved();
-		}
-		return Factory::getDeleteObject($this->getTable(), $this->getId())->delete()->queryWasSuccessful();
-	}
+        return $this;
+    }
 
-	/**
-	 * save the data to the database
-	 *
-	 * @return \York\Database\Model\Item
-	 *
-	 */
-	public function save(){
-		$this->validate();
-		if(false === $this->isModified()){
-			return $this;
-		}
+    /**
+     * checker for the dirty-flag
+     *
+     * @return boolean
+     */
+    public function isModified()
+    {
+        return true === $this->isModified;
+    }
 
-		if(null === $this->getId()){
-			$this->id = Factory
-				::getSaveObject($this->getTable())
-				->setData($this->data->getAll())
-				->save()
-				->getLastInsertId();
+    /**
+     * setter for modified flag
+     * disabled saving! handle with care!
+     *
+     * @param boolean $modified
+     *
+     * @return $this
+     */
+    public function setIsModified($modified)
+    {
+        $this->isModified = true === $modified;
 
-			return $this->getManager()->getById($this->id);
-		}
+        return $this;
+    }
 
-		Factory::getUpdateObject($this->getTable(), $this->getId())
-			->setData($this->data->getAll())
-			->update();
+    /**
+     * delete the set in the database
+     *
+     * @throws \York\Exception\ModelNotSaved
+     *
+     * @return boolean
+     */
+    public function delete()
+    {
+        if (null === $this->getId()) {
+            throw new \York\Exception\ModelNotSaved();
+        }
 
-		return $this->getManager()->getById($this->id);
-	}
+        \York\Dependency\Manager::getModelCache()->remove($this);
+
+        return \York\Database\Accessor\Factory::getDeleteObject($this->getTable(), $this->getId())->delete()->queryWasSuccessful();
+    }
+
+    /**
+     * save the data to the database
+     *
+     * @return \York\Database\Model\Item
+     *
+     */
+    public function save()
+    {
+        $this->validate();
+
+        if (false === $this->isModified()) {
+            return $this;
+        }
+
+        if (null === $this->getId()) {
+            $this->id = \York\Database\Accessor\Factory
+                ::getSaveObject($this->getTable())
+                ->setData($this->data->getAll())
+                ->save()
+                ->getLastInsertId();
+
+            return $this->getManager()->getById($this->id);
+        }
+
+        \York\Database\Accessor\Factory::getUpdateObject($this->getTable(), $this->getId())
+            ->setData($this->data->getAll())
+            ->update();
+
+        return $this->getManager()->getById($this->id);
+    }
 }

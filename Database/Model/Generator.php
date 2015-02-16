@@ -4,367 +4,391 @@ namespace York\Database\Model;
 /**
  * generator for database blueprints
  *
- * @author wolxXx
- * @version 3.1
  * @package York\Database\Model
+ * @version $version$
+ * @author wolxXx
  */
-class Generator {
-	/**
-	 * @var \York\Database\Manager
-	 */
-	protected $databaseManager;
+class Generator
+{
+    /**
+     * table name
+     *
+     * @var string
+     */
+    protected $table;
 
-	/**
-	 * table name
-	 *
-	 * @var string
-	 */
-	protected $table;
+    /**
+     * @var string
+     */
+    protected $model;
 
-	/**
-	 * @var string
-	 */
-	protected $model;
+    /**
+     * @var string
+     */
+    protected $pathPrefix;
 
-	/**
-	 * @var string
-	 */
-	protected $pathPrefix;
+    /**
+     * setup
+     */
+    public function __construct($table)
+    {
+        $this->table = $table;
+        $this->model = ucfirst(\York\Helper\String::underscoresToPascalCase($this->table));
+        $this->setPathPrefix();
+    }
 
-	/**
-	 * setup
-	 */
-	public function __construct($table){
-		$this->table = $table;
-		$this->databaseManager = \York\Dependency\Manager::get('databaseManager');
-		$this->model = ucfirst(\York\Helper\String::underscoresToPascalCase($this->table));
-		$this->setPathPrefix();
-	}
+    /**
+     * match the database field configuration to a php equivalent
+     *
+     * @param string $type
+     *
+     * @return string
+     */
+    public function matchDatabaseTypeToPHP($type)
+    {
+        if ('datetime' === $type) {
+            return '\DateTime';
+        }
 
-	/**
-	 * match the database field configuration to a php equivalent
-	 *
-	 * @param $type
-	 * @return string
-	 */
-	public function matchDatabaseTypeToPHP($type){
-		if('datetime' === $type){
-			return '\DateTime';
-		}
+        if ('tinyint' === $type) {
+            return 'boolean';
+        }
 
-		if('tinyint' === $type){
-			return 'boolean';
-		}
+        if ('int' === $type) {
+            return 'integer';
+        }
 
-		if('int' === $type){
-			return 'integer';
-		}
+        if (true === in_array($type, array('varchar', 'text'))) {
+            return 'string';
+        }
 
-		if(true === in_array($type, array('varchar', 'text'))){
-			return 'string';
-		}
+        return 'string';
+    }
 
-		return 'string';
-	}
+    /**
+     * generates blueprint, manager and model with default settings
+     *
+     * @param string $table
+     *
+     * @return $this
+     *
+     */
+    public function generate()
+    {
+        return $this
+            ->generateBlueprint()
+            ->generateModel()
+            ->generateManagerBlueprint()
+            ->generateManager();
+    }
 
-	/**
-	 * generates blueprint, manager and model with default settings
-	 *
-	 * @param string $table
-	 * @return $this
-	 *
-	 */
-	public function generate(){
-		return $this
-			->generateBlueprint()
-			->generateModel()
-			->generateManagerBlueprint()
-			->generateManager();
-	}
+    /**
+     * generates the blueprint
+     * overwrites the eventually found file if wanted
+     *
+     * @param boolean   $overwrite
+     *
+     * @return $this
+     * todo refactor! ouhya. really!!!!
+     */
+    public function generateBlueprint($overwrite = true)
+    {
+        $target = $this->getPathForBlueprint();
+        $targetPath = $this->getPathForBlueprint(false);
 
-	/**
-	 * generates the blueprint
-	 * overwrites the eventually found file if wanted
-	 *
-	 * @param boolean $overwrite
-	 * @param null $targetFull
-	 * @return $this
-	 * todo refactor!
-	 */
-	public function generateBlueprint($overwrite = true){
-		$target = $this->getPathForBlueprint();
-		$targetPath = $this->getPathForBlueprint(false);
+        new \York\FileSystem\Directory($targetPath, true);
 
-		new \York\FileSystem\Directory($targetPath, true);
+        if (true === file_exists($target)) {
+            if (false === $overwrite) {
+                return $this;
+            }
 
-		if(true === file_exists($target)){
-			if(false === $overwrite){
-				return $this;
-			}
-			unlink($target);
-		}
+            unlink($target);
+        }
 
-		$schema = $this->databaseManager->getConnection()->getSchema();
-		$columns = \York\Database\Information::getColumnsForTable($schema, $this->table);
-		$fileText = '';
-		$flatMembers = array();
-		$referencedMembers = array();
-		$classMemberVisibility = 'protected';
-		$memberText = \York\Template\Parser::parseFile(__DIR__.'/Generator/member', array());
-		$referencedMemberText = \York\Template\Parser::parseFile(__DIR__.'/Generator/referencedMember', array());
-		$getterSetterText = \York\Template\Parser::parseFile(__DIR__.'/Generator/getterSetter', array());
-		$fileTextTemplate = \York\Template\Parser::parseFile(__DIR__.'/Generator/skeleton_blueprint', array());
-		$getManagerText = \York\Template\Parser::parseFile(__DIR__.'/Generator/getManager', array());
-		$factoryText = \York\Template\Parser::parseFile(__DIR__.'/Generator/factory', array());
+        $schema = \York\Dependency\Manager::getDatabaseManager()->getConnection()->getSchema();
+        $columns = \York\Database\Information::getColumnsForTable($schema, $this->table);
+        $fileText = '';
+        $flatMembers = array();
+        $referencedMembers = array();
+        $classMemberVisibility = 'protected';
+        $memberText = \York\Template\Parser::parseFile(__DIR__ . '/Generator/member', array());
+        $referencedMemberText = \York\Template\Parser::parseFile(__DIR__ . '/Generator/referencedMember', array());
+        $getterSetterText = \York\Template\Parser::parseFile(__DIR__ . '/Generator/getterSetter', array());
+        $fileTextTemplate = \York\Template\Parser::parseFile(__DIR__ . '/Generator/skeleton_blueprint', array());
+        $getManagerText = \York\Template\Parser::parseFile(__DIR__ . '/Generator/getManager', array());
+        $factoryText = \York\Template\Parser::parseFile(__DIR__ . '/Generator/factory', array());
 
-		foreach($columns as $current){
-			$name = $current->COLUMN_NAME;
-			$type = \York\Database\Information::getTypeOfColumn($schema, $this->table, $name)->DATA_TYPE;
-			$type = $this->matchDatabaseTypeToPHP($type);
+        foreach ($columns as $current) {
+            $name = $current->COLUMN_NAME;
+            $type = \York\Database\Information::getTypeOfColumn($schema, $this->table, $name)->DATA_TYPE;
+            $type = $this->matchDatabaseTypeToPHP($type);
 
-			$fileText .= \York\Template\Parser::parseText($memberText, array(
-				'visibility' => $classMemberVisibility,
-				'type' => $type,
-				'name' => $name
-			));
+            $fileText .= \York\Template\Parser::parseText($memberText, array(
+                'visibility' => $classMemberVisibility,
+                'type' => $type,
+                'name' => $name
+            ));
 
-			$fileText .= \York\Template\Parser::parseText($getterSetterText, array(
-				'name' => $name,
-				'uname' => ucfirst($name),
-				'type' => $type,
-				'model' => $this->model
-			));
+            $fileText .= \York\Template\Parser::parseText($getterSetterText, array(
+                'name' => $name,
+                'uname' => ucfirst($name),
+                'type' => $type,
+                'model' => $this->model
+            ));
 
 
-			$flatMembers[] = $name;
+            $flatMembers[] = $name;
 
-			if(false === \York\Helper\String::startsWith($name, 'id_')){
-				continue;
-			}
+            if (false === \York\Helper\String::startsWith($name, 'id_')) {
+                continue;
+            }
 
-			$class = \York\Helper\String::underscoresToPascalCase(substr($name, 3));
-			$model = '\Application\Model\\'.$class;
+            $class = \York\Helper\String::underscoresToPascalCase(substr($name, 3));
+            $model = '\Application\Model\\' . $class;
 
-			$fileText .= \York\Template\Parser::parseText($referencedMemberText, array(
-				'class' => $model,
-				'name' => $class,
-				'identified' => $name
-			));
+            $fileText .= \York\Template\Parser::parseText($referencedMemberText, array(
+                'class' => $model,
+                'name' => $class,
+                'identified' => $name
+            ));
 
-			$referencedMembers[] = $class;
-		}
+            $referencedMembers[] = $class;
+        }
 
-		$flatMembers = \York\Helper\Set::decorate($flatMembers, "'", "'");
-		$fileText .= sprintf('/**
+        $flatMembers = \York\Helper\Set::decorate($flatMembers, "'", "'");
+        $fileText .= sprintf('/**
 	* @var array $flatMembers
-	*/', implode(', ', $flatMembers)).PHP_EOL."\t";
-		$fileText .= sprintf('public $flatMembers = array(%s);', implode(', ', $flatMembers)).PHP_EOL.PHP_EOL;
+	*/', implode(', ', $flatMembers)) . PHP_EOL . "\t";
+        $fileText .= sprintf('public $flatMembers = array(%s);', implode(', ', $flatMembers)) . PHP_EOL . PHP_EOL;
 
-		$referencedMembers = \York\Helper\Set::decorate($referencedMembers, "'", "'");
-		$fileText .= sprintf('/**
+        $referencedMembers = \York\Helper\Set::decorate($referencedMembers, "'", "'");
+        $fileText .= sprintf('/**
 	* @var array $referencedMembers
-	*/', implode(', ', $referencedMembers)).PHP_EOL."\t";
-		$fileText .= sprintf('public $referencedMembers = array(%s);', implode(', ', $referencedMembers)).PHP_EOL.PHP_EOL;
+	*/', implode(', ', $referencedMembers)) . PHP_EOL . "\t";
+        $fileText .= sprintf('public $referencedMembers = array(%s);', implode(', ', $referencedMembers)) . PHP_EOL . PHP_EOL;
 
-		$fileText .= \York\Template\Parser::parseText($getManagerText, array(
-			'model' => \York\Helper\String::underscoresToPascalCase($this->table)
-		));
+        $fileText .= \York\Template\Parser::parseText($getManagerText, array(
+            'model' => \York\Helper\String::underscoresToPascalCase($this->table)
+        ));
 
-		$fileText .= \York\Template\Parser::parseText($factoryText, array(
-			'model' => \York\Helper\String::underscoresToPascalCase($this->table)
-		));
+        $fileText .= \York\Template\Parser::parseText($factoryText, array(
+            'model' => \York\Helper\String::underscoresToPascalCase($this->table)
+        ));
 
-		file_put_contents($target, \York\Template\Parser::parseText($fileTextTemplate, array(
-			'tablename' => $this->table,
-			'modelname' => \York\Helper\String::underscoresToPascalCase($this->table),
-			'classmembers' => $fileText
-		)));
+        file_put_contents($target, \York\Template\Parser::parseText($fileTextTemplate, array(
+            'tablename' => $this->table,
+            'modelname' => \York\Helper\String::underscoresToPascalCase($this->table),
+            'classmembers' => $fileText
+        )));
 
-		return $this;
-	}
+        return $this;
+    }
 
-	/**
-	 * generates the model class file
-	 * overwrites the eventually found file if wanted
-	 *
-	 * @param boolean $overwrite
-	 * @return $this
-	 */
-	public function generateModel($overwrite = false){
-		$target = $this->getPathForModel();
-		$targetPath = $this->getPathForModel(false);
-		new \York\FileSystem\Directory($targetPath, true);
+    /**
+     * generates the model class file
+     * overwrites the eventually found file if wanted
+     *
+     * @param boolean $overwrite
+     *
+     * @return $this
+     */
+    public function generateModel($overwrite = false)
+    {
+        $target = $this->getPathForModel();
+        $targetPath = $this->getPathForModel(false);
+        new \York\FileSystem\Directory($targetPath, true);
 
-		if(true === file_exists($target)){
-			if(false === $overwrite){
-				return $this;
-			}
-			unlink($target);
-		}
+        if (true === file_exists($target)) {
+            if (false === $overwrite) {
+                return $this;
+            }
 
-		file_put_contents($target, \York\Template\Parser::parseFile(__DIR__.'/Generator/skeleton_model', array(
-			'modelname' => $this->model
-		)));
+            unlink($target);
+        }
 
-		return $this;
-	}
+        file_put_contents($target, \York\Template\Parser::parseFile(__DIR__ . '/Generator/skeleton_model', array(
+            'modelname' => $this->model
+        )));
 
-	/**
-	 * @param boolean $overwrite
-	 * @return $this
-	 */
-	public function generateManagerBlueprint($overwrite = true){
-		$target = $this->getPathForManagerBlueprint();
-		$targetPath = $this->getPathForManagerBlueprint(false);
+        return $this;
+    }
 
-		new \York\FileSystem\Directory($targetPath, true);
+    /**
+     * @param boolean $overwrite
+     *
+     * @return $this
+     */
+    public function generateManagerBlueprint($overwrite = true)
+    {
+        $target = $this->getPathForManagerBlueprint();
+        $targetPath = $this->getPathForManagerBlueprint(false);
 
-		if(true === file_exists($target)){
-			if(false === $overwrite){
-				return $this;
-			}
-			unlink($target);
-		}
+        new \York\FileSystem\Directory($targetPath, true);
 
-		file_put_contents($target, \York\Template\Parser::parseFile(__DIR__.'/Generator/skeleton_manager_blueprint', array(
-			'modelname' => $this->model,
-			'table' => $this->table
-		)));
+        if (true === file_exists($target)) {
+            if (false === $overwrite) {
+                return $this;
+            }
 
-		return $this;
-	}
+            unlink($target);
+        }
 
-	/**
-	 * generates the manager class file
-	 * overwrites the eventually found file if wanted
-	 *
-	 * @param boolean $overwrite
-	 * @return $this
-	 */
-	public function generateManager($overwrite = false){
-		$target = $this->getPathForManager();
-		$targetPath = $this->getPathForManager(false);
-		new \York\FileSystem\Directory(\York\Helper\FileSystem::getDirectory($targetPath), true);
+        file_put_contents($target, \York\Template\Parser::parseFile(__DIR__ . '/Generator/skeleton_manager_blueprint', array(
+            'modelname' => $this->model,
+            'table' => $this->table
+        )));
 
-		if(true === file_exists($target)){
-			if(false === $overwrite){
-				return $this;
-			}
-			unlink($target);
-		}
+        return $this;
+    }
 
-		file_put_contents($target, \York\Template\Parser::parseFile(__DIR__.'/Generator/skeleton_manager', array(
-			'modelname' => $this->model,
-			'table' => $this->table
-		)));
+    /**
+     * generates the manager class file
+     * overwrites the eventually found file if wanted
+     *
+     * @param boolean $overwrite
+     *
+     * @return $this
+     */
+    public function generateManager($overwrite = false)
+    {
+        $target = $this->getPathForManager();
+        $targetPath = $this->getPathForManager(false);
+        new \York\FileSystem\Directory(\York\Helper\FileSystem::getDirectory($targetPath), true);
 
-		return $this;
-	}
+        if (true === file_exists($target)) {
+            if (false === $overwrite) {
+                return $this;
+            }
 
-	/**
-	 * @return string
-	 */
-	public function getTable(){
-		return $this->table;
-	}
+            unlink($target);
+        }
 
-	/**
-	 * @param string $prefix
-	 * @return $this
-	 */
-	public function setPathPrefix($prefix = null){
-		if(null === $prefix){
-			$prefix = \York\Helper\Application::getApplicationRoot();
-		}
+        file_put_contents($target, \York\Template\Parser::parseFile(__DIR__ . '/Generator/skeleton_manager', array(
+            'modelname' => $this->model,
+            'table' => $this->table
+        )));
 
-		$this->pathPrefix = $prefix;
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * @return string
+     */
+    public function getTable()
+    {
+        return $this->table;
+    }
 
-	/**
-	 * @return string
-	 */
-	public function getPathPrefix(){
-		return $this->pathPrefix;
-	}
+    /**
+     * @param string $prefix
+     *
+     * @return $this
+     */
+    public function setPathPrefix($prefix = null)
+    {
+        if (null === $prefix) {
+            $prefix = \York\Helper\Application::getApplicationRoot();
+        }
 
-	/**
-	 * @param $class
-	 * @param null | string $infix
-	 * @param bool $full
-	 * @return string
-	 */
-	protected function getPath($infix = null, $full = true){
-		if(null === $infix){
-			$infix = '';
-		}else{
-			$infix .= '/';
-		}
+        $this->pathPrefix = $prefix;
 
-		$postfix = '';
-		if(true === $full){
-			$postfix = $this->model.'.php';
-		}
+        return $this;
+    }
 
-		return $this->getPathPrefix().'Model/'.$infix.$postfix;
-	}
+    /**
+     * @return string
+     */
+    public function getPathPrefix()
+    {
+        return $this->pathPrefix;
+    }
 
-	/**
-	 * get the path for the model for the given table
-	 *
-	 * @param $table
-	 * @param bool $full
-	 * @return string
-	 */
-	public function getPathForModel($full = true){
-		return $this->getPath(null, $full);
-	}
+    /**
+     * @param null | string $infix
+     * @param boolean       $full
+     *
+     * @return string
+     */
+    protected function getPath($infix = null, $full = true)
+    {
+        if (null === $infix) {
+            $infix = '';
+        } else {
+            $infix .= '/';
+        }
 
-	/**
-	 * get the path for the manager for the given table
-	 *
-	 * @param bool $full
-	 * @return string
-	 */
-	public function getPathForManager($full = true){
-		return $this->getPath('Manager', $full);
-	}
+        $postfix = '';
 
-	/**
-	 * @param bool $full
-	 * @return string
-	 */
-	public function getPathForManagerBlueprint($full = true){
-		return $this->getPath('Manager/Blueprint', $full);
-	}
+        if (true === $full) {
+            $postfix = $this->model . '.php';
+        }
 
-	/**
-	 * get the path for the blueprint for the given table
-	 *
-	 * @param $table
-	 * @param bool $full
-	 * @return string
-	 */
-	public function getPathForBlueprint($full = true){
-		return $this->getPath('Blueprint', $full);
-	}
+        return $this->getPathPrefix() . 'Model/' . $infix . $postfix;
+    }
 
-	/**
-	 * generates models for all found tables in the current database
-	 *
-	 * @return $this
-	 */
-	public function generateAll(){
-		$tableSave = $this->table;
+    /**
+     * get the path for the model for the given table
+     *
+     * @param boolean $full
+     *
+     * @return string
+     */
+    public function getPathForModel($full = true)
+    {
+        return $this->getPath(null, $full);
+    }
 
-		foreach(\York\Database\Information::getAllTables($this->databaseManager->getConnection()->getSchema()) as $table){
-			$this->table = $table->TABLE_NAME;
-			$this->generate();
-		}
+    /**
+     * get the path for the manager for the given table
+     *
+     * @param boolean $full
+     *
+     * @return string
+     */
+    public function getPathForManager($full = true)
+    {
+        return $this->getPath('Manager', $full);
+    }
 
-		$this->table = $tableSave;
+    /**
+     * @param boolean $full
+     *
+     * @return string
+     */
+    public function getPathForManagerBlueprint($full = true)
+    {
+        return $this->getPath('Manager/Blueprint', $full);
+    }
 
-		return $this;
-	}
+    /**
+     * get the path for the blueprint for the given table
+     *
+     * @param boolean $full
+     *
+     * @return string
+     */
+    public function getPathForBlueprint($full = true)
+    {
+        return $this->getPath('Blueprint', $full);
+    }
+
+    /**
+     * generates models for all found tables in the current database
+     *
+     * @return $this
+     */
+    public function generateAll()
+    {
+        $tableSave = $this->table;
+
+        foreach (\York\Database\Information::getAllTables(\York\Dependency\Manager::getDatabaseManager()->getConnection()->getSchema()) as $table) {
+            $this->table = $table->TABLE_NAME;
+            $this->generate();
+        }
+
+        $this->table = $tableSave;
+
+        return $this;
+    }
 }

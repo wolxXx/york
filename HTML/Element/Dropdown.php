@@ -1,73 +1,81 @@
 <?php
 namespace York\HTML\Element;
+
 /**
  * a dropdown element container
  *
- * @author wolxXx
- * @version 3.0
  * @package \York\HTML\Element
+ * @version $version$
+ * @author wolxXx
  */
-class Dropdown extends \York\HTML\ContainableDomElementAbstract{
-	/**
-	 * @param array $data
-	 * @return \York\HTML\Element\Dropdown
-	 */
-	public static function Factory($data = array()){
-		return parent::Factory($data);
-	}
-	/**
-	 * @inheritdoc
-	 */
-	public static function getDefaultConf(){
-		return array(
-		);
-	}
+class Dropdown extends \York\HTML\ContainableDomElementAbstract
+{
+    /**
+     * @param array $data
+     * @return \York\HTML\Element\Dropdown
+     */
+    public static function Factory($data = array())
+    {
+        return parent::Factory($data);
+    }
 
-	/**
-	 * overwrites the abstract method
-	 * it only accepts dropdown elements or dropdown groups
-	 *
-	 * @param \York\HTML\DomElementInterface|\York\HTML\Element\DropdownElement|\York\HTML\Element\DropdownGroup $child
-	 * @throws \York\Exception\HTTMLGenerator
-	 * @return \York\HTML\Element\Dropdown
-	 */
-	public function addChild(\York\HTML\DomElementInterface $child){
-		if($child instanceof \York\HTML\Element\DropdownElement || $child instanceof \York\HTML\Element\DropdownGroup){
-			parent::addChild($child);
+    /**
+     * @inheritdoc
+     */
+    public static function getDefaultConf()
+    {
+        return array();
+    }
 
-			return $this;
-		}
+    /**
+     * overwrites the abstract method
+     * it only accepts dropdown elements or dropdown groups
+     *
+     * @param \York\HTML\DomElementInterface | \York\HTML\Element\DropdownElement | \York\HTML\Element\DropdownGroup $child
+     *
+     * @return $this
+     *
+     * @throws \York\Exception\HTTMLGenerator
+     */
+    public function addChild(\York\HTML\DomElementInterface $child)
+    {
+        if ($child instanceof \York\HTML\Element\DropdownElement || $child instanceof \York\HTML\Element\DropdownGroup) {
+            parent::addChild($child);
 
-		throw new \York\Exception\HTTMLGenerator('dropdown container can only contain dropdown elements or groups as children');
-	}
+            return $this;
+        }
 
-	/**
-	 * @inheritdoc
-	 */
-	public function display(){
-		$this->displayLabelBefore();
+        throw new \York\Exception\HTTMLGenerator('dropdown container can only contain dropdown elements or groups as children');
+    }
 
-		$conf = $this->getConf();
+    /**
+     * @inheritdoc
+     */
+    public function display()
+    {
+        $this->displayLabelBefore();
 
-		\York\HTML\Core::out(
-			\York\HTML\Core::openTag('select', $conf)
-		);
+        $conf = $this->getConf();
 
-
-		/**
-		 * @var \York\HTML\DomElementInterface $current
-		 */
-		foreach($this->children as $current){
-			$current->display();
-		}
-
-		\York\HTML\Core::out(
-			\York\HTML\Core::closeTag('select')
-		);
+        \York\HTML\Core::out(
+            \York\HTML\Core::openTag('select', $conf)
+        );
 
 
-		$this->displayLabelAfter();
+        /**
+         * @var \York\HTML\DomElementInterface $current
+         */
+        foreach ($this->children as $current) {
+            $current->display();
+        }
 
-		return $this;
-	}
+        \York\HTML\Core::out(
+            \York\HTML\Core::closeTag('select')
+        );
+
+
+        $this->displayLabelAfter();
+
+        return $this;
+    }
 }

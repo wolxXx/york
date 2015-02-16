@@ -1,66 +1,76 @@
 <?php
 namespace York\HTML\Element;
+
 /**
  * a radio option element
  *
+ * @package \York\HTML\Element
+ * @version $version$
  * @author wolxXx
- * @version 3.0
- * @package York\HTML\Element
  */
-class RadioOption extends \York\HTML\DomElementAbstract{
-	/**
-	 * @param array $data
-	 * @return \York\HTML\Element\RadioOption
-	 */
-	public static function Factory($data = array()){
-		return parent::Factory($data);
-	}
+class RadioOption extends \York\HTML\DomElementAbstract
+{
+    /**
+     * @param array $data
+     *
+     * @return \York\HTML\Element\RadioOption
+     */
+    public static function Factory($data = array())
+    {
+        return parent::Factory($data);
+    }
 
-	/**
-	 * @inheritdoc
-	 */
-	public static function getDefaultConf(){
-		return array(
-			'checked' => null,
-			'type' => 'radio'
-		);
-	}
+    /**
+     * @inheritdoc
+     */
+    public static function getDefaultConf()
+    {
+        return array(
+            'checked' => null,
+            'type' => 'radio'
+        );
+    }
 
-	/**
-	 * setter for the value
-	 *
-	 * @param string $value
-	 * @return \York\HTML\Element\RadioOption
-	 */
-	public function setValue($value){
-		$this->set('value', $value);
-		return $this;
-	}
+    /**
+     * setter for the value
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        $this->set('value', $value);
 
-	/**
-	 * @inheritdoc
-	 */
-	public function display(){
-		if(null === $this->label){
-			$this->addLabel($this->get('value'), 'after');
-		}
-		$this->displayLabelBefore();
+        return $this;
+    }
 
-		$conf = $this->getConf();
+    /**
+     * @inheritdoc
+     */
+    public function display()
+    {
+        if (null === $this->label) {
+            $this->addLabel($this->get('value'), 'after');
+        }
 
-		if(true === $conf['checked']){
-			$conf['checked'] = 'checked';
-		}else{
-			unset($conf['checked']);
-		}
+        $this->displayLabelBefore();
 
-		\York\HTML\Core::out(
-			\York\HTML\Core::openSingleTag('input', $conf),
-			\York\HTML\Core::closeSingleTag('input')
-		);
+        $conf = $this->getConf();
 
-		$this->displayLabelAfter();
+        if (true === isset($conf['checked']) && true === $conf['checked']) {
+            $conf['checked'] = 'checked';
+        } else {
+            unset($conf['checked']);
+        }
 
-		return $this;
-	}
+        \York\HTML\Core::out(
+            \York\HTML\Core::openSingleTag('input', $conf),
+            \York\HTML\Core::closeSingleTag('input')
+        );
+
+        $this->displayLabelAfter();
+
+        return $this;
+    }
 }

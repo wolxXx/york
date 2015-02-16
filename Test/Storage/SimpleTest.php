@@ -8,8 +8,25 @@ class StorageSimpleTest extends \PHPUnit_Framework_TestCase{
 	 */
 	protected $storage;
 	public function setup(){
-		parent::setup();
 		$this->storage = new \York\Storage\Simple();
+	}
+
+	public function testGet(){
+		$this->setExpectedException('\York\Exception\KeyNotFound');
+		$this->storage->get('hamwanich');
+	}
+
+	public function testGetSafely(){
+		$this->assertNull($this->storage->getSafely('hamwanich'));
+		$this->storage->set('hamwanich', 'hamwadoch');
+		$this->assertSame('hamwadoch', $this->storage->getSafely('hamwanich'));
+	}
+
+	public function testRemoveKey(){
+		$this->storage->set('foo', 'bar');
+		$this->assertSame('bar', $this->storage->getSafely('foo'));
+		$this->storage->remove('foo');
+		$this->assertSame(null, $this->storage->getSafely('foo'));
 	}
 
 	public function testGetAll(){

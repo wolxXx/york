@@ -1,63 +1,68 @@
 <?php
 namespace York\Logger;
+
 /**
  * log file writer
  * writes all log messages for the the given levels to the given file
  *
+ * @package \York\Logger
+ * @version $version$
  * @author wolxXx
- * @version 3.1\York\Template\Parser::DELIMITER;
- * @package York\Logger
  */
-class File extends LoggerAbstract{
-	/**
-	 * @var string
-	 */
-	protected $filePath;
+class File extends LoggerAbstract
+{
+    /**
+     * @var \York\FileSystem\File $file
+     */
+    protected $file;
 
-	/**
-	 * @var \York\FileSystem\File $file
-	 */
-	protected $file;
+    /**
+     * @return $this
+     */
+    public static function Factory()
+    {
+        return new self();
+    }
 
-	/**
-	 * set up the logger
-	 *
-	 * @param string $filePath
-	 * @param string $level
-	 */
-	public function __construct($filePath, $level = Manager::LEVEL_ALL){
-		$this
-			->setFilePath($filePath)
-			->setLevel($level);
-	}
+    /**
+     * set the path to the log file
+     * if the parent directories not exist, try to create them
+     * if the log file does not exist, try to touch it
+     *
+     * @param string $fileName
+     *
+     * @return $this
+     */
+    public function setFilePath($fileName)
+    {
+        $logPath = \York\Helper\Application::getProjectRoot() . 'log/';
 
-	/**
-	 * set the path to the log file
-	 * if the parent directories not exist, try to create them
-	 * if the log file does not exist, try to touch it
-	 *
-	 * @param $filePath
-	 * @return $this
-	 * @throws \York\Exception\FileSystem
-	 */
-	public function setFilePath($filePath){
-		$logPath = \York\Helper\Application::getProjectRoot().'log/';
-		new \York\FileSystem\Directory($logPath, true);
-		$this->file = new \York\FileSystem\File($logPath.basename($filePath), true);
+        new \York\FileSystem\Directory($logPath, true);
 
-		return $this;
-	}
+        $this->file = new \York\FileSystem\File($logPath . $fileName, true);
 
-	/**
-	 * @inheritdoc
-	 */
-	public function log($message){
-		$message = $message.PHP_EOL.PHP_EOL;
-		$file = fopen($this->file->getFullName(), "a+");
-		fwrite($file, $message);
-		fclose($file);
+        return $this;
+    }
 
-		return $this;
-	}
+    /**
+     * @inheritdoc
+     */
+    protected function logAction($message)
+    {
+        $message = $message . PHP_EOL . PHP_EOL;
+        $file = fopen($this->file->getFullName(), "a+");
+        fwrite($file, $message);
+        fclose($file);
 
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     * @todo implement me!
+     */
+    public function validate()
+    {
+        return $this;
+    }
 }
