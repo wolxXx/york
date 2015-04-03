@@ -6,7 +6,7 @@ namespace York\Database\QueryBuilder;
  *
  * @package York\Database\QueryBuilder
  * @version $version$
- * @author wolxXx
+ * @author  wolxXx
  */
 class Insert extends \York\Database\QueryBuilder
 {
@@ -27,8 +27,8 @@ class Insert extends \York\Database\QueryBuilder
     /**
      * constructor
      *
-     * @param string    $table
-     * @param array     $data
+     * @param string $table
+     * @param array  $data
      */
     public function __construct($table = '', $data = array())
     {
@@ -84,7 +84,7 @@ class Insert extends \York\Database\QueryBuilder
      * section and the values for the value section.
      * this might be a clause for cptn. obvious
      *
-     * @todo as long as we have no multitype returns as in 5.5 it returns an array
+     * @todo  as long as we have no multitype returns as in 5.5 it returns an array
      * @fixme but now we have ;) is called yield..
      *
      * @return array

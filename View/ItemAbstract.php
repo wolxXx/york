@@ -21,7 +21,7 @@ abstract class ItemAbstract extends \York\Storage\Application implements \York\V
     protected $request;
 
     /**
-     * @return $thiss
+     * @return $this
      */
     public static function Factory()
     {

@@ -2,18 +2,18 @@
 namespace York\HTML\Element;
 
 /**
- * a password input element
+ * a file element
  *
  * @package \York\HTML\Element
  * @version $version$
  * @author wolxXx
  */
-class Password extends \York\HTML\DomElementAbstract
+class File extends \York\HTML\DomElementAbstract
 {
     /**
      * @param array $data
      *
-     * @return \York\HTML\Element\Password
+     * @return \York\HTML\Element\File
      */
     public static function Factory($data = array())
     {
@@ -26,11 +26,25 @@ class Password extends \York\HTML\DomElementAbstract
     public static function getDefaultConf()
     {
         return array(
-            'name' => 'password',
-            'type' => 'password',
-            'autocomplete' => 'off'
+            'value' => null,
+            'type' => 'file',
+            'multiple' => 'multiple',
+            'style' => null
         );
     }
+
+    /**
+     * @param boolean $multiple
+     *
+     * @return $this
+     */
+    public function setIsMultiple($multiple = true)
+    {
+        $multiple = true === $multiple? 'multiple' : false;
+
+        return $this;
+    }
+
 
     /**
      * @inheritdoc

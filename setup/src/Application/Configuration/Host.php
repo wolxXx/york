@@ -1,11 +1,12 @@
 <?php
 namespace Application\Configuration;
+
 /**
  * host configuration
  *
  * @package Application\Configuration
  * @version 1.0
- * @author York Framework
+ * @author  York Framework
  *
  * @codeCoverageIgnore
  */
@@ -22,9 +23,11 @@ class Host extends Application
             ->set('db_user', 'root')
             ->set('db_pass', 'password')
             ->set('db_schema', 'database');
-
-        $this->stack->set('app_url', 'my-page.org..local');
-
+        
+        Dependency::getApplicationConfiguration()
+            ->set('app_url', 'my-page.org.local')
+            ->set('foo', 'bar');
+        
         return $this;
     }
 }

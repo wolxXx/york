@@ -11,6 +11,10 @@ namespace York\Backend\Script;
  */
 class ModelGenerator extends \York\Console\Application
 {
+    const SCRIPT_NAME = 'generate models';
+    
+    const SCRIPT_VERSION = '$version$';
+    
     /**
      * flag if force is enabled
      * used for overwriting files
@@ -70,7 +74,7 @@ class ModelGenerator extends \York\Console\Application
             ->output('')
             ->output('options:')
             ->output('-m | --model=$name: only for this model. csv allowed. optional. default = all')
-            ->output('-l | --list: list all tables ')
+            ->output('-l | --list: list all tables and exit')
             ->output('--force: !overwrite! !all! files!! handle with care!!!')
             ->output('--exclude-blueprint: do not generate blueprints')
             ->output('--exclude-manager: do not generate manager')
@@ -124,6 +128,7 @@ class ModelGenerator extends \York\Console\Application
         }
 
         foreach (explode(',', $this->model) as $model) {
+            $model = trim($model);
             $this->verboseOutput('model criteria found: generating table ' . $model);
             $this->generateModel($model);
         }

@@ -7,7 +7,7 @@ namespace Application\Configuration;
  *
  * @package Application\Configuration
  * @version 1.0
- * @author York Framework
+ * @author  York Framework
  *
  * @codeCoverageIgnore
  */

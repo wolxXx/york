@@ -64,6 +64,8 @@ class Database extends LoggerAbstract
      * @inheritdoc
      *
      * @todo implement me!
+     * @todo check if database is configured and table exists
+     * @todo create table if not exists?! dunno...
      */
     public function validate()
     {

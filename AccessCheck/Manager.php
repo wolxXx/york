@@ -49,6 +49,7 @@ class Manager
      * setter for user is logged in
      *
      * @param boolean $userIsLoggedIn
+     *
      * @return $this
      */
     public function setUserIsLoggedIn($userIsLoggedIn)
@@ -72,6 +73,7 @@ class Manager
      * setter for the user level
      *
      * @param integer $userLevel
+     *
      * @return $this
      */
     public function setUserLevel($userLevel)
@@ -95,6 +97,7 @@ class Manager
      * adds a rule to the rule set
      *
      * @param \York\AccessCheck\Rule $rule
+     *
      * @return $this
      */
     public function addRule(\York\AccessCheck\Rule $rule)
@@ -118,6 +121,7 @@ class Manager
      * removes a rule from the rule set
      *
      * @param string $actionName
+     *
      * @return $this
      */
     public function removeRule($actionName)
@@ -147,6 +151,7 @@ class Manager
      * otherwise return the result of the checked rule
      *
      * @param string $actionName
+     *
      * @return boolean
      * @throws \York\Exception\Apocalypse
      */
@@ -170,6 +175,7 @@ class Manager
      * checks if a rule was added for an explicit action
      *
      * @param string $actionName
+     *
      * @return boolean
      */
     public function hasRuleForAction($actionName)
@@ -181,6 +187,7 @@ class Manager
      * checks if the requested action requires a logged in user
      *
      * @param string $actionName
+     *
      * @return boolean
      */
     public function requiresAuth($actionName)
@@ -200,6 +207,7 @@ class Manager
      * checks if the current user is allowed to run the requested action
      *
      * @param \York\AccessCheck\Rule $rule
+     *
      * @return boolean
      */
     protected function checkAccessRule(\York\AccessCheck\Rule $rule)

@@ -2,18 +2,18 @@
 namespace York\HTML\Element;
 
 /**
- * a password input element
+ * a hidden input element
  *
  * @package \York\HTML\Element
  * @version $version$
- * @author wolxXx
+ * @author  wolxXx
  */
-class Password extends \York\HTML\DomElementAbstract
+class Hidden extends \York\HTML\DomElementAbstract
 {
     /**
      * @param array $data
      *
-     * @return \York\HTML\Element\Password
+     * @return \York\HTML\Element\Hidden
      */
     public static function Factory($data = array())
     {
@@ -26,10 +26,23 @@ class Password extends \York\HTML\DomElementAbstract
     public static function getDefaultConf()
     {
         return array(
-            'name' => 'password',
-            'type' => 'password',
-            'autocomplete' => 'off'
+            'type' => 'hidden',
+            'value' => null,
         );
+    }
+
+    /**
+     * setter for the value
+     *
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function setValue($value)
+    {
+        $this->set('value', $value);
+
+        return $this;
     }
 
     /**

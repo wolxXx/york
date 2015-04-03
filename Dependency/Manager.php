@@ -233,6 +233,14 @@ class Manager
     }
 
     /**
+     * @return \York\AccessCheck\Manager
+     */
+    public static function getAccessManager()
+    {
+        return self::get('accessCheck');
+    }
+    
+    /**
      * @return \York\Request\Api\Code
      */
     public static function getApiCode()
@@ -254,6 +262,14 @@ class Manager
     public static function getAssetManager()
     {
         return self::get('assetManager');
+    }
+    
+    /**
+     * @return \York\Auth\Manager
+     */
+    public static function getAuthManager()
+    {
+        return self::get('authManager');
     }
 
     /**
@@ -287,6 +303,14 @@ class Manager
     {
         return self::get('databaseManager');
     }
+    
+    /**
+     * @return \York\Storage\Application
+     */
+    public static function getDataStorage()
+    {
+        return self::get('databaseManager');
+    }
 
     /**
      * @return \York\Logger\Manager
@@ -294,6 +318,14 @@ class Manager
     public static function getLogger()
     {
         return self::get('logger');
+    }
+    
+    /**
+     * @return \York\Mailer
+     */
+    public static function getMailer()
+    {
+        return self::get('mailer');
     }
 
     /**
@@ -350,5 +382,13 @@ class Manager
     public static function getViewManager()
     {
         return self::get('viewManager');
+    }
+    
+    /**
+     * @return \York\Writer\Standard
+     */
+    public static function getWriter()
+    {
+        return self::get('writer');
     }
 }

@@ -25,7 +25,7 @@ class IniFile extends File
      */
     public function parse()
     {
-        $this->content = parse_ini_file($this->getFullName(), true, 2);
+        $this->content = parse_ini_file($this->getFullName(), true, INI_SCANNER_RAW);
         $this->parsed = true;
 
         return $this;

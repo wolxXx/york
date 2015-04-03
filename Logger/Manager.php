@@ -36,6 +36,7 @@ class Manager
      */
     public function addLogger(\York\Logger\LoggerInterface $logger)
     {
+        $logger->validate();
         $this->registeredLoggers[] = $logger;
         return $this;
     }

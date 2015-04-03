@@ -1,0 +1,22 @@
+<?php
+namespace Application\View\Main\%%controllerName%%;
+
+/**
+ * Home View Class
+ *
+ * @package Application\View\Main\%%controllerName%%
+ * @version $version$
+ * @author  York Framework
+ */
+class %%actionName%% extends \York\View\ItemAbstract
+{
+    /**
+     * @inheritdoc
+     */
+    public function render()
+    {
+        $this->setContent('foobar!');
+        
+        return $this;
+    }
+}

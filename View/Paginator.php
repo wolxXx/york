@@ -129,7 +129,7 @@ class Paginator
      *
      * @param integer $pageNumber
      *
-     * @return §this
+     * @return $this
      */
     public function setPageNumber($pageNumber)
     {
@@ -143,7 +143,7 @@ class Paginator
      *
      * @param string $urlPrefix
      *
-     * @return §this
+     * @return $this
      */
     public function setUrlPrefix($urlPrefix)
     {

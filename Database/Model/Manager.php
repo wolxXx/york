@@ -256,7 +256,7 @@ abstract class Manager implements ManagerInterface
         }
 
 
-        //@todo check if needed xD
+        //@todo check if needed xD //uhm.. does seem to.... oO
         #foreach ($instance->referencedMembers as $referenced) {
             #$instance->setReferenced($referenced, $this->matchDeclaredVar($reflection->getProperty($referenced), $resultData));
         #}

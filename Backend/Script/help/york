@@ -1,0 +1,34 @@
+USAGE:
+php york.php command [arguments]
+
+___________________
+
+AVAILABLE COMMANDS
+help
+migration
+model
+controller
+
+___________________
+
+HELP
+
+just shows this tiny text of help text
+
+___________________
+
+MIGRATION
+
+
+
+___________________
+
+MODEL
+
+___________________
+
+CONTROLLER
+
+___________________
+
+

@@ -5,6 +5,9 @@ namespace Application\Model;
  *
  * @package Application\Model
  * @version 1.0
- * @author York Framework
+ * @author  York Framework
  */
-class %%modelname%% extends \Application\Model\Blueprint\%%modelname%%{}
+class %%modelname%% extends \Application\Model\Blueprint\%%modelname%%
+{
+
+}

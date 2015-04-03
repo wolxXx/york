@@ -6,7 +6,7 @@ namespace Application\Model\Blueprint;
  *
  * @package Application\Model\Blueprint
  * @version 1.0
- * @author York Framework
+ * @author  York Framework
  */
 class %%modelname%% extends \York\Database\Model\Item
 {

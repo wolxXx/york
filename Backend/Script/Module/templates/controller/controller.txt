@@ -1,0 +1,27 @@
+<?php
+namespace Application\Controller;
+
+/**
+ * %%controllerName%% Controller Class
+ * created by York Framework
+ *
+ * @package Application\Controller
+ * @Version $version$
+ * @author  York Framework
+ */
+class %%controllerName%% extends \York\Controller
+{
+    /**
+     * @inheritdoc
+     */
+    public function setAccessRules()
+    {
+        $this->accessChecker
+            ->addRule(new \York\AccessCheck\Rule('*', false))
+%%accessRules%%
+        ;
+        return $this;
+    }
+
+%%actions%%
+}

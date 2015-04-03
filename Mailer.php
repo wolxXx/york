@@ -600,7 +600,9 @@ class Mailer implements \York\MailerInterface
 
 
         if (false === $sending) {
-            $text .= sprintf('receivers: %s%s', implode(', ', $this->receivers->getAll()), $break);
+            $text .= sprintf('receivers: %s%s', implode(', ', $this->getReceivers()), $break);
+            $text .= sprintf('cc receivers: %s%s', implode(', ', $this->getCarbonCopyReceivers()), $break);
+            $text .= sprintf('bcc receivers: %s%s', implode(', ', $this->getBlindCarbonCopyReceivers()), $break);
 
             return $this->log($text);
         }

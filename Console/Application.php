@@ -5,9 +5,10 @@ namespace York\Console;
  * abstract class for console applications
  * parameters / arguments must be passed via "--key value"
  *
- * @author wolxXx
- * @version $version$
  * @package York\Console
+ * @version $version$
+ * @author  wolxXx
+ * 
  */
 abstract class Application
 {
@@ -101,31 +102,183 @@ abstract class Application
      * @var string
      */
     protected $outputPrefix = '   ';
+    
+    /**
+     * @var string[]
+     */
+    protected $originalArgv = array();
+    
+    /**
+     * @var integer
+     */
+    protected $originalArgc = 0;
+    
+    /**
+     * @var string
+     */
+    const SCRIPT_NAME = 'yet another york cli application';
+    
+    
+    const SCRIPT_VERSION = '1.3.3-7';
 
     /**
      * start up
      *
      * @param string $scriptName
      * @param string $version
+     * 
      * @throws \York\Exception\Console
      */
-    public final function __construct($scriptName, $version)
+    public final function __construct($scriptName = null, $version = null)
     {
         if (false === \York\Helper\Application::isCli()) {
             throw new \York\Exception\Console('tried to run cli script in non-cli environment!');
         }
+        
+        global $argc;
+        global $argv;
 
-        $writer = \York\Writer\Console::Factory();
-        \York\Dependency\Manager::setDependency('writer', $writer);
+        \York\Dependency\Manager::setDependency('writer', \York\Writer\Console::Factory());
+        
+        if(null === $scriptName){
+            $scriptName = static::SCRIPT_NAME;
+        }
+        
+        if(null === $version){
+            $version = static::SCRIPT_VERSION;
+        }
 
-        $this->scriptName = $scriptName;
-        $this->version = $version;
-        $this->carriageReturnDelay = $this->defaultCarriageReturnDelay;
-        $this->typingDelay = $this->defaultTypingDelay;
+        $this
+            ->setTypingDelay($this->defaultTypingDelay)
+            ->setCarriageReturnDelay($this->defaultCarriageReturnDelay)
+            ->setVersion($version)
+            ->setScriptName($scriptName)
+            ->setOriginalArgc($argc)
+            ->setOriginalArgv($argv);
 
         $this->init();
     }
-
+    
+    /**
+     * @param integer $typingDelay
+     * 
+     * @return $this
+     */
+    public function setTypingDelay($typingDelay)
+    {
+        $this->typingDelay = $typingDelay;
+        
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getTypingDelay()
+    {
+        return $this->typingDelay;
+    }
+    
+    /**
+     * @param integer $carriageReturnDelay
+     * 
+     * @return $this
+     */
+    public function setCarriageReturnDelay($carriageReturnDelay)
+    {
+        $this->carriageReturnDelay = $carriageReturnDelay;
+        
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getCarriageReturnDelay()
+    {
+        return $this->carriageReturnDelay;
+    }
+    
+    /**
+     * @param string $version
+     * 
+     * @return $this
+     */
+    public function setVersion($version)
+    {
+        $this->version = $version;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getVersion()
+    {
+        return $this->version;
+    }
+    
+    /**
+     * @param string $scriptName
+     * 
+     * @return $this
+     */
+    public function setScriptName($scriptName)
+    {
+        $this->scriptName = $scriptName;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string
+     */
+    public function getScriptName()
+    {
+        return $this->scriptName;
+    }
+    
+    /**
+     * @param string[] $originalArgv
+     * 
+     * @return $this
+     */
+    public function setOriginalArgv($originalArgv)
+    {
+        $this->originalArgv = $originalArgv;
+        
+        return $this;
+    }
+    
+    /**
+     * @return string[]
+     */
+    public function getOriginalArgv()
+    {
+        return $this->originalArgv;
+    }
+    
+    /**
+     * @param integer $originalArgc
+     * 
+     * @return $this
+     */
+    public function setOriginalArgc($originalArgc)
+    {
+        $this->originalArgc = $originalArgc;
+        
+        return $this;
+    }
+    
+    /**
+     * @return integer
+     */
+    public function getOriginalArgc()
+    {
+        return $this->originalArgc;
+    }
+    
     /**
      * run the application
      *
@@ -393,10 +546,10 @@ abstract class Application
      * @param string $foreGround
      * @return string
      */
-    public function colorString($string, $foreGround = Style::FOREGROUND_RED)
+    public function colorString($string, $foreGround = \York\Console\Style::FOREGROUND_RED)
     {
         if (true === $this->isColorEnabled) {
-            $string = Style::styleString($string, $foreGround);
+            $string = \York\Console\Style::styleString($string, $foreGround);
         }
 
         return $string;
@@ -484,15 +637,19 @@ abstract class Application
             ->newLine();
     }
 
-    /***
+    /**
      * must be implemented by extending class
      * shall display usage and help text
+     * 
+     * @return $this
      */
     public abstract function help();
 
     /**
      * must be implemented by extending class
      * drop your business logic here....
+     * 
+     * @return $this
      */
     public abstract function run();
 }

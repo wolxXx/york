@@ -31,6 +31,17 @@ class Directory
     }
 
     /**
+     * @param string  $path
+     * @param boolean $createIfNotExists
+     *
+     * @return \York\FileSystem\Directory
+     */
+    public static final function Factory($path, $createIfNotExists = false)
+    {
+        return new self($path, $createIfNotExists);
+    }
+
+    /**
      * to string
      *
      * @return string

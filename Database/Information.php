@@ -7,15 +7,15 @@ namespace York\Database;
  *
  * @package York\Database
  * @version $version$
- * @author wolxXx
+ * @author  wolxXx
  */
 class Information
 {
     /**
      * checks if the given table exists in the given database
      *
-     * @param string    $databaseName
-     * @param string    $tableName
+     * @param string $databaseName
+     * @param string $tableName
      *
      * @return boolean
      */
@@ -36,9 +36,9 @@ class Information
     /**
      * checks if the given column exists in the given table and database
      *
-     * @param string    $databaseName
-     * @param string    $tableName
-     * @param string    $columnName
+     * @param string $databaseName
+     * @param string $tableName
+     * @param string $columnName
      *
      * @return boolean
      */
@@ -60,8 +60,8 @@ class Information
     /**
      * retrieves all columns for a table
      *
-     * @param string    $databaseName
-     * @param string    $tableName
+     * @param string $databaseName
+     * @param string $tableName
      *
      * @return array
      */
@@ -84,9 +84,9 @@ class Information
     /**
      * retrieves the the of a column in a table
      *
-     * @param string    $databaseName
-     * @param string    $tableName
-     * @param string    $columnName
+     * @param string $databaseName
+     * @param string $tableName
+     * @param string $columnName
      *
      * @return \stdClass
      */
@@ -113,8 +113,8 @@ class Information
      * retrieves all tables in a database
      * exclude array may contain some strings for excluding matching table names
      *
-     * @param string    $databaseName
-     * @param array     $exclude
+     * @param string $databaseName
+     * @param array  $exclude
      *
      * @return array
      */
@@ -134,6 +134,23 @@ class Information
                 'NOTIN' => array(
                     'TABLE_NAME' => $exclude
                 )
+            )
+        ));
+    }
+
+    /**
+     * @param string $table
+     *
+     * @return integer
+     */
+    public static function countTableEntries($table)
+    {
+        $model = new \York\Database\Model();
+
+        return $model->count(array(
+            'method' => 'all',
+            'from' => array(
+                $table
             )
         ));
     }

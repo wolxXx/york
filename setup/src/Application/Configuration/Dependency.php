@@ -10,12 +10,19 @@ namespace Application\Configuration;
  */
 class Dependency extends \York\Dependency\Manager
 {
-
     /**
      * @return \Application\Foo\Bar
      */
     public static function getADependency()
     {
         return \York\Dependency\Manager::get('aDependency');
+    }
+    
+    /**
+     * @return \Application\Bar\Foo
+     */
+    public static function getAnotherDependency()
+    {
+        return \York\Dependency\Manager::get('anotherDependency');
     }
 }

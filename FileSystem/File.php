@@ -6,7 +6,9 @@ namespace York\FileSystem;
  *
  * @package York\FileSystem
  * @version $version$
- * @author wolxXx
+ * @author  wolxXx
+ *          
+ * @todo what about setting the content? save the content, provide add, set and set content....
  */
 class File
 {
@@ -16,8 +18,8 @@ class File
     protected $path;
 
     /**
-     * @param string    $path
-     * @param boolean   $createIfNotExists
+     * @param string  $path
+     * @param boolean $createIfNotExists
      */
     public final function __construct($path, $createIfNotExists = false)
     {
@@ -42,8 +44,8 @@ class File
     }
 
     /**
-     * @param string    $path
-     * @param boolean   $createIfNotExists
+     * @param string  $path
+     * @param boolean $createIfNotExists
      *
      * @return \York\FileSystem\File
      */

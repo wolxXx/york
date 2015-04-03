@@ -271,7 +271,13 @@ new \York\Setup\Setup('Setup', '1.0');
  */
 namespace Application\Configuration;
 class Host{
-    public function configureApplication(){}
-    public function configureHost(){}
-    public function checkConfig(){}
+    public function configureApplication(){
+        return $this;
+    }
+    public function configureHost(){
+        return $this;
+    }
+    public function checkConfig(){
+        return $this;
+    }
 }

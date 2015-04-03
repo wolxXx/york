@@ -190,6 +190,7 @@ class Setup
         $this->execute(sprintf('rm -rf %s/.git', $this->target), 'removing dev dirs and files: git');
         $this->execute(sprintf('rm -rf %s/.idea', $this->target), 'removing dev dirs and files: idea');
         $this->execute(sprintf('rm -rf %s/Test', $this->target), 'removing dev dirs and files: Test');
+        $this->execute(sprintf('rm -rf %s/vendor', $this->target), 'removing dev dirs and files: Test');
 
         return $this;
     }

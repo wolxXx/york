@@ -101,27 +101,32 @@ class Router
         if (null !== $route) {
             if (true === is_callable($route)) {
                 $route($path);
-            } elseif (true === is_array($route)) {
+                return $this;
+            } 
+            if (true === is_array($route)) {
                 foreach ($route as $index => $field) {
                     $path[$index] = $field;
                 }
-            } else {
-                $path[0] = $route;
+                
+                return $this;
             }
-        } else {
-            foreach ($this->getAllRoutes() as $match => $replace) {
-                $matches = sscanf($request, $match);
+            
+            $path[0] = $route;
+            
+            return $this;
+        }
+        foreach ($this->getAllRoutes() as $match => $replace) {
+            $matches = sscanf($request, $match);
 
-                if (false === empty($matches) && false === in_array(null, $matches)) {
-                    foreach ($replace as $index => $field) {
-                        if (true === is_numeric($field)) {
-                            $path[$index] = $matches[$field];
+            if (false === empty($matches) && false === in_array(null, $matches)) {
+                foreach ($replace as $index => $field) {
+                    if (true === is_numeric($field)) {
+                        $path[$index] = $matches[$field];
 
-                            continue;
-                        }
-
-                        $path[$index] = $field;
+                        continue;
                     }
+
+                    $path[$index] = $field;
                 }
             }
         }

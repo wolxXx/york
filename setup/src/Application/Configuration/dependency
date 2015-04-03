@@ -1,3 +1,7 @@
 [aDependency]
 class = '\Application\Foo\Bar';
 shared = true;
+
+[anotherDependency]
+class = '\Application\Bar\Foo';
+shared = false;
