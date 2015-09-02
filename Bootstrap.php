@@ -76,6 +76,8 @@ abstract class Bootstrap
             ->configureHost()
             ->checkConfig()
         ;
+
+        \York\Dependency\Manager::getTranslator()->init();
     }
 
     /**

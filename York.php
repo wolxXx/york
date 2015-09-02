@@ -6,10 +6,11 @@ namespace York;
  *
  * @package \York
  * @version $version$
- * @author wolxXx
+ * @author  wolxXx
  */
 class York
 {
+
     /**
      * @var \Application\Configuration\Bootstrap
      */
@@ -31,6 +32,7 @@ class York
         require_once __DIR__ . '/Autoload/Manager.php';
 
         new \York\Autoload\Manager();
+        require_once(\York\Helper\Application::getProjectRoot() . 'vendor/autoload.php');
 
         return $this;
     }
@@ -54,12 +56,12 @@ class York
             $this->checkRequirements();
 
             \York\Dependency\Manager::getBootstrap()
-                ->beforeRun()
-                ->run()
-                ->afterRun()
-                ->beforeView()
-                ->view()
-                ->afterView()
+                                    ->beforeRun()
+                                    ->run()
+                                    ->afterRun()
+                                    ->beforeView()
+                                    ->view()
+                                    ->afterView()
             ;
         } catch (\Exception $exception) {
             $this->handleException($exception);
@@ -68,31 +70,36 @@ class York
 
     /**
      * @param \Exception $exception
+     *
      * @return \York\ErrorHandler\ErrorHandlerInterface
      */
     protected function getExceptionHandler(\Exception $exception)
     {
         switch (true) {
-            case $exception instanceof \York\Exception\Redirect:
+            case $exception instanceof \York\Exception\Redirect: {
                 return new \York\ErrorHandler\Redirect();
 
                 break;
-
-            case $exception instanceof \York\Exception\NoView:
+            }
+            case $exception instanceof \York\Exception\NoView: {
                 return new \York\ErrorHandler\NoView();
 
                 break;
-
-            case $exception instanceof \York\Exception\QueryGenerator:
-            case $exception instanceof \York\Exception\Database:
+            }
+            case $exception instanceof \York\Exception\QueryGenerator: {
                 return new \York\ErrorHandler\Database();
 
                 break;
-
-            default:
+            }
+            case $exception instanceof \York\Exception\Database: {
+                return new \York\ErrorHandler\Database();
+                break;
+            }
+            default: {
                 return new \York\ErrorHandler\General();
 
                 break;
+            }
         }
     }
 
@@ -106,7 +113,8 @@ class York
      */
     protected function handleException(\Exception $exception)
     {
-        $this->getExceptionHandler($exception)
+        $this
+            ->getExceptionHandler($exception)
             ->setException($exception)
             ->handle()
         ;

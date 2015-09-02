@@ -1,5 +1,6 @@
 <?php
 namespace York\AccessCheck;
+
 /**
  * sets the access rules for one action
  *
@@ -9,6 +10,7 @@ namespace York\AccessCheck;
  */
 class Rule
 {
+
     /**
      * the action name
      *
@@ -33,7 +35,7 @@ class Rule
     /**
      * constructor
      *
-     * @param string $actionName
+     * @param string  $actionName
      * @param boolean $authNeeded
      * @param integer $levelNeeded
      */
@@ -42,13 +44,15 @@ class Rule
         $this
             ->setActionName($actionName)
             ->setAuthNeeded($authNeeded)
-            ->setLevelNeeded($levelNeeded);
+            ->setLevelNeeded($levelNeeded)
+        ;
     }
 
     /**
      * setter for the action name
      *
      * @param string $actionName
+     *
      * @return $this
      */
     public function setActionName($actionName)
@@ -72,6 +76,7 @@ class Rule
      * setter for auth needed
      *
      * @param boolean $authNeeded
+     *
      * @return $this
      */
     public function setAuthNeeded($authNeeded)
@@ -95,6 +100,7 @@ class Rule
      * setter for the needed level
      *
      * @param integer $levelNeeded
+     *
      * @return $this
      */
     public function setLevelNeeded($levelNeeded)

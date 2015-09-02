@@ -10,6 +10,7 @@ namespace York\AccessCheck;
  */
 class Manager
 {
+
     /**
      * is the current user logged in?
      *
@@ -42,7 +43,8 @@ class Manager
         $this
             ->clearRules()
             ->setUserIsLoggedIn($userIsLoggedIn)
-            ->setUserLevel($userLevel);
+            ->setUserLevel($userLevel)
+        ;
     }
 
     /**
@@ -110,7 +112,7 @@ class Manager
     /**
      * returns all set rules
      *
-     * @return array
+     * @return \York\AccessCheck\Rule[]
      */
     public function getRules()
     {
@@ -140,7 +142,7 @@ class Manager
      */
     public function clearRules()
     {
-        $this->rules = array();
+        $this->rules = [];
 
         return $this;
     }
@@ -163,11 +165,9 @@ class Manager
         } elseif (true === $this->hasRuleForAction('*')) {
             $rule = $this->rules['*'];
         }
-
         if (null !== $rule) {
             return $this->checkAccessRule($rule);
         }
-
         throw new \York\Exception\Apocalypse();
     }
 
@@ -195,7 +195,6 @@ class Manager
         if (true === $this->hasRuleForAction($actionName)) {
             return $this->rules[$actionName]->isAuthNeeded();
         }
-
         if (true === $this->hasRuleForAction('*')) {
             return $this->rules['*']->isAuthNeeded();
         }
@@ -215,11 +214,9 @@ class Manager
         if (false === $rule->isAuthNeeded()) {
             return true;
         }
-
         if (false === $this->userIsLoggedIn) {
             return false;
         }
-
         if ($rule->getLevelNeeded() <= $this->userLevel) {
             return true;
         }

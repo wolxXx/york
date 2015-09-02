@@ -2,8 +2,8 @@
   "name": "wolxxx/york",
   "description": "york framework",
   "minimum-stability": "stable",
-  "version": "$version$",
-  "license": "proprietary",
+  "version": "3.3.2",
+  "license": "MIT",
   "authors": [
     {
       "name": "wolxXx",
@@ -16,10 +16,12 @@
   },
   "require": {
     "squizlabs/php_codesniffer": "1.4.5",
-    "pbergman/whiptail": "@stable"
+    "pbergman/whiptail": "@stable",
+    "guzzlehttp/guzzle": "@stable"
   },
   "require-dev": {
     "phpdocumentor/phpdocumentor": "2.*",
-    "phpunit/phpunit": "4.5.*"
+    "phpunit/phpunit": "4.5.*",
+    "fabpot/php-cs-fixer": "master-dev"
   }
 }
